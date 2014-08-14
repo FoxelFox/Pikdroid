@@ -24,7 +24,7 @@ public class EntityManager {
     public int create(ArrayList<Component> components) {
         if(eStack.empty()) {
             entities.add(components);
-            return entities.size();
+            return entities.size() -1;
         } else {
             int i = eStack.pop();
             entities.set(i, components);
@@ -37,7 +37,7 @@ public class EntityManager {
      * @param id EntityID
      */
     public void delete(int id) {
-        entities.remove(id);
+        entities.set(id, null);
         eStack.push(id);
     }
 }
