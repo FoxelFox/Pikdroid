@@ -11,9 +11,6 @@ import de.u5b.pikdroid.manager.EventManager;
 
 public class PikdroidActivity extends Activity {
 
-    EntityManager entityManager;
-    EventManager eventManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
