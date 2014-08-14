@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import manager.EntityManager;
+import manager.EventManager;
 
-public class Pikdroid extends Activity {
+
+public class PikdroidActivity extends Activity {
+
+    EntityManager entityManager;
+    EventManager eventManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
