@@ -1,7 +1,7 @@
-package game;
+package de.u5b.pikdroid.game;
 
-import manager.EntityManager;
-import manager.EventManager;
+import de.u5b.pikdroid.manager.EntityManager;
+import de.u5b.pikdroid.manager.EventManager;
 
 /**
  * Created by Foxel on 14.08.2014.

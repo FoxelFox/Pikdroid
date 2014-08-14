@@ -1,9 +1,9 @@
-package manager;
+package de.u5b.pikdroid.manager;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-import component.Component;
+import de.u5b.pikdroid.component.Component;
 
 /**
  * Created by Foxel on 14.08.2014.

@@ -1,4 +1,4 @@
-package component;
+package de.u5b.pikdroid.component;
 
 /**
  * Created by Foxel on 13.08.2014.

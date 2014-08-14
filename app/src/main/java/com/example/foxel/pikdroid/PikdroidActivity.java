@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import manager.EntityManager;
-import manager.EventManager;
+import de.u5b.pikdroid.manager.EntityManager;
+import de.u5b.pikdroid.manager.EventManager;
 
 
 public class PikdroidActivity extends Activity {
