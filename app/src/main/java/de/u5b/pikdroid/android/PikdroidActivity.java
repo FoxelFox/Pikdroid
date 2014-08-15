@@ -1,13 +1,11 @@
-package com.example.foxel.pikdroid;
+package de.u5b.pikdroid.android;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.u5b.pikdroid.manager.EntityManager;
-import de.u5b.pikdroid.manager.EventManager;
-
+import de.u5b.pikdroid.R;
 
 public class PikdroidActivity extends Activity {
 

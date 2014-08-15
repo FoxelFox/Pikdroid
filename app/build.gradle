@@ -4,7 +4,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId 'com.example.foxel.pikdroid'
+        applicationId 'de.u5b.pikdroid'
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 1
