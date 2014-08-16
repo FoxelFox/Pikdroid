@@ -1,18 +1,24 @@
 package de.u5b.pikdroid.android;
 
 import android.app.Activity;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import de.u5b.pikdroid.R;
+import de.u5b.pikdroid.system.render.MySurfaceView;
 
 public class PikdroidActivity extends Activity {
+
+    private GLSurfaceView glView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pikdroid);
+        //setContentView(R.layout.activity_pikdroid);
+        glView = new MySurfaceView(this);
+        setContentView(glView);
     }
 
 
