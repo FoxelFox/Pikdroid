@@ -11,6 +11,9 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import de.u5b.pikdroid.system.render.mesh.Mesh;
+import de.u5b.pikdroid.system.render.mesh.MeshFactory;
+
 /**
  * Created by Foxel on 13.08.2014.
  */
@@ -29,26 +32,14 @@ public class RenderSystem implements GLSurfaceView.Renderer {
                     "}";
 
     private int shaderProgram;
-    private FloatBuffer vertexBuffer;
-    static float triangleCoords[] = {   // in counterclockwise order:
-            0.0f,  0.622008459f, 0.0f, // top
-            -0.5f, -0.311004243f, 0.0f, // bottom left
-            0.5f, -0.311004243f, 0.0f  // bottom right
-    };
+    private Mesh triangle;
+
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(1.0f, 0.0f, 0.25f, 1.0f);
-
-        ByteBuffer bb = ByteBuffer.allocateDirect(triangleCoords.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(triangleCoords);
-        vertexBuffer.position(0);
-
         shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);
-
+        triangle = MeshFactory.getTriangle();
 
     }
 
@@ -62,16 +53,7 @@ public class RenderSystem implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glUseProgram(shaderProgram);
 
-
-
-        int vPosition = GLES20.glGetAttribLocation(shaderProgram,"vPosition");
-        GLES20.glEnableVertexAttribArray(vPosition);
-        GLES20.glVertexAttribPointer(vPosition, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
-
-        GLES20.glDisableVertexAttribArray(vPosition);
-
+        triangle.draw(shaderProgram);
     }
 
     private static int createShader(String vertex, String fragment) {
