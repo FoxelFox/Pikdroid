@@ -17,16 +17,29 @@ public class EventManager {
 
     /**
      * Subscribe to an EventTopic
-     * @param eTopic Topic to subscribe on
+     * @param eventTopic Topic to subscribe on
      * @param system The ISystem that want to subscribe
      */
-    public void subscribe(EventTopic eTopic, ISystem system) {
-        if(subscriber.containsKey(eTopic)) {
-            subscriber.get(eTopic).add(system);
+    public void subscribe(EventTopic eventTopic, ISystem system) {
+        if(subscriber.containsKey(eventTopic)) {
+            subscriber.get(eventTopic).add(system);
         } else {
             ArrayList<ISystem> list = new ArrayList<ISystem>();
             list.add(system);
-            subscriber.put(eTopic, list);
+            subscriber.put(eventTopic, list);
         }
+    }
+
+    /**
+     * Publish a new  Event that all subscribers will receive.
+     * @param eventTopic Event
+     */
+    public void publish(EventTopic eventTopic) {
+        if(subscriber.containsKey(eventTopic)) {
+            for(ISystem sys: subscriber.get(eventTopic)) {
+                sys.handleEvent(eventTopic);
+            }
+        }
+
     }
 }
