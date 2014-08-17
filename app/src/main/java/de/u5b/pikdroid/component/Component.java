@@ -5,9 +5,4 @@ package de.u5b.pikdroid.component;
  */
 public abstract class Component {
 
-    public Component ()
-    {
-
-    }
-
 }
