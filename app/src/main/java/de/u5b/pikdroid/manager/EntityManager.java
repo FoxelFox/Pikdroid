@@ -1,10 +1,14 @@
 package de.u5b.pikdroid.manager;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import de.u5b.pikdroid.component.Component;
+import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.manager.event.Event;
+import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * Created by Foxel on 14.08.2014.
@@ -24,14 +28,27 @@ public class EntityManager extends AManager {
      * @return EntityID
      */
     public int create(ArrayList<Component> components) {
+        int index;
         if(eStack.empty()) {
             entities.add(components);
-            return entities.size() -1;
+            index = entities.size() -1;
         } else {
-            int i = eStack.pop();
-            entities.set(i, components);
-            return i;
+            index = eStack.pop();
+            entities.set(index, components);
         }
+        engine.getEventManager().publish(new Event(Topic.ENTITY_CREATED, index));
+        return index;
+    }
+
+
+    public <T extends Component> T getComponent(int id, Class<T> type) {
+        ArrayList<Component> e = entities.get(id);
+        for(int i = 0; i < entities.size(); ++i) {
+            if(type.isInstance(e.get(i))) {
+                return type.cast(e.get(i));
+            }
+        }
+        throw new NoSuchElementException("This Entity has no such Component!" + type.getClass().toString());
     }
 
     /**

@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
@@ -35,6 +36,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     public RenderSystem(Engine engine) {
         super(engine);
+        eventManager.subscribe(Topic.ENTITY_CREATED,this);
     }
 
     @Override
@@ -48,8 +50,6 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(1.0f, 0.0f, 0.25f, 1.0f);
         shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);
-        triangle = MeshFactory.getTriangle();
-
     }
 
     @Override
@@ -62,10 +62,13 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glUseProgram(shaderProgram);
 
-        triangle.draw(shaderProgram);
+        if(triangle != null)
+            triangle.draw(shaderProgram);
     }
 
     private void entityCreated(Event event) {
+        Visual vis = entityManager.getComponent(event.getEntityID(), Visual.class);
+        triangle = MeshFactory.getTriangle();
 
     }
 
