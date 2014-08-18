@@ -10,29 +10,30 @@ import de.u5b.pikdroid.manager.SystemManager;
 public class Engine {
     private EntityManager entityManager;
     private EventManager eventManager;
-    private SystemManager gameManager;
+    private SystemManager systemManager;
 
     private Engine engine;
 
-    private Engine() {
+    public Engine() {
         entityManager = new EntityManager(this);
         eventManager = new EventManager(this);
-        gameManager = new SystemManager(this);
+        systemManager = new SystemManager(this);
     }
 
     public void play() {
-        gameManager.startGame();
+        systemManager.startGame();
     }
 
     public EntityManager getEntityManager(){
         return entityManager;
     }
 
-    public SystemManager getGameManager() {
-        return gameManager;
+    public SystemManager getSystemManager() {
+        return systemManager;
     }
 
     public EventManager getEventManager() {
         return eventManager;
     }
+
 }

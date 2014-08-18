@@ -11,13 +11,16 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.manager.EventTopic;
+import de.u5b.pikdroid.system.ASystem;
 import de.u5b.pikdroid.system.render.mesh.Mesh;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
 
 /**
  * Created by Foxel on 13.08.2014.
  */
-public class RenderSystem implements GLSurfaceView.Renderer {
+public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;                        \n" +
                     "attribute vec4 vPosition;               \n" +
@@ -34,6 +37,16 @@ public class RenderSystem implements GLSurfaceView.Renderer {
     private int shaderProgram;
     private Mesh triangle;
 
+    public RenderSystem(Engine engine) {
+        super(engine);
+    }
+
+    @Override
+    public void handleEvent(EventTopic eventTopic) {
+        switch (eventTopic) {
+            case ENTITY_CREATED: entityCreated(eventTopic);
+        }
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -56,6 +69,10 @@ public class RenderSystem implements GLSurfaceView.Renderer {
         triangle.draw(shaderProgram);
     }
 
+    private void entityCreated(EventTopic eventTopic) {
+
+    }
+
     private static int createShader(String vertex, String fragment) {
         int vs = compileShader(GLES20.GL_VERTEX_SHADER, vertex);
         int fs = compileShader(GLES20.GL_FRAGMENT_SHADER, fragment);
@@ -73,4 +90,6 @@ public class RenderSystem implements GLSurfaceView.Renderer {
         GLES20.glCompileShader(shader);
         return shader;
     }
+
+
 }
