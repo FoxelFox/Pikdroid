@@ -7,4 +7,5 @@ package de.u5b.pikdroid.manager;
 public enum EventTopic {
     ENTITY_CREATED,
     ENTITY_DELETED,
+    SPAWN_PIKDROID,
 }

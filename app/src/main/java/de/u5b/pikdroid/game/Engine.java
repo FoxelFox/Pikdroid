@@ -2,7 +2,7 @@ package de.u5b.pikdroid.game;
 
 import de.u5b.pikdroid.manager.EntityManager;
 import de.u5b.pikdroid.manager.EventManager;
-import de.u5b.pikdroid.manager.GameManager;
+import de.u5b.pikdroid.manager.SystemManager;
 
 /**
  * Created by Foxel on 14.08.2014.
@@ -10,21 +10,25 @@ import de.u5b.pikdroid.manager.GameManager;
 public class Engine {
     private EntityManager entityManager;
     private EventManager eventManager;
-    private GameManager gameManager;
+    private SystemManager gameManager;
 
     private Engine engine;
 
     private Engine() {
         entityManager = new EntityManager(this);
         eventManager = new EventManager(this);
-        gameManager = new GameManager(this);
+        gameManager = new SystemManager(this);
+    }
+
+    public void play() {
+        gameManager.startGame();
     }
 
     public EntityManager getEntityManager(){
         return entityManager;
     }
 
-    public GameManager getGameManager() {
+    public SystemManager getGameManager() {
         return gameManager;
     }
 

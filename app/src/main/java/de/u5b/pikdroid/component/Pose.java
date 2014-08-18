@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 /**
  * Created by Foxel on 18.08.2014.
  */
-public class Pose {
+public class Pose extends Component{
     Matrix pose;
 
     public Pose() {

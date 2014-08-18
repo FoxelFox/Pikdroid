@@ -5,7 +5,7 @@ import android.graphics.Color;
 /**
  * Created by Foxel on 18.08.2014.
  */
-public class Visual {
+public class Visual extends Component{
     Color color;
 
     public Visual() {
