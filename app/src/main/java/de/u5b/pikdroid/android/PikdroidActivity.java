@@ -12,10 +12,14 @@ import de.u5b.pikdroid.system.render.MySurfaceView;
 
 public class PikdroidActivity extends Activity {
 
+    Engine engine;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MySurfaceView(this, new Engine()));
+        engine = new Engine();
+        setContentView(new MySurfaceView(this, engine));
+        engine.play();
     }
 
 

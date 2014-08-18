@@ -20,11 +20,11 @@ public class Engine {
         entityManager = new EntityManager(this);
         eventManager = new EventManager(this);
         systemManager = new SystemManager(this);
-        eventManager.publish(new Event(Topic.SPAWN_PIKDROID,-1));
     }
 
     public void play() {
         systemManager.startGame();
+        eventManager.publish(new Event(Topic.SPAWN_PIKDROID,-1));
     }
 
     public EntityManager getEntityManager(){

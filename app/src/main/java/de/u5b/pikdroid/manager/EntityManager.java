@@ -41,9 +41,16 @@ public class EntityManager extends AManager {
     }
 
 
+    /**
+     * Returns the component of type @type
+     * @param id EntityID
+     * @param type ComponentType
+     * @param <T>
+     * @return The Component of Type @type
+     */
     public <T extends Component> T getComponent(int id, Class<T> type) {
         ArrayList<Component> e = entities.get(id);
-        for(int i = 0; i < entities.size(); ++i) {
+        for(int i = 0; i < e.size(); ++i) {
             if(type.isInstance(e.get(i))) {
                 return type.cast(e.get(i));
             }
