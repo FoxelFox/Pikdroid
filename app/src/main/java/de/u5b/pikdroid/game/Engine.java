@@ -1,7 +1,7 @@
 package de.u5b.pikdroid.game;
 
 import de.u5b.pikdroid.manager.EntityManager;
-import de.u5b.pikdroid.manager.EventManager;
+import de.u5b.pikdroid.manager.event.EventManager;
 import de.u5b.pikdroid.manager.SystemManager;
 
 /**

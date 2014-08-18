@@ -1,18 +1,14 @@
 package de.u5b.pikdroid.system.render;
 
-import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.manager.EventTopic;
+import de.u5b.pikdroid.manager.event.Event;
+import de.u5b.pikdroid.manager.event.Topic;
 import de.u5b.pikdroid.system.ASystem;
 import de.u5b.pikdroid.system.render.mesh.Mesh;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
@@ -42,9 +38,9 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     }
 
     @Override
-    public void handleEvent(EventTopic eventTopic) {
-        switch (eventTopic) {
-            case ENTITY_CREATED: entityCreated(eventTopic);
+    public void handleEvent(Event event) {
+        switch (event.getTopic()) {
+            case ENTITY_CREATED: entityCreated(event);
         }
     }
 
@@ -69,7 +65,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         triangle.draw(shaderProgram);
     }
 
-    private void entityCreated(EventTopic eventTopic) {
+    private void entityCreated(Event event) {
 
     }
 

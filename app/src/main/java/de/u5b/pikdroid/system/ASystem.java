@@ -2,8 +2,9 @@ package de.u5b.pikdroid.system;
 
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.EntityManager;
-import de.u5b.pikdroid.manager.EventManager;
-import de.u5b.pikdroid.manager.EventTopic;
+import de.u5b.pikdroid.manager.event.Event;
+import de.u5b.pikdroid.manager.event.EventManager;
+import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * Created by Foxel on 13.08.2014.
@@ -18,5 +19,5 @@ public abstract class ASystem {
         eventManager = engine.getEventManager();
     }
 
-    public abstract void handleEvent(EventTopic eventTopic);
+    public abstract void handleEvent(Event event);
 }
