@@ -3,15 +3,17 @@ package de.u5b.pikdroid.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.*;
 
 /**
  * Created by Foxel on 14.08.2014.
  */
-public class EventManager {
+public class EventManager extends Manager{
     private HashMap<EventTopic, ArrayList<ISystem>> subscriber;
 
-    public EventManager() {
+    public EventManager(Engine engine) {
+        super(engine);
         subscriber = new HashMap<EventTopic, ArrayList<ISystem>>();
     }
 

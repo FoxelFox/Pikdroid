@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import de.u5b.pikdroid.component.Component;
+import de.u5b.pikdroid.game.Engine;
 
 /**
  * Created by Foxel on 14.08.2014.
  */
-public class EntityManager {
+public class EntityManager extends Manager{
     private ArrayList<ArrayList<Component>> entities;
     private Stack<Integer> eStack;
 
-    public EntityManager() {
+    public EntityManager(Engine engine) {
+        super(engine);
         entities = new ArrayList<ArrayList<Component>>();
         eStack = new Stack<Integer>();
     }
