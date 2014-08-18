@@ -9,12 +9,12 @@ import de.u5b.pikdroid.system.*;
 /**
  * Created by Foxel on 14.08.2014.
  */
-public class EventManager extends Manager{
-    private HashMap<EventTopic, ArrayList<ISystem>> subscriber;
+public class EventManager extends AManager {
+    private HashMap<EventTopic, ArrayList<ASystem>> subscriber;
 
     public EventManager(Engine engine) {
         super(engine);
-        subscriber = new HashMap<EventTopic, ArrayList<ISystem>>();
+        subscriber = new HashMap<EventTopic, ArrayList<ASystem>>();
     }
 
     /**
@@ -22,11 +22,11 @@ public class EventManager extends Manager{
      * @param eventTopic Topic to subscribe on
      * @param system The ISystem that want to subscribe
      */
-    public void subscribe(EventTopic eventTopic, ISystem system) {
+    public void subscribe(EventTopic eventTopic, ASystem system) {
         if(subscriber.containsKey(eventTopic)) {
             subscriber.get(eventTopic).add(system);
         } else {
-            ArrayList<ISystem> list = new ArrayList<ISystem>();
+            ArrayList<ASystem> list = new ArrayList<ASystem>();
             list.add(system);
             subscriber.put(eventTopic, list);
         }
@@ -38,7 +38,7 @@ public class EventManager extends Manager{
      */
     public void publish(EventTopic eventTopic) {
         if(subscriber.containsKey(eventTopic)) {
-            for(ISystem sys: subscriber.get(eventTopic)) {
+            for(ASystem sys: subscriber.get(eventTopic)) {
                 sys.handleEvent(eventTopic);
             }
         }

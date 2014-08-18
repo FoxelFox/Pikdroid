@@ -10,12 +10,12 @@ import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.EventTopic;
-import de.u5b.pikdroid.system.ISystem;
+import de.u5b.pikdroid.system.ASystem;
 
 /**
  * Created by Foxel on 18.08.2014.
  */
-public class PikdroidSystem extends ISystem{
+public class PikdroidSystem extends ASystem {
 
     Vector<Integer> pikdroids;
 
@@ -31,7 +31,7 @@ public class PikdroidSystem extends ISystem{
     @Override
     public void handleEvent(EventTopic eventTopic) {
         switch (eventTopic) {
-            case SPAWN_PIKDROID: pikdroids.add(entityManager.create(buildPikdroid(0.0f,0.0f)));
+            case SPAWN_PIKDROID: pikdroids.add(entityManager.create(buildPikdroid(0.0f, 0.0f)));
         }
     }
 

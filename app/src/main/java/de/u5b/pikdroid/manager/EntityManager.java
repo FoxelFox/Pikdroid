@@ -9,7 +9,7 @@ import de.u5b.pikdroid.game.Engine;
 /**
  * Created by Foxel on 14.08.2014.
  */
-public class EntityManager extends Manager{
+public class EntityManager extends AManager {
     private ArrayList<ArrayList<Component>> entities;
     private Stack<Integer> eStack;
 

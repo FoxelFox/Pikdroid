@@ -6,7 +6,7 @@ import de.u5b.pikdroid.system.pikdroid.PikdroidSystem;
 /**
  * Created by Foxel on 18.08.2014.
  */
-public class SystemManager extends Manager{
+public class SystemManager extends AManager {
     PikdroidSystem pikdroidSystem;
 
     public SystemManager(Engine engine){

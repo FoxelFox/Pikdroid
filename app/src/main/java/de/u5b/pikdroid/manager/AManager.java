@@ -5,10 +5,10 @@ import de.u5b.pikdroid.game.Engine;
 /**
  * Created by Foxel on 18.08.2014.
  */
-public abstract class Manager {
+public abstract class AManager {
     protected Engine engine;
 
-    public Manager(Engine engine) {
+    public AManager(Engine engine) {
         this.engine = engine;
     }
 }

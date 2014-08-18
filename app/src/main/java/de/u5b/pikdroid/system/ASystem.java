@@ -8,12 +8,12 @@ import de.u5b.pikdroid.manager.EventTopic;
 /**
  * Created by Foxel on 13.08.2014.
  */
-public abstract class ISystem {
+public abstract class ASystem {
 
     protected EntityManager entityManager;
     protected EventManager eventManager;
 
-    public ISystem(Engine engine) {
+    public ASystem(Engine engine) {
         entityManager = engine.getEntityManager();
         eventManager = engine.getEventManager();
     }
