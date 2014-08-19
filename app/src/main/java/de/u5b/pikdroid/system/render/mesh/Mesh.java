@@ -7,12 +7,18 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 /**
+ * A Mesh is a 3D Polygon collection on the GPU.
+ * It is used to draw Objects on OpenGL.
  * Created by Foxel on 17.08.2014.
  */
 public class Mesh {
 
-    private FloatBuffer vbo;
+    private FloatBuffer vbo;    // The VertexBufferObject
 
+    /**
+     * Create a new Mesh with the @vertices
+     * @param vertices 3D Vertices
+     */
     public Mesh(float[] vertices) {
         ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
         bb.order(ByteOrder.nativeOrder());
@@ -22,6 +28,10 @@ public class Mesh {
         vbo.position(0);
     }
 
+    /**
+     * Draw the Mesh in OpenGL to a Screen or Framebuffer
+     * @param shaderProgram
+     */
     public void draw(int shaderProgram) {
         // TODO Optimize
         int vPosition = GLES20.glGetAttribLocation(shaderProgram, "vPosition");

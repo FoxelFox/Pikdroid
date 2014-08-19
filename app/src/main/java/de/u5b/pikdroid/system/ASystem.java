@@ -7,6 +7,7 @@ import de.u5b.pikdroid.manager.event.EventManager;
 import de.u5b.pikdroid.manager.event.Topic;
 
 /**
+ * Abstract System Class for all Systems
  * Created by Foxel on 13.08.2014.
  */
 public abstract class ASystem {

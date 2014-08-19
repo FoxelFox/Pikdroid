@@ -1,12 +1,13 @@
 package de.u5b.pikdroid.component;
 
 /**
+ * Component for Entities that will have Intelligence
  * Created by Foxel on 19.08.2014.
  */
 public class Intelligence extends Component{
-    private int lookupDistance;
+    private int viewDistance; // how far can this intelligence look
 
-    public Intelligence(int lookupDistance) {
-        this.lookupDistance = lookupDistance;
+    public Intelligence(int viewDistance) {
+        this.viewDistance = viewDistance;
     }
 }

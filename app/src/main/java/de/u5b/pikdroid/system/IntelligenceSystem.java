@@ -9,6 +9,7 @@ import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
 
 /**
+ * The IntelligenceSystem will try to control Entities that have an Intelligence Component
  * Created by Foxel on 19.08.2014.
  */
 public class IntelligenceSystem extends ASystem{

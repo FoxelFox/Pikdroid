@@ -19,6 +19,7 @@ import de.u5b.pikdroid.system.render.object.ARenderObject;
 import de.u5b.pikdroid.system.render.object.UniformColorRenderObject;
 
 /**
+ * The RenderSystem draws Entities that have an Visual Component
  * Created by Foxel on 13.08.2014.
  */
 public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {

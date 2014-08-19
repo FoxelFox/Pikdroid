@@ -8,10 +8,12 @@ import de.u5b.pikdroid.manager.AManager;
 import de.u5b.pikdroid.system.*;
 
 /**
+ * The EventManager is used to receive and send Events between Systems
+ * Events will be send over EventTopics that can Systems subscribe / publish
  * Created by Foxel on 14.08.2014.
  */
 public class EventManager extends AManager {
-    private HashMap<Topic, ArrayList<ASystem>> subscriber;
+    private HashMap<Topic, ArrayList<ASystem>> subscriber;  // contains the Systems that subscribe to Topics
 
     public EventManager(Engine engine) {
         super(engine);

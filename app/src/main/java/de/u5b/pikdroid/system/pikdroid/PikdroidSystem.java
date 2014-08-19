@@ -16,6 +16,7 @@ import de.u5b.pikdroid.manager.event.Topic;
 import de.u5b.pikdroid.system.ASystem;
 
 /**
+ * The Pikdroid Game System
  * Created by Foxel on 18.08.2014.
  */
 public class PikdroidSystem extends ASystem {
@@ -38,6 +39,12 @@ public class PikdroidSystem extends ASystem {
         }
     }
 
+    /**
+     * Build a new Pikdroid
+     * @param x position X
+     * @param y position >
+     * @return a new Pikdroid Entity
+     */
     private ArrayList<Component> buildPikdroid(float x, float y) {
 
         Matrix matrix = new Matrix();

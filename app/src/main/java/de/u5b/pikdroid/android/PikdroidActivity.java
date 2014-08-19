@@ -10,6 +10,9 @@ import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.render.MySurfaceView;
 
+/**
+ * The main AndroidActivity
+ */
 public class PikdroidActivity extends Activity {
 
     Engine engine;

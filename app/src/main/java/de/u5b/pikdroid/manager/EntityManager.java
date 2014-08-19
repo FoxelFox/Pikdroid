@@ -11,6 +11,7 @@ import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
 
 /**
+ * The EntityManager is the Database for Collections of Components that form Entities.
  * Created by Foxel on 14.08.2014.
  */
 public class EntityManager extends AManager {

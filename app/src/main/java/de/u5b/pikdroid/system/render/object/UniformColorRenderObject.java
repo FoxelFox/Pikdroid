@@ -5,6 +5,7 @@ import android.graphics.Color;
 import de.u5b.pikdroid.system.render.mesh.Mesh;
 
 /**
+ * A Basic Object colored by an uniform in the shader
  * Created by Foxel on 19.08.2014.
  */
 public class UniformColorRenderObject extends ARenderObject{

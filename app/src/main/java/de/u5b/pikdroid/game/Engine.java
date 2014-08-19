@@ -7,6 +7,7 @@ import de.u5b.pikdroid.manager.SystemManager;
 import de.u5b.pikdroid.manager.event.Topic;
 
 /**
+ * This is the main class for the Game. It contains all Manager and starts the game.
  * Created by Foxel on 14.08.2014.
  */
 public class Engine {
@@ -22,6 +23,9 @@ public class Engine {
         systemManager = new SystemManager(this);
     }
 
+    /**
+     * Start the Game
+     */
     public void play() {
         systemManager.startGame();
         eventManager.publish(new Event(Topic.SPAWN_PIKDROID,-1));
