@@ -11,4 +11,8 @@ public class Visual extends Component{
     public Visual() {
         color = new Color();
     }
+
+    public Color getColor() {
+        return color;
+    }
 }
