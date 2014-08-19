@@ -14,6 +14,7 @@ import java.nio.FloatBuffer;
 public class Mesh {
 
     private FloatBuffer vbo;    // The VertexBufferObject
+    private int vertexCount;
 
     /**
      * Create a new Mesh with the @vertices
@@ -26,6 +27,8 @@ public class Mesh {
         vbo = bb.asFloatBuffer();
         vbo.put(vertices);
         vbo.position(0);
+
+        vertexCount = vertices.length / 3;
     }
 
     /**
@@ -38,7 +41,7 @@ public class Mesh {
         GLES20.glEnableVertexAttribArray(vPosition);
         GLES20.glVertexAttribPointer(vPosition, 3, GLES20.GL_FLOAT, false, 0, vbo);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
         GLES20.glDisableVertexAttribArray(vPosition);
     }
 

@@ -39,22 +39,18 @@ public class PikdroidSystem extends ASystem {
     }
 
     private void onSpawnPikdroid(Event event) {
-        pikdroids.add(buildPikdroid(0.0f, 0.0f));
+        pikdroids.add(buildPikdroid(event.getEntity().getComponent(Pose.class)));
     }
 
     /**
      * Build a new Pikdroid
-     * @param x position X
-     * @param y position Y
+     * @param pose position
      * @return a new Pikdroid Entity
      */
-    private Entity buildPikdroid(float x, float y) {
+    private Entity buildPikdroid(Pose pose) {
         Entity pikdroid = new Entity();
 
-        Matrix matrix = new Matrix();
-        matrix.setTranslate(x,y);
-
-        pikdroid.addComponent(new Pose(matrix));
+        pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual());
         pikdroid.addComponent(new Movement(1.0f,1.0f));
         pikdroid.addComponent(new Intelligence(4));

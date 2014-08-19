@@ -1,9 +1,15 @@
 package de.u5b.pikdroid.system.render;
 
 import android.content.Context;
+import android.opengl.Matrix;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 
+import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.manager.entity.Entity;
+import de.u5b.pikdroid.manager.event.Event;
+import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * The OpenGLSurface on Android Devices
@@ -11,6 +17,7 @@ import de.u5b.pikdroid.game.Engine;
  */
 public class MySurfaceView extends GLSurfaceView {
 
+    Engine engine;
 
     public MySurfaceView(Context context, Engine engine) {
         super(context);
@@ -19,5 +26,27 @@ public class MySurfaceView extends GLSurfaceView {
         // set the render
         setRenderer(new RenderSystem(engine));
 
+        this.engine = engine;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX() / (float)getWidth() * 2.0f - 1.0f;
+        float y = event.getY() / (float)getHeight() * 2.0f - 1.0f;
+
+        y = y * (-1.0f);
+
+        System.out.println(y);
+
+        float[] matrix = new float[16];
+        Matrix.setIdentityM(matrix,0);
+        Matrix.translateM(matrix,0,x,y, 0.0f);
+
+
+        Entity entity = new Entity();
+        entity.addComponent(new Pose(matrix));
+
+        engine.getEventManager().publish(new Event(Topic.SPAWN_PIKDROID, entity));
+        return true;
     }
 }

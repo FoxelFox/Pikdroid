@@ -8,6 +8,7 @@ package de.u5b.pikdroid.system.render.mesh;
 public class MeshFactory {
 
     private static Mesh triangle;
+    private static Mesh quad;
 
     /**
      * A simple triangle
@@ -19,6 +20,15 @@ public class MeshFactory {
     }
 
     /**
+     * A simple triangle
+     * @return Triangle Mesh
+     */
+    public static Mesh getQuad() {
+        if(quad == null) quad = createQuad();
+        return quad;
+    }
+
+    /**
      * Creates a basic Triangle
      * @return
      */
@@ -27,6 +37,19 @@ public class MeshFactory {
                 0.0f,  0.5f, 0.0f,
                 -0.5f, -0.5f, 0.0f,
                 0.5f, -0.5f, 0.0f
+        };
+        return new Mesh(vertices);
+    }
+
+    private static Mesh createQuad() {
+        float vertices[] = {
+                0.5f,  0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                -0.5f, 0.5f, 0.0f,
+
+                0.5f, 0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+                -0.5f,  -0.5f, 0.0f,
         };
         return new Mesh(vertices);
     }

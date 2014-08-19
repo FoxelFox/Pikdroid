@@ -1,20 +1,21 @@
 package de.u5b.pikdroid.component;
 
-import android.graphics.Matrix;
-
 /**
  * The Pose is the Entities position and rotation in the World
  * Created by Foxel on 18.08.2014.
  */
 public class Pose extends Component{
-    Matrix pose;
+    private float[] matrix;
 
     public Pose() {
-        pose = new Matrix();
+        matrix = new float[16];
     }
 
-    public Pose(Matrix pose) {
-        this.pose = pose;
+    public Pose(float[] matrix) {
+        this.matrix = matrix;
     }
 
+    public float[] getMatrix() {
+        return matrix;
+    }
 }

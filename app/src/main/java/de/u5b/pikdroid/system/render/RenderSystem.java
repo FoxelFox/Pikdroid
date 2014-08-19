@@ -1,5 +1,6 @@
 package de.u5b.pikdroid.system.render;
 
+import android.graphics.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
@@ -8,12 +9,12 @@ import java.util.LinkedList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
 import de.u5b.pikdroid.system.ASystem;
-import de.u5b.pikdroid.system.render.mesh.Mesh;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
 import de.u5b.pikdroid.system.render.object.ARenderObject;
 import de.u5b.pikdroid.system.render.object.UniformColorRenderObject;
@@ -24,11 +25,12 @@ import de.u5b.pikdroid.system.render.object.UniformColorRenderObject;
  */
 public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private final String vertexShaderCode =
-            "uniform mat4 uMVPMatrix;                        \n" +
-                    "attribute vec4 vPosition;               \n" +
-                    "void main(){                            \n" +
-                    "  gl_Position = vPosition; \n" +
-                    "}                                       \n";
+            "uniform mat4 uMVPMatrix;" +
+                    "attribute vec4 vPosition;" +
+                    "uniform mat4 uPose;" +
+                    "void main(){" +
+                    "  gl_Position = uPose * vPosition;" +
+                    "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
@@ -75,10 +77,16 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     }
 
     private void onEntityCreated(Event event) {
+
+        // get the pose matrix from Entity
+        float[] matrix = event.getEntity().getComponent(Pose.class).getMatrix();
+
         // get the visual component
         Visual vis = event.getEntity().getComponent(Visual.class);
+
         // add a new RenderObject to the renderObject List
-        renderObjects.add(new UniformColorRenderObject(MeshFactory.getTriangle(), vis.getColor()));
+        renderObjects.add(new UniformColorRenderObject(MeshFactory.getQuad(), vis.getColor(), matrix));
+
     }
 
     private static int createShader(String vertex, String fragment) {

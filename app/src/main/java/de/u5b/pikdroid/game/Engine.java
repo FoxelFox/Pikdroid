@@ -28,7 +28,6 @@ public class Engine {
      */
     public void play() {
         systemManager.startGame();
-        eventManager.publish(new Event(Topic.SPAWN_PIKDROID,null));
     }
 
     public EntityManager getEntityManager(){
