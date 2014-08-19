@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.game;
 
-import de.u5b.pikdroid.manager.EntityManager;
+import de.u5b.pikdroid.manager.entity.EntityManager;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventManager;
 import de.u5b.pikdroid.manager.SystemManager;
@@ -28,7 +28,7 @@ public class Engine {
      */
     public void play() {
         systemManager.startGame();
-        eventManager.publish(new Event(Topic.SPAWN_PIKDROID,-1));
+        eventManager.publish(new Event(Topic.SPAWN_PIKDROID,null));
     }
 
     public EntityManager getEntityManager(){

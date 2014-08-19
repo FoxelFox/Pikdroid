@@ -76,7 +76,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     private void onEntityCreated(Event event) {
         // get the visual component
-        Visual vis = entityManager.getComponent(event.getEntityID(), Visual.class);
+        Visual vis = event.getEntity().getComponent(Visual.class);
         // add a new RenderObject to the renderObject List
         renderObjects.add(new UniformColorRenderObject(MeshFactory.getTriangle(), vis.getColor()));
     }

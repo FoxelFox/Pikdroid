@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.AManager;
+import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.system.*;
 
 /**

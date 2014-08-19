@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
 
@@ -14,13 +15,13 @@ import de.u5b.pikdroid.manager.event.Topic;
  */
 public class IntelligenceSystem extends ASystem{
 
-    Vector<Integer> entities;
+    Vector<Entity> entities;
 
     public IntelligenceSystem(Engine engine){
         super(engine);
         eventManager.subscribe(Topic.UPDATE_INTELLIGENCE, this);
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
-        entities = new Vector<Integer>();
+        entities = new Vector<Entity>();
     }
 
     @Override
@@ -33,9 +34,9 @@ public class IntelligenceSystem extends ASystem{
 
     private void onEntityCreated(Event event) {
         try {
-            if(entityManager.getComponent(event.getEntityID(), Intelligence.class) != null) {
-                // This Entity hat Intelligence to update
-                entities.add(event.getEntityID());
+            if(event.getEntity().getComponent(Intelligence.class) != null) {
+                // This Entity has Intelligence to update
+                entities.add(event.getEntity());
             }
         } catch (NoSuchElementException e) {
             // This Entity has no such component

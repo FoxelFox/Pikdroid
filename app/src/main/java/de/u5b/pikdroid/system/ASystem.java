@@ -1,10 +1,9 @@
 package de.u5b.pikdroid.system;
 
 import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.manager.EntityManager;
+import de.u5b.pikdroid.manager.entity.EntityManager;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventManager;
-import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * Abstract System Class for all Systems
