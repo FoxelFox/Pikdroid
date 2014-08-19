@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import de.u5b.pikdroid.component.Component;
+import de.u5b.pikdroid.component.Intelligence;
+import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
@@ -44,6 +46,8 @@ public class PikdroidSystem extends ASystem {
         ArrayList<Component> pikdroid = new ArrayList<Component>();
         pikdroid.add(new Pose(matrix));
         pikdroid.add(new Visual());
+        pikdroid.add(new Movement(1.0f,1.0f));
+        pikdroid.add(new Intelligence(4));
 
         return  pikdroid;
     }

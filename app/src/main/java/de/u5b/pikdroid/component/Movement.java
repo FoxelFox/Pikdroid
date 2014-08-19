@@ -3,7 +3,7 @@ package de.u5b.pikdroid.component;
 /**
  * Created by Foxel on 19.08.2014.
  */
-public class Movement {
+public class Movement extends Component{
     private float linearSpeed;
     private float angularSpeed;
 
