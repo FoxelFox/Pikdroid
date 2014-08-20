@@ -11,6 +11,7 @@ public class Pose extends Component{
 
     public Pose() {
         matrix = new float[16];
+        Matrix.setIdentityM(matrix,0);
     }
 
     public Pose(float[] matrix) {

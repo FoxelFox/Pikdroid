@@ -27,10 +27,10 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private final String vertexShaderCode =
 
             "attribute vec4 vPosition;" +
-            "uniform mat4 uPose;" +
+            "uniform mat4 uMP;" +
             "uniform mat4 uView;" +
             "void main(){" +
-            "  gl_Position = uView * uPose * vPosition;" +
+            "  gl_Position = uView * uMP * vPosition;" +
             "}";
 
     private final String fragmentShaderCode =
@@ -103,13 +103,14 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private void onEntityCreated(Event event) {
 
         // get the pose matrix from Entity
-        float[] matrix = event.getEntity().getComponent(Pose.class).getMatrix();
+        float[] poseMatrix = event.getEntity().getComponent(Pose.class).getMatrix();
 
         // get the visual component
-        Visual vis = event.getEntity().getComponent(Visual.class);
+        float[] color = event.getEntity().getComponent(Visual.class).getColor();
+        float[] modelMatrix = event.getEntity().getComponent(Visual.class).getModelMatrix();
 
         // add a new RenderObject to the renderObject List
-        renderObjects.add(new UniformColorRenderObject(MeshFactory.getQuad(), vis.getColor(), matrix));
+        renderObjects.add(new UniformColorRenderObject(MeshFactory.getQuad(), color, poseMatrix, modelMatrix));
 
     }
 

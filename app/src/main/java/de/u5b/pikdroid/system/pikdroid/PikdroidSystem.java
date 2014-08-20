@@ -21,6 +21,7 @@ import de.u5b.pikdroid.system.ASystem;
 public class PikdroidSystem extends ASystem {
 
     Vector<Entity> pikdroids;
+    Vector<Entity> food;
 
     public PikdroidSystem(Engine engine) {
         super(engine);
@@ -29,6 +30,7 @@ public class PikdroidSystem extends ASystem {
         eventManager.subscribe(Topic.SPAWN_PIKDROID, this);
 
         pikdroids = new Vector<Entity>();
+        food = new Vector<Entity>();
     }
 
     @Override
@@ -40,6 +42,11 @@ public class PikdroidSystem extends ASystem {
 
     private void onSpawnPikdroid(Event event) {
         pikdroids.add(buildPikdroid(event.getEntity().getComponent(Pose.class)));
+
+        // TODO: this should be called on an special event
+        if(food.size() < 10) {
+            food.add(spawnFood());
+        }
     }
 
     /**
@@ -49,7 +56,6 @@ public class PikdroidSystem extends ASystem {
      */
     private Entity buildPikdroid(Pose pose) {
         Entity pikdroid = new Entity();
-        float color[] = { 0.5f,  1.0f, 0.0f, 1.0f };
 
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
@@ -59,5 +65,25 @@ public class PikdroidSystem extends ASystem {
         entityManager.add(pikdroid);
 
         return  pikdroid;
+    }
+
+    private Entity spawnFood() {
+        Entity food = new Entity();
+
+        Pose pose = new Pose();
+        pose.translate(randomValue(20.0f),randomValue(20.0f),0);
+
+        Visual vis = new Visual(new float[] { 0.0f,  0.5f, 1.0f, 1.0f });
+        vis.scale(0.5f,0.5f,1.0f);
+
+        food.addComponent(pose);
+        food.addComponent(vis);
+
+        entityManager.add(food);
+        return food;
+    }
+
+    private float randomValue(float range){
+        return ((float)Math.random() - 0.5f) * range;
     }
 }
