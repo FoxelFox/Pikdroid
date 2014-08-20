@@ -40,7 +40,8 @@ public class MySurfaceView extends GLSurfaceView {
 
         float[] matrix = new float[16];
         Matrix.setIdentityM(matrix,0);
-        Matrix.translateM(matrix,0,x,y, 0.0f);
+
+        Matrix.translateM(matrix,0,x * 10.0f,y * 10.0f, 0.0f);
 
 
         Entity entity = new Entity();

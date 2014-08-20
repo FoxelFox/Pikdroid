@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render;
 
-import android.graphics.Matrix;
+import android.opengl.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
@@ -28,8 +28,9 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
             "uniform mat4 uMVPMatrix;" +
                     "attribute vec4 vPosition;" +
                     "uniform mat4 uPose;" +
+                    "uniform mat4 uView;" +
                     "void main(){" +
-                    "  gl_Position = uPose * vPosition;" +
+                    "  gl_Position = uView * uPose * vPosition;" +
                     "}";
 
     private final String fragmentShaderCode =
@@ -40,11 +41,13 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     private int shaderProgram;
     private LinkedList<ARenderObject> renderObjects;
+    private float[] viewMatrix;
 
     public RenderSystem(Engine engine) {
         super(engine);
         eventManager.subscribe(Topic.ENTITY_CREATED,this);
         renderObjects = new LinkedList<ARenderObject>();
+        viewMatrix = new float[16];
     }
 
     @Override
@@ -63,12 +66,29 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
+
+        float s = 1.0f/10.f;
+        if(width > height) {
+            float ar = (float)height / (float)width;
+            //Matrix.orthoM(viewMatrix,0,-s,s,-s*ar,s*ar,1.0f,10.0f);
+            Matrix.setIdentityM(viewMatrix,0);
+            Matrix.scaleM(viewMatrix,0,s*ar,s,1.0f);
+        } else {
+            float ar = (float)width / (float)height;
+            //Matrix.orthoM(viewMatrix,0,-s*ar,s*ar,-s,s,1.0f,10.0f);
+            Matrix.setIdentityM(viewMatrix,0);
+            Matrix.scaleM(viewMatrix,0,s,s*ar,1.0f);
+        }
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glUseProgram(shaderProgram);
+
+
+        int uView = GLES20.glGetUniformLocation(shaderProgram, "uView");
+        GLES20.glUniformMatrix4fv(uView,1,false,viewMatrix,0);
 
         // draw all objects
         for (int i = 0; i < renderObjects.size(); ++i) {
