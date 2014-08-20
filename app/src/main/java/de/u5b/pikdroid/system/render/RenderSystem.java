@@ -84,6 +84,9 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        // TODO: remove this update
+        eventManager.publish(new Event(Topic.UPDATE_INTELLIGENCE,null));
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glUseProgram(shaderProgram);
 

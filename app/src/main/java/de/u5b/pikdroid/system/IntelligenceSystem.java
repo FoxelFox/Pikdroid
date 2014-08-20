@@ -1,9 +1,12 @@
 package de.u5b.pikdroid.system;
 
+import android.graphics.Matrix;
+
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import de.u5b.pikdroid.component.Intelligence;
+import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
@@ -45,6 +48,9 @@ public class IntelligenceSystem extends ASystem{
     }
 
     private void onUpdateIntelligence() {
-
+        for(int i = 0; i < entities.size(); ++i) {
+            Pose pose = entities.get(i).getComponent(Pose.class);
+            pose.translate(((float)Math.random() - 0.5f) * 0.25f,((float)Math.random() - 0.5f) * 0.25f,0);
+        }
     }
 }
