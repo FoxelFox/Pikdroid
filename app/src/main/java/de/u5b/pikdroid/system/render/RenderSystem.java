@@ -36,7 +36,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private final String fragmentShaderCode =
             "precision mediump float;" +
                     "void main() {" +
-                    "  gl_FragColor = vec4(0.1,0.1,0.1,1.0);" +
+                    "  gl_FragColor = vec4(0.5,1.0,0.1,1.0);" +
                     "}";
 
     private int shaderProgram;
@@ -59,7 +59,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(1.0f, 0.0f, 0.25f, 1.0f);
+        GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);
     }
 
