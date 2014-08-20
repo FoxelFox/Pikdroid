@@ -31,17 +31,22 @@ public class MySurfaceView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         float x = event.getX() / (float)getWidth() * 2.0f - 1.0f;
         float y = event.getY() / (float)getHeight() * 2.0f - 1.0f;
-
         y = y * (-1.0f);
 
-        System.out.println(y);
+        x *= (float)getWidth()*0.02f;
+        y *= (float)getHeight()*0.02f;
+
+
+        System.out.println("x: " + x + "y: " + y);
 
         float[] matrix = new float[16];
         Matrix.setIdentityM(matrix,0);
 
-        Matrix.translateM(matrix,0,x * 10.0f,y * 10.0f, 0.0f);
+
+        Matrix.translateM(matrix,0,x ,y, 0.0f);
 
 
         Entity entity = new Entity();
