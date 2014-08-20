@@ -49,9 +49,10 @@ public class PikdroidSystem extends ASystem {
      */
     private Entity buildPikdroid(Pose pose) {
         Entity pikdroid = new Entity();
+        float color[] = { 0.5f,  1.0f, 0.0f, 1.0f };
 
         pikdroid.addComponent(pose);
-        pikdroid.addComponent(new Visual());
+        pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
         pikdroid.addComponent(new Movement(1.0f,1.0f));
         pikdroid.addComponent(new Intelligence(4));
 

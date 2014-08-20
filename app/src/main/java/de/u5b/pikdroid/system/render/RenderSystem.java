@@ -25,19 +25,20 @@ import de.u5b.pikdroid.system.render.object.UniformColorRenderObject;
  */
 public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private final String vertexShaderCode =
-            "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "uniform mat4 uPose;" +
-                    "uniform mat4 uView;" +
-                    "void main(){" +
-                    "  gl_Position = uView * uPose * vPosition;" +
-                    "}";
+
+            "attribute vec4 vPosition;" +
+            "uniform mat4 uPose;" +
+            "uniform mat4 uView;" +
+            "void main(){" +
+            "  gl_Position = uView * uPose * vPosition;" +
+            "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-                    "void main() {" +
-                    "  gl_FragColor = vec4(0.5,1.0,0.1,1.0);" +
-                    "}";
+            "uniform vec4 uColor;" +
+            "void main() {" +
+            "  gl_FragColor = uColor;" +
+            "}";
 
     private int shaderProgram;
     private LinkedList<ARenderObject> renderObjects;

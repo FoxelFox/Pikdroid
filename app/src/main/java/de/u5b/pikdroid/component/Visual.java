@@ -1,19 +1,17 @@
 package de.u5b.pikdroid.component;
 
-import android.graphics.Color;
-
 /**
  * This Component is for the RenderSystem to draw it
  * Created by Foxel on 18.08.2014.
  */
 public class Visual extends Component{
-    Color color;    // The Color for an Entity
+    float[] color;    // The Color for an Entity
 
-    public Visual() {
-        color = new Color();
+    public Visual(float[] color) {
+        this.color = color;
     }
 
-    public Color getColor() {
+    public float[] getColor() {
         return color;
     }
 }
