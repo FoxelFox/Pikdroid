@@ -8,6 +8,11 @@ public class Energy extends Component{
     private int load;
     private int capacity;
 
+    /**
+     * Create a new Energy Component
+     * @param capacity max capacity
+     * @param load initialized charge load
+     */
     public Energy(int capacity, int load) {
         if(capacity < 0) capacity = 0;
         if(capacity < load) load = capacity;
@@ -15,20 +20,11 @@ public class Energy extends Component{
         this.capacity = capacity;
     }
 
-    public int getLoad() {
-        return load;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public int discharge() {
-        int tmp = load;
-        load = 0;
-        return load;
-    }
-
+    /**
+     * Charge with @charge amount. It returns the charge overflow.
+     * @param charge charge amount
+     * @return overflow
+     */
     public int charge(int charge) {
         int overflow = 0;
 
@@ -41,6 +37,16 @@ public class Energy extends Component{
     }
 
     /**
+     * Fully discharge the Component
+     * @return discharged Energy
+     */
+    public int discharge() {
+        int tmp = load;
+        load = 0;
+        return load;
+    }
+
+    /**
      * Transfer Energy from A to B
      * @param from A
      * @param to B
@@ -48,5 +54,13 @@ public class Energy extends Component{
     public void transfer(Energy from, Energy to) {
         // yeah the law of conservation of energy :D
         from.charge(to.charge(from.discharge()));
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }
