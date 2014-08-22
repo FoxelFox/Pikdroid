@@ -4,6 +4,7 @@ import android.graphics.Matrix;
 
 import java.util.Vector;
 
+import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
@@ -76,8 +77,12 @@ public class PikdroidSystem extends ASystem {
         Visual vis = new Visual(new float[] { 0.0f,  0.5f, 1.0f, 1.0f });
         vis.scale(0.5f,0.5f,1.0f);
 
+        Energy energy = new Energy(100,100);
+
+
         food.addComponent(pose);
         food.addComponent(vis);
+        food.addComponent(energy);
 
         entityManager.add(food);
         return food;

@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
@@ -18,13 +19,15 @@ import de.u5b.pikdroid.manager.event.Topic;
  */
 public class IntelligenceSystem extends ASystem{
 
-    Vector<Entity> entities;
+    Vector<Entity> entities;    // Intelligence to control
+    Vector<Entity> food;        // Food to collect
 
     public IntelligenceSystem(Engine engine){
         super(engine);
         eventManager.subscribe(Topic.UPDATE_INTELLIGENCE, this);
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
         entities = new Vector<Entity>();
+        food = new Vector<Entity>();
     }
 
     @Override
@@ -40,6 +43,9 @@ public class IntelligenceSystem extends ASystem{
             if(event.getEntity().getComponent(Intelligence.class) != null) {
                 // This Entity has Intelligence to update
                 entities.add(event.getEntity());
+            } else if(event.getEntity().getComponent(Energy.class) != null) {
+                // This Entity has Energy its Food for me
+                food.add(event.getEntity());
             }
         } catch (NoSuchElementException e) {
             // This Entity has no such component
