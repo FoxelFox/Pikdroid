@@ -24,9 +24,9 @@ public class Pose extends Component{
 
     /**
      * translate in local directions
-     * @param x local x-axis dx
-     * @param y local y-axis dx
-     * @param z local z-axis dx
+     * @param dx local x-axis dx
+     * @param dy local y-axis dx
+     * @param dz local z-axis dx
      */
     public void translate(float dx, float dy, float dz) {
         Matrix.translateM(matrix, 0, dx, dy, dz);
@@ -45,8 +45,35 @@ public class Pose extends Component{
      * @return euclidean distance
      */
     public float distance(Pose pose) {
-        return (float)Math.sqrt(Math.pow(matrix[ 3] - pose.matrix[ 3],2) +
-                                Math.pow(matrix[ 7] - pose.matrix[ 7],2) +
-                                Math.pow(matrix[11] - pose.matrix[11],2));
+        return (float)Math.sqrt(Math.pow(matrix[12] - pose.matrix[12],2) +
+                                Math.pow(matrix[13] - pose.matrix[13],2) +
+                                Math.pow(matrix[14] - pose.matrix[14],2));
+    }
+
+    /**
+     * Calculate a float[3] ray to @target
+     * @param target ray target
+     * @return ray from this to target
+     */
+    public float[] ray(Pose target) {
+        float[] dirVec = new float[3];
+        dirVec[0] = target.matrix[12] - matrix[12];
+        dirVec[1] = target.matrix[13] - matrix[13];
+        dirVec[2] = target.matrix[14] - matrix[14];
+        return dirVec;
+    }
+
+    /**
+     * Calculate a normalized float[3] ray to @target
+     * @param target ray target
+     * @return normalized ray from this to target
+     */
+    public  float[] nray(Pose target) {
+        float dist = distance(target);
+        float[] r = ray(target);
+        r[0] /= dist;
+        r[1] /= dist;
+        r[2] /= dist;
+        return r;
     }
 }

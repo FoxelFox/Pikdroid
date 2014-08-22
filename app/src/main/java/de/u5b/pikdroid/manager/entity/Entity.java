@@ -45,7 +45,8 @@ public class Entity {
                 return type.cast(components.get(i));
             }
         }
-        throw new NoSuchElementException("This Entity has no such Component!" + type.getClass().toString());
+        //throw new NoSuchElementException("This Entity has no such Component!" + type.getClass().toString());
+        return null;
     }
 
     /**

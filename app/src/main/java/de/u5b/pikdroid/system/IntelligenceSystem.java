@@ -39,24 +39,37 @@ public class IntelligenceSystem extends ASystem{
     }
 
     private void onEntityCreated(Event event) {
-        try {
-            if(event.getEntity().getComponent(Intelligence.class) != null) {
-                // This Entity has Intelligence to update
-                entities.add(event.getEntity());
-            } else if(event.getEntity().getComponent(Energy.class) != null) {
-                // This Entity has Energy its Food for me
-                food.add(event.getEntity());
-            }
-        } catch (NoSuchElementException e) {
-            // This Entity has no such component
-            return;
+
+        if(event.getEntity().getComponent(Intelligence.class) != null) {
+            // This Entity has Intelligence to update
+            entities.add(event.getEntity());
+        } else if(event.getEntity().getComponent(Energy.class) != null) {
+            // This Entity has Energy its Food for me
+            food.add(event.getEntity());
         }
     }
 
     private void onUpdateIntelligence() {
+
         for(int i = 0; i < entities.size(); ++i) {
-            Pose pose = entities.get(i).getComponent(Pose.class);
-            pose.translate(((float)Math.random() - 0.5f) * 0.25f,((float)Math.random() - 0.5f) * 0.25f,0);
+            Pose iPoseAi = entities.get(i).getComponent(Pose.class);
+            float minDistanceToFood = 1000.0f;
+            Pose iBestMatch = null;
+
+            // find shortest way to food
+            for(int k = 0; k < food.size(); ++k) {
+                Pose kPoseFood = food.get(k).getComponent(Pose.class);
+                float kDistToFood = iPoseAi.distance(kPoseFood);
+                if(minDistanceToFood > kDistToFood) {
+                    minDistanceToFood = kDistToFood;
+                    iBestMatch = kPoseFood;
+                }
+            }
+
+            if(iBestMatch != null) {
+                float[] dir = iPoseAi.nray(iBestMatch);
+                iPoseAi.translate(dir[0]*0.1f, dir[1]*0.1f, 0);
+            }
         }
     }
 }
