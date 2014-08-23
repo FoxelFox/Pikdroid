@@ -32,11 +32,25 @@ public class Pose extends Component{
         Matrix.translateM(matrix, 0, dx, dy, dz);
     }
 
+    /**
+     * Rotate the pose around itself
+     * @param angle angle to rotate
+     * @param x x-axis
+     * @param y y-axis
+     * @param z z-axis
+     */
     public void rotate(float angle, float x, float y, float z) {
-        //Matrix.
-        //am.setValues(matrix);
-        //am.postRotate(angle,x,y);
-        //am.getValues(matrix);
+        float tmpX = matrix[12];
+        float tmpY = matrix[13];
+        float tmpZ = matrix[14];
+
+        matrix[12] = matrix[13] = matrix[14] = 0.0f;
+
+        Matrix.rotateM(matrix,0,angle,x,y,z);
+
+        matrix[12] = tmpX;
+        matrix[13] = tmpY;
+        matrix[14] = tmpZ;
     }
 
     /**
