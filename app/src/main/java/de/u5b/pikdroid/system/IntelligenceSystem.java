@@ -89,7 +89,7 @@ public class IntelligenceSystem extends ASystem{
                 }
 
                 // calc speed to move
-                float speed = 0.5f * (float)Math.pow(minDistanceToFood,2);
+                float speed = 0.25f * (float)Math.pow(minDistanceToFood,2);
                 if(speed > 0.1f)
                     speed = 0.1f;
                 iPoseAi.translate(speed , 0, 0);
