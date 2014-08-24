@@ -25,6 +25,7 @@ public class Entity {
 
     public boolean addComponent(Component component) {
         if(!isFinalized) {
+            component.setEntity(this);
             components.add(component);
             return true;
         }

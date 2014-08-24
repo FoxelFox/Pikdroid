@@ -9,4 +9,5 @@ public enum Topic {
     ENTITY_DELETED,
     SPAWN_PIKDROID,
     UPDATE_INTELLIGENCE,
+    UPDATE_PIKDROID,
 }

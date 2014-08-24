@@ -2,6 +2,7 @@ package de.u5b.pikdroid.system.pikdroid;
 
 import android.graphics.Matrix;
 
+import java.util.TreeMap;
 import java.util.Vector;
 
 import de.u5b.pikdroid.component.Energy;
@@ -21,33 +22,42 @@ import de.u5b.pikdroid.system.ASystem;
  */
 public class PikdroidSystem extends ASystem {
 
-    Vector<Entity> pikdroids;
-    Vector<Entity> food;
+    TreeMap<Integer, Entity> spawnedPikdroids;
+    TreeMap<Integer, Entity> spawnedFood;
 
     public PikdroidSystem(Engine engine) {
         super(engine);
 
         // subscribe to Spawn new Pikdroids
         eventManager.subscribe(Topic.SPAWN_PIKDROID, this);
+        eventManager.subscribe(Topic.ENTITY_DELETED, this);
+        eventManager.subscribe(Topic.UPDATE_PIKDROID, this);
 
-        pikdroids = new Vector<Entity>();
-        food = new Vector<Entity>();
+        spawnedPikdroids = new TreeMap<Integer, Entity>();
+        spawnedFood = new TreeMap<Integer, Entity>();
     }
 
     @Override
     public void handleEvent(Event event) {
         switch (event.getTopic()) {
             case SPAWN_PIKDROID: onSpawnPikdroid(event); break;
+            case ENTITY_DELETED: onEntityDeleted(event); break;
+            case UPDATE_PIKDROID: onUpdate(event); break;
         }
     }
 
-    private void onSpawnPikdroid(Event event) {
-        pikdroids.add(buildPikdroid(event.getEntity().getComponent(Pose.class)));
+    private void onUpdate(Event event) {
+        if(spawnedFood.size() < 10)
+            spawnFood();
+    }
 
-        // TODO: this should be called on an special event
-        if(food.size() < 10) {
-            food.add(spawnFood());
-        }
+    private void onEntityDeleted(Event event) {
+        spawnedFood.remove(event.getEntity().getID());
+        spawnedPikdroids.remove(event.getEntity().getID());
+    }
+
+    private void onSpawnPikdroid(Event event) {
+        buildPikdroid(event.getEntity().getComponent(Pose.class));
     }
 
     /**
@@ -55,7 +65,7 @@ public class PikdroidSystem extends ASystem {
      * @param pose position
      * @return a new Pikdroid Entity
      */
-    private Entity buildPikdroid(Pose pose) {
+    private void buildPikdroid(Pose pose) {
         Entity pikdroid = new Entity();
 
         pikdroid.addComponent(pose);
@@ -64,11 +74,10 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(new Intelligence(4));
 
         entityManager.add(pikdroid);
-
-        return  pikdroid;
+        spawnedPikdroids.put(pikdroid.getID(), pikdroid);
     }
 
-    private Entity spawnFood() {
+    private void spawnFood() {
         Entity food = new Entity();
 
         Pose pose = new Pose();
@@ -84,8 +93,9 @@ public class PikdroidSystem extends ASystem {
         food.addComponent(vis);
         food.addComponent(energy);
 
+
         entityManager.add(food);
-        return food;
+        spawnedFood.put(food.getID(), food);
     }
 
     private float randomValue(float range){

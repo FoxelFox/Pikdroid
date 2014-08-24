@@ -32,6 +32,8 @@ public class Engine {
 
     public void update() {
         eventManager.clearQueue();
+
+        eventManager.publish(new Event(Topic.UPDATE_PIKDROID,null));
         eventManager.publish(new Event(Topic.UPDATE_INTELLIGENCE,null));
     }
 
