@@ -30,6 +30,11 @@ public class Engine {
         systemManager.startGame();
     }
 
+    public void update() {
+        eventManager.clearQueue();
+        eventManager.publish(new Event(Topic.UPDATE_INTELLIGENCE,null));
+    }
+
     public EntityManager getEntityManager(){
         return entityManager;
     }

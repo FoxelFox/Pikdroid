@@ -7,8 +7,9 @@ import android.opengl.Matrix;
  * Created by Foxel on 18.08.2014.
  */
 public class Visual extends Component{
-    float[] color;          // The Color for an Entity
-    float[] modelMatrix;
+    private float[] color;          // The Color for an Entity
+    private float[] modelMatrix;
+    private int renderObjectID;
 
     public Visual(float[] color) {
         this.color = color;
@@ -26,5 +27,13 @@ public class Visual extends Component{
 
     public float[] getModelMatrix() {
         return modelMatrix;
+    }
+
+    public void setRenderObjectID(int id) {
+        renderObjectID = id;
+    }
+
+    public int getRenderObjectID(){
+        return renderObjectID;
     }
 }

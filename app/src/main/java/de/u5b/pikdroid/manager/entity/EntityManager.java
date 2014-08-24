@@ -49,5 +49,6 @@ public class EntityManager extends AManager {
     public void delete(Entity entity) {
         entities.set(entity.getID(), null);
         eStack.push(entity.getID());
+        engine.getEventManager().publish(new Event(Topic.ENTITY_DELETED, entity));
     }
 }

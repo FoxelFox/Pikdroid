@@ -4,7 +4,11 @@ import android.opengl.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -41,20 +45,27 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
             "}";
 
     private int shaderProgram;
-    private LinkedList<ARenderObject> renderObjects;
+    private TreeMap<Integer, ARenderObject> renderObjects;
     private float[] viewMatrix;
+    private Engine engine; // TODO: this is only for update call --> remove this later
 
     public RenderSystem(Engine engine) {
         super(engine);
+        this.engine = engine;
+
+        // subscribe to topics
         eventManager.subscribe(Topic.ENTITY_CREATED,this);
-        renderObjects = new LinkedList<ARenderObject>();
+        eventManager.subscribe(Topic.ENTITY_DELETED,this);
+
+        renderObjects = new TreeMap<Integer, ARenderObject>();
         viewMatrix = new float[16];
     }
 
     @Override
     public void handleEvent(Event event) {
         switch (event.getTopic()) {
-            case ENTITY_CREATED: onEntityCreated(event);
+            case ENTITY_CREATED: onEntityCreated(event); break;
+            case ENTITY_DELETED: onEntityDeleted(event); break;
         }
     }
 
@@ -85,7 +96,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         // TODO: remove this update
-        eventManager.publish(new Event(Topic.UPDATE_INTELLIGENCE,null));
+        engine.update();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glUseProgram(shaderProgram);
@@ -95,8 +106,8 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         GLES20.glUniformMatrix4fv(uView,1,false,viewMatrix,0);
 
         // draw all objects
-        for (int i = 0; i < renderObjects.size(); ++i) {
-            renderObjects.get(i).draw(shaderProgram);
+        for (Map.Entry<Integer, ARenderObject> entry : renderObjects.entrySet()) {
+            entry.getValue().draw(shaderProgram);
         }
     }
 
@@ -110,8 +121,13 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         float[] modelMatrix = event.getEntity().getComponent(Visual.class).getModelMatrix();
 
         // add a new RenderObject to the renderObject List
-        renderObjects.add(new UniformColorRenderObject(MeshFactory.getQuad(), color, poseMatrix, modelMatrix));
+        renderObjects.put(event.getEntity().getID(), new UniformColorRenderObject(MeshFactory.getQuad(), color, poseMatrix, modelMatrix));
 
+
+    }
+
+    private void onEntityDeleted(Event event) {
+        renderObjects.remove(event.getEntity().getID());
     }
 
     private static int createShader(String vertex, String fragment) {

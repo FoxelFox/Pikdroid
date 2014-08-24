@@ -2,6 +2,8 @@ package de.u5b.pikdroid.manager.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.AManager;
@@ -15,10 +17,12 @@ import de.u5b.pikdroid.system.*;
  */
 public class EventManager extends AManager {
     private HashMap<Topic, ArrayList<ASystem>> subscriber;  // contains the Systems that subscribe to Topics
+    private ConcurrentLinkedQueue<Event> eventQueue;
 
     public EventManager(Engine engine) {
         super(engine);
         subscriber = new HashMap<Topic, ArrayList<ASystem>>();
+        eventQueue = new ConcurrentLinkedQueue<Event>();
     }
 
     /**
@@ -46,5 +50,14 @@ public class EventManager extends AManager {
                 sys.handleEvent(event);
             }
         }
+    }
+
+    public void clearQueue() {
+        if(!eventQueue.isEmpty())
+            publish(eventQueue.poll());
+    }
+
+    public void publishQueued(Event event) {
+        eventQueue.offer(event);
     }
 }
