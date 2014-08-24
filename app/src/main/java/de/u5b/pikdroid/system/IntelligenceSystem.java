@@ -66,9 +66,10 @@ public class IntelligenceSystem extends ASystem{
             if(iBestMatch != null) {
                 float[] dir = iPoseAi.nray(iBestMatch);
                 if(iPoseAi.dotForward(iBestMatch) < 0.1) {
-                    iPoseAi.rotate(8.0f, 0, 0, 1);
-                } else {
                     iPoseAi.rotate(-8.0f, 0, 0, 1);
+                } else {
+                    iPoseAi.rotate(8.0f, 0, 0, 1);
+
                 }
                 float speed = 0.01f * (float)Math.pow(minDistanceToFood,2);
                 if(speed > 0.1f)

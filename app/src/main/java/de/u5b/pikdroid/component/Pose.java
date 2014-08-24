@@ -117,8 +117,8 @@ public class Pose extends Component{
 
     public float dotForward(Pose pose) {
         float[] nr = nray(pose);
-        return matrix[0] * nr[0] +
-               matrix[1] * nr[1] +
-               matrix[2] * nr[2];
+        return matrix[4] * nr[0] +
+               matrix[5] * nr[1] +
+               matrix[6] * nr[2];
     }
 }
