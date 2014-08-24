@@ -1,8 +1,5 @@
 package de.u5b.pikdroid.system;
 
-import android.graphics.Matrix;
-
-import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import de.u5b.pikdroid.component.Energy;
@@ -68,7 +65,15 @@ public class IntelligenceSystem extends ASystem{
 
             if(iBestMatch != null) {
                 float[] dir = iPoseAi.nray(iBestMatch);
-                iPoseAi.translate(dir[0]*0.1f, dir[1]*0.1f, 0);
+                if(iPoseAi.dotForward(iBestMatch) < 0.1) {
+                    iPoseAi.rotate(8.0f, 0, 0, 1);
+                } else {
+                    iPoseAi.rotate(-8.0f, 0, 0, 1);
+                }
+                float speed = 0.01f * (float)Math.pow(minDistanceToFood,2);
+                if(speed > 0.1f)
+                    speed = 0.1f;
+                iPoseAi.translate(speed , 0, 0);
             }
         }
     }

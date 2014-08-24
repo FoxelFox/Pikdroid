@@ -90,4 +90,35 @@ public class Pose extends Component{
         r[2] /= dist;
         return r;
     }
+
+    public float[] localX() {
+        float[] loc = new float[3];
+        loc[0] = matrix[0];
+        loc[1] = matrix[1];
+        loc[2] = matrix[2];
+        return loc;
+    }
+
+    public float[] localY() {
+        float[] loc = new float[3];
+        loc[0] = matrix[4];
+        loc[1] = matrix[5];
+        loc[2] = matrix[6];
+        return loc;
+    }
+
+    public float[] localZ() {
+        float[] loc = new float[3];
+        loc[0] = matrix[8];
+        loc[1] = matrix[9];
+        loc[2] = matrix[10];
+        return loc;
+    }
+
+    public float dotForward(Pose pose) {
+        float[] nr = nray(pose);
+        return matrix[0] * nr[0] +
+               matrix[1] * nr[1] +
+               matrix[2] * nr[2];
+    }
 }
