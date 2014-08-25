@@ -10,6 +10,9 @@ import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
+import de.u5b.pikdroid.component.detect.DetectHint;
+import de.u5b.pikdroid.component.detect.Detectable;
+import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
@@ -72,6 +75,8 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
         pikdroid.addComponent(new Movement(1.0f,1.0f));
         pikdroid.addComponent(new Intelligence(4));
+        pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));
+        pikdroid.addComponent(new Detector());
 
         entityManager.add(pikdroid);
         spawnedPikdroids.put(pikdroid.getID(), pikdroid);
@@ -87,11 +92,13 @@ public class PikdroidSystem extends ASystem {
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100);
+        Detectable detectable = new Detectable(DetectHint.FOOD);
 
 
         food.addComponent(pose);
         food.addComponent(vis);
         food.addComponent(energy);
+        food.addComponent(detectable);
 
 
         entityManager.add(food);

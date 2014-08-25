@@ -10,20 +10,29 @@ import de.u5b.pikdroid.manager.entity.Entity;
  */
 public class Detector extends Component{
 
-    ArrayList<ArrayList<Entity>> detections;
+    private ArrayList<ArrayList<DetectEntry>> detections;
+    private ArrayList<DetectEntry> minDistanceEntries;
 
     public  Detector() {
-        detections = new ArrayList<ArrayList<Entity>>(DetectHint.values().length);
+        detections = new ArrayList<ArrayList<DetectEntry>>(DetectHint.values().length);
+        minDistanceEntries = new ArrayList<DetectEntry>(DetectHint.values().length);
+
         for (int i = 0; i < DetectHint.values().length; ++i) {
-            detections.add(new ArrayList<Entity>());
+            detections.add(new ArrayList<DetectEntry>());
+            minDistanceEntries.add(null);
         }
     }
 
-    public void setDetections(DetectHint hint, ArrayList<Entity> detectedEntities) {
+    public void setDetections(DetectHint hint, ArrayList<DetectEntry> detectedEntities, DetectEntry minDistanceEntry) {
         detections.set(hint.ordinal(), detectedEntities);
+        minDistanceEntries.set(hint.ordinal(),  minDistanceEntry);
     }
 
-    public ArrayList<Entity> getDetections(DetectHint hint) {
+    public ArrayList<DetectEntry> getDetections(DetectHint hint) {
         return detections.get(hint.ordinal());
+    }
+
+    public DetectEntry getMinDistanceDetection(DetectHint hint) {
+        return minDistanceEntries.get(hint.ordinal());
     }
 }

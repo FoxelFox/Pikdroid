@@ -7,6 +7,9 @@ import java.util.Vector;
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Pose;
+import de.u5b.pikdroid.component.detect.DetectEntry;
+import de.u5b.pikdroid.component.detect.DetectHint;
+import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
@@ -46,7 +49,7 @@ public class IntelligenceSystem extends ASystem{
 
             Pose iPoseAi = entityEntry.getValue().getComponent(Pose.class);
             float minDistanceToFood = 1000.0f;
-            Pose iBestMatch = null;
+            Pose iBestFoodMatch = null;
 
             // find shortest way to food
             for (Map.Entry<Integer, Entity> foodEntry : food.entrySet()) {
@@ -55,19 +58,19 @@ public class IntelligenceSystem extends ASystem{
                 float kDistToFood = iPoseAi.distance(kPoseFood);
                 if(minDistanceToFood > kDistToFood) {
                     minDistanceToFood = kDistToFood;
-                    iBestMatch = kPoseFood;
+                    iBestFoodMatch = kPoseFood;
                 }
             }
 
-            if(iBestMatch != null) {
+            if(iBestFoodMatch != null) {
 
                 if(minDistanceToFood < 0.2f) {
                     // eat the food ...
-                    entityManager.delete(iBestMatch.getEntity());
+                    entityManager.delete(iBestFoodMatch.getEntity());
                 }
 
                 // look to food
-                if(iPoseAi.dotForward(iBestMatch) < 0.1) {
+                if(iPoseAi.dotForward(iBestFoodMatch) < 0.1) {
                     iPoseAi.rotate(-8.0f, 0, 0, 1);
                 } else {
                     iPoseAi.rotate(8.0f, 0, 0, 1);
@@ -78,6 +81,37 @@ public class IntelligenceSystem extends ASystem{
                 if(speed > 0.1f)
                     speed = 0.1f;
                 iPoseAi.translate(speed , 0, 0);
+            }
+        }
+    }
+
+    public void updateNew() {
+        for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
+            Entity entity = entityEntry.getValue();
+            Detector detector = entity.getComponent(Detector.class);
+
+            DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
+            if(food != null) {
+                if(food.getDistance() < 0.2f) {
+                    // eat the food ...
+                    entityManager.delete(food.getEntity());
+                }
+
+                Pose poseAi = entity.getComponent(Pose.class);
+                Pose poseFood = food.getEntity().getComponent(Pose.class);
+
+                // look to food
+                if(poseAi.dotForward(poseFood) < 0.1) {
+                    poseAi.rotate(-8.0f, 0, 0, 1);
+                } else {
+                    poseAi.rotate(8.0f, 0, 0, 1);
+                }
+
+                // calc speed to move
+                float speed = 0.25f * (float)Math.pow(food.getDistance(),2);
+                if(speed > 0.1f)
+                    speed = 0.1f;
+                poseAi.translate(speed , 0, 0);
             }
         }
     }

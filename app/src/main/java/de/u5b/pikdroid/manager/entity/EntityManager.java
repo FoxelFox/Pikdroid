@@ -2,7 +2,9 @@ package de.u5b.pikdroid.manager.entity;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Pose;
@@ -18,11 +20,13 @@ import de.u5b.pikdroid.manager.event.Topic;
 public class EntityManager extends AManager {
     private ArrayList<Entity> entities;
     private Stack<Integer> eStack;
+    private ConcurrentLinkedQueue<Entity> deleteQueue;
 
     public EntityManager(Engine engine) {
         super(engine);
         entities = new ArrayList<Entity>();
         eStack = new Stack<Integer>();
+        deleteQueue = new ConcurrentLinkedQueue<Entity>();
     }
 
     /**
@@ -47,8 +51,15 @@ public class EntityManager extends AManager {
      * @param entity Entity to delete
      */
     public void delete(Entity entity) {
-        entities.set(entity.getID(), null);
-        eStack.push(entity.getID());
-        engine.getEventManager().publish(new Event(Topic.ENTITY_DELETED, entity));
+        deleteQueue.offer(entity);
+    }
+
+    public void update() {
+        while (!deleteQueue.isEmpty()) {
+            Entity entity = deleteQueue.poll();
+            entities.set(entity.getID(), null);
+            eStack.push(entity.getID());
+            engine.getEventManager().publish(new Event(Topic.ENTITY_DELETED, entity));
+        }
     }
 }

@@ -52,7 +52,7 @@ public class EventManager extends AManager {
         }
     }
 
-    public void clearQueue() {
+    public void update() {
         while (!eventQueue.isEmpty())
             publish(eventQueue.poll());
     }

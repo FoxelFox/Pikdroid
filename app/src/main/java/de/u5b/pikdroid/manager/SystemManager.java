@@ -30,9 +30,9 @@ public class SystemManager extends AManager {
     }
 
     public void update() {
-        pikdroidSystem.update();
         detectSystem.update();
         intelligenceSystem.update();
+        pikdroidSystem.update();
         renderSystem.update();
     }
 

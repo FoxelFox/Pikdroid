@@ -1,10 +1,8 @@
 package de.u5b.pikdroid.game;
 
 import de.u5b.pikdroid.manager.entity.EntityManager;
-import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventManager;
 import de.u5b.pikdroid.manager.SystemManager;
-import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * This is the main class for the Game. It contains all Manager and starts the game.
@@ -31,8 +29,9 @@ public class Engine {
     }
 
     public void update() {
-        eventManager.clearQueue();
+        eventManager.update();
         systemManager.update();
+        entityManager.update();
     }
 
     public EntityManager getEntityManager(){

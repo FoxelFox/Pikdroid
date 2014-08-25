@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.u5b.pikdroid.component.Pose;
+import de.u5b.pikdroid.component.detect.DetectEntry;
 import de.u5b.pikdroid.component.detect.DetectHint;
 import de.u5b.pikdroid.component.detect.Detectable;
 import de.u5b.pikdroid.component.detect.Detector;
@@ -54,28 +55,31 @@ public class DetectSystem extends ASystem {
             // for every List by DetectHint
             for (int k = 0; k < DetectHint.values().length; ++k) {
                 ArrayList<Entity> kDetectableList = detectables.get(k);
-                ArrayList<Entity> kDetected = new ArrayList<Entity>();
+                ArrayList<DetectEntry> kDetected = new ArrayList<DetectEntry>();
+                DetectEntry kMinDistanceEntry = null;
 
                 // for every Detectable in List
                 for (int m = 0; m < kDetectableList.size(); ++m) {
                     Entity mDetectable = kDetectableList.get(m);
 
                     // check if Detector can detect Detectable
-                    if(detectedByDistance(iDetector,mDetectable)) {
-                        kDetected.add(mDetectable);
+                    float mDistance = detectedDistance(iDetector, mDetectable);
+                    if(mDistance < 100.0f) {
+                        kMinDistanceEntry = new DetectEntry(mDetectable, mDistance);
+                        kDetected.add(new DetectEntry(mDetectable, mDistance));
                     }
                 }
                 // add detected entities for Hint to Detector
-                iDetector.getComponent(Detector.class).setDetections(DetectHint.values()[k], kDetected);
+                iDetector.getComponent(Detector.class).setDetections(DetectHint.values()[k], kDetected, kMinDistanceEntry);
             }
         }
     }
 
-    private boolean detectedByDistance(Entity detector, Entity detectable) {
+    private float detectedDistance(Entity detector, Entity detectable) {
         Pose p1 = detector.getComponent(Pose.class);
         Pose p2 = detectable.getComponent(Pose.class);
 
-        return (p1.distance(p2) < 1.0f);
+        return p1.distance(p2);
     }
 
     private void onEntityDeleted(Event event) {
