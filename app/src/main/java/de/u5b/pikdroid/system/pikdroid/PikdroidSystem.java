@@ -25,6 +25,7 @@ public class PikdroidSystem extends ASystem {
     TreeMap<Integer, Entity> spawnedPikdroids;
     TreeMap<Integer, Entity> spawnedFood;
 
+
     public PikdroidSystem(Engine engine) {
         super(engine);
 
