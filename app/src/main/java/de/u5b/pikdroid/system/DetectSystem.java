@@ -3,6 +3,7 @@ package de.u5b.pikdroid.system;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.detect.DetectHint;
 import de.u5b.pikdroid.component.detect.Detectable;
 import de.u5b.pikdroid.component.detect.Detector;
@@ -46,6 +47,35 @@ public class DetectSystem extends ASystem {
     @Override
     public void update() {
 
+        // For all Detector Entities
+        for (int i = 0; i < detectors.size(); ++i) {
+            Entity iDetector = detectors.get(i);
+
+            // for every List by DetectHint
+            for (int k = 0; k < DetectHint.values().length; ++k) {
+                ArrayList<Entity> kDetectableList = detectables.get(k);
+                ArrayList<Entity> kDetected = new ArrayList<Entity>();
+
+                // for every Detectable in List
+                for (int m = 0; m < kDetectableList.size(); ++m) {
+                    Entity mDetectable = kDetectableList.get(m);
+
+                    // check if Detector can detect Detectable
+                    if(detectedByDistance(iDetector,mDetectable)) {
+                        kDetected.add(mDetectable);
+                    }
+                }
+                // add detected entities for Hint to Detector
+                iDetector.getComponent(Detector.class).setDetections(DetectHint.values()[k], kDetected);
+            }
+        }
+    }
+
+    private boolean detectedByDistance(Entity detector, Entity detectable) {
+        Pose p1 = detector.getComponent(Pose.class);
+        Pose p2 = detectable.getComponent(Pose.class);
+
+        return (p1.distance(p2) < 1.0f);
     }
 
     private void onEntityDeleted(Event event) {
