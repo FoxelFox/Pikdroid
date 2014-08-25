@@ -32,7 +32,6 @@ public class PikdroidSystem extends ASystem {
         // subscribe to Spawn new Pikdroids
         eventManager.subscribe(Topic.SPAWN_PIKDROID, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
-        eventManager.subscribe(Topic.UPDATE_PIKDROID, this);
 
         spawnedPikdroids = new TreeMap<Integer, Entity>();
         spawnedFood = new TreeMap<Integer, Entity>();
@@ -43,11 +42,11 @@ public class PikdroidSystem extends ASystem {
         switch (event.getTopic()) {
             case SPAWN_PIKDROID: onSpawnPikdroid(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
-            case UPDATE_PIKDROID: onUpdate(event); break;
+
         }
     }
 
-    private void onUpdate(Event event) {
+    public void update() {
         if(spawnedFood.size() < 10)
             spawnFood();
     }

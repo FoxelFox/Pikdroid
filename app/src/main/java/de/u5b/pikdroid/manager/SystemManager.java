@@ -3,6 +3,7 @@ package de.u5b.pikdroid.manager;
 import android.opengl.GLSurfaceView;
 
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.system.DetectSystem;
 import de.u5b.pikdroid.system.IntelligenceSystem;
 import de.u5b.pikdroid.system.pikdroid.PikdroidSystem;
 import de.u5b.pikdroid.system.render.RenderSystem;
@@ -14,6 +15,7 @@ public class SystemManager extends AManager {
     PikdroidSystem pikdroidSystem;
     RenderSystem renderSystem;
     IntelligenceSystem intelligenceSystem;
+    DetectSystem detectSystem;
 
     public SystemManager(Engine engine){
         super(engine);
@@ -24,6 +26,14 @@ public class SystemManager extends AManager {
         pikdroidSystem = new PikdroidSystem(engine);
         renderSystem = new RenderSystem(engine);
         intelligenceSystem = new IntelligenceSystem(engine);
+        detectSystem = new DetectSystem(engine);
+    }
+
+    public void update() {
+        pikdroidSystem.update();
+        detectSystem.update();
+        intelligenceSystem.update();
+        renderSystem.update();
     }
 
 }

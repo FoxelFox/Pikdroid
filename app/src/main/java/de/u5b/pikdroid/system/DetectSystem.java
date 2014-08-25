@@ -43,6 +43,11 @@ public class DetectSystem extends ASystem {
         }
     }
 
+    @Override
+    public void update() {
+
+    }
+
     private void onEntityDeleted(Event event) {
         detectors.remove(event.getEntity());
 

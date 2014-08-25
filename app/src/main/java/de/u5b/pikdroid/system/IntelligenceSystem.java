@@ -24,9 +24,10 @@ public class IntelligenceSystem extends ASystem{
 
     public IntelligenceSystem(Engine engine){
         super(engine);
-        eventManager.subscribe(Topic.UPDATE_INTELLIGENCE, this);
+
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
+
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
     }
@@ -34,29 +35,13 @@ public class IntelligenceSystem extends ASystem{
     @Override
     public void handleEvent(Event event) {
         switch (event.getTopic()) {
-            case UPDATE_INTELLIGENCE: onUpdateIntelligence(); break;
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
         }
     }
 
-    private void onEntityCreated(Event event) {
-        if(event.getEntity().getComponent(Intelligence.class) != null) {
-            // This Entity has Intelligence to update
-            entities.put(event.getEntity().getID(), event.getEntity());
-        } else if(event.getEntity().getComponent(Energy.class) != null) {
-            // This Entity has Energy its Food for me
-            food.put(event.getEntity().getID(), event.getEntity());
-        }
-    }
-
-    private void  onEntityDeleted(Event event) {
-        entities.remove(event.getEntity().getID());
-        food.remove(event.getEntity().getID());
-    }
-
-    private void onUpdateIntelligence() {
-
+    @Override
+    public void update() {
         for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
 
             Pose iPoseAi = entityEntry.getValue().getComponent(Pose.class);
@@ -95,5 +80,20 @@ public class IntelligenceSystem extends ASystem{
                 iPoseAi.translate(speed , 0, 0);
             }
         }
+    }
+
+    private void onEntityCreated(Event event) {
+        if(event.getEntity().getComponent(Intelligence.class) != null) {
+            // This Entity has Intelligence to update
+            entities.put(event.getEntity().getID(), event.getEntity());
+        } else if(event.getEntity().getComponent(Energy.class) != null) {
+            // This Entity has Energy its Food for me
+            food.put(event.getEntity().getID(), event.getEntity());
+        }
+    }
+
+    private void  onEntityDeleted(Event event) {
+        entities.remove(event.getEntity().getID());
+        food.remove(event.getEntity().getID());
     }
 }

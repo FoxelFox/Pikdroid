@@ -70,6 +70,11 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     }
 
     @Override
+    public void update() {
+        // TODO: here it would be nice to draw
+    }
+
+    @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);

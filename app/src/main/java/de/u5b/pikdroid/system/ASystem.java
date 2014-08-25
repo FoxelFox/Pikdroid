@@ -20,4 +20,6 @@ public abstract class ASystem {
     }
 
     public abstract void handleEvent(Event event);
+
+    public abstract void update();
 }
