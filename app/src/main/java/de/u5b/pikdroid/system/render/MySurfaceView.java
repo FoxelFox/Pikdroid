@@ -23,6 +23,7 @@ public class MySurfaceView extends GLSurfaceView {
         super(context);
         // set OpenGLES 2.0 usage
         setEGLContextClientVersion(2);
+        setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
         // set the render
         setRenderer(new RenderSystem(engine));
 
