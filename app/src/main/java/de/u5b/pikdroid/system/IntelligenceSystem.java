@@ -46,47 +46,6 @@ public class IntelligenceSystem extends ASystem{
     @Override
     public void update() {
         for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
-
-            Pose iPoseAi = entityEntry.getValue().getComponent(Pose.class);
-            float minDistanceToFood = 1000.0f;
-            Pose iBestFoodMatch = null;
-
-            // find shortest way to food
-            for (Map.Entry<Integer, Entity> foodEntry : food.entrySet()) {
-
-                Pose kPoseFood = foodEntry.getValue().getComponent(Pose.class);
-                float kDistToFood = iPoseAi.distance(kPoseFood);
-                if(minDistanceToFood > kDistToFood) {
-                    minDistanceToFood = kDistToFood;
-                    iBestFoodMatch = kPoseFood;
-                }
-            }
-
-            if(iBestFoodMatch != null) {
-
-                if(minDistanceToFood < 0.2f) {
-                    // eat the food ...
-                    entityManager.delete(iBestFoodMatch.getEntity());
-                }
-
-                // look to food
-                if(iPoseAi.dotForward(iBestFoodMatch) < 0.1) {
-                    iPoseAi.rotate(-8.0f, 0, 0, 1);
-                } else {
-                    iPoseAi.rotate(8.0f, 0, 0, 1);
-                }
-
-                // calc speed to move
-                float speed = 0.25f * (float)Math.pow(minDistanceToFood,2);
-                if(speed > 0.1f)
-                    speed = 0.1f;
-                iPoseAi.translate(speed , 0, 0);
-            }
-        }
-    }
-
-    public void updateNew() {
-        for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
             Entity entity = entityEntry.getValue();
             Detector detector = entity.getComponent(Detector.class);
 

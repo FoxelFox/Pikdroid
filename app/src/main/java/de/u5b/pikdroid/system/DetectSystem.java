@@ -65,7 +65,13 @@ public class DetectSystem extends ASystem {
                     // check if Detector can detect Detectable
                     float mDistance = detectedDistance(iDetector, mDetectable);
                     if(mDistance < 100.0f) {
-                        kMinDistanceEntry = new DetectEntry(mDetectable, mDistance);
+
+                        // is this the minimum distance?
+                        if(kMinDistanceEntry == null || kMinDistanceEntry.getDistance() > mDistance) {
+                            kMinDistanceEntry = new DetectEntry(mDetectable, mDistance);
+                        }
+
+                        // add to detected list
                         kDetected.add(new DetectEntry(mDetectable, mDistance));
                     }
                 }
