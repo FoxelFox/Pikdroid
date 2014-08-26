@@ -67,7 +67,9 @@ public class DetectSystem extends ASystem {
                     if(mDistance < 100.0f) {
 
                         // is this the minimum distance?
-                        if(kMinDistanceEntry == null || kMinDistanceEntry.getDistance() > mDistance) {
+                        if(kMinDistanceEntry == null) {
+                            kMinDistanceEntry = new DetectEntry(mDetectable, mDistance);
+                        } else if (kMinDistanceEntry.getDistance() > mDistance) {
                             kMinDistanceEntry = new DetectEntry(mDetectable, mDistance);
                         }
 
@@ -94,7 +96,9 @@ public class DetectSystem extends ASystem {
         // if entity is detectable remove it from collection
         Detectable detectable = event.getEntity().getComponent(Detectable.class);
         if (detectable != null) {
-            detectables.get(detectable.getHint().ordinal()).remove(event.getEntity());
+            if(!detectables.get(detectable.getHint().ordinal()).remove(event.getEntity())) {
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            }
         }
     }
 

@@ -33,8 +33,8 @@ public class Engine {
 
     public void update() {
         if(isRunning) {
-            entityManager.update();
             eventManager.update();
+            entityManager.update();
             systemManager.update();
 
         }
