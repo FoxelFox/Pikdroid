@@ -88,7 +88,7 @@ public class DetectSystem extends ASystem {
         // if entity is detectable remove it from collection
         Detectable detectable = event.getEntity().getComponent(Detectable.class);
         if (detectable != null) {
-            detectables.get(detectable.getHint().ordinal()).remove(detectable);
+            detectables.get(detectable.getHint().ordinal()).remove(event.getEntity());
         }
     }
 

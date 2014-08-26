@@ -9,6 +9,7 @@ import de.u5b.pikdroid.manager.SystemManager;
  * Created by Foxel on 14.08.2014.
  */
 public class Engine {
+    private boolean isRunning;
     private EntityManager entityManager;
     private EventManager eventManager;
     private SystemManager systemManager;
@@ -16,6 +17,7 @@ public class Engine {
     private Engine engine;
 
     public Engine() {
+        isRunning = false;
         entityManager = new EntityManager(this);
         eventManager = new EventManager(this);
         systemManager = new SystemManager(this);
@@ -26,12 +28,16 @@ public class Engine {
      */
     public void play() {
         systemManager.startGame();
+        isRunning = true;
     }
 
     public void update() {
-        eventManager.update();
-        systemManager.update();
-        entityManager.update();
+        if(isRunning) {
+            entityManager.update();
+            eventManager.update();
+            systemManager.update();
+
+        }
     }
 
     public EntityManager getEntityManager(){
