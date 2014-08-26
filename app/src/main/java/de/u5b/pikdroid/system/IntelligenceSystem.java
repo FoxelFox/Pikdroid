@@ -48,15 +48,18 @@ public class IntelligenceSystem extends ASystem{
         for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
             Entity entity = entityEntry.getValue();
             Detector detector = entity.getComponent(Detector.class);
+            Pose poseAi = entity.getComponent(Pose.class);
 
             DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
+
             if(food != null) {
+                // Food was detected try to eat it
+
                 if(food.getDistance() < 0.2f) {
                     // eat the food ...
                     entityManager.delete(food.getEntity());
                 }
 
-                Pose poseAi = entity.getComponent(Pose.class);
                 Pose poseFood = food.getEntity().getComponent(Pose.class);
 
                 // look to food
@@ -71,7 +74,25 @@ public class IntelligenceSystem extends ASystem{
                 if(speed > 0.1f)
                     speed = 0.1f;
                 poseAi.translate(speed , 0, 0);
+
+            } else {
+                // Move random around
+                if(Math.random() < 0.5) {
+                    poseAi.rotate(-8.0f, 0, 0, 1);
+                } else {
+                    poseAi.rotate(8.0f, 0, 0, 1);
+                }
+
+                poseAi.translate(0.1f , 0, 0);
+
             }
+
+            // edge Detect
+            if(poseAi.getPositionX() < -10.0f || poseAi.getPositionX() > 10.0f)
+                poseAi.rotate(90.f,0,0,1);
+            if(poseAi.getPositionY() < -13.0f || poseAi.getPositionY() > 13.0f)
+                poseAi.rotate(90.f,0,0,1);
+
         }
     }
 

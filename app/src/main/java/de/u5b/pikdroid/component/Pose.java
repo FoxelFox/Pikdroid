@@ -77,6 +77,26 @@ public class Pose extends Component{
         return dirVec;
     }
 
+    public float[] getPosition() {
+        float[] pos = new float[3];
+        pos[0] = matrix[12];
+        pos[1] = matrix[13];
+        pos[2] = matrix[14];
+        return pos;
+    }
+
+    public float getPositionX() {
+        return matrix[12];
+    }
+
+    public float getPositionY() {
+        return matrix[13];
+    }
+
+    public float getPositionZ() {
+        return matrix[14];
+    }
+
     /**
      * Calculate a normalized float[3] ray to @target
      * @param target ray target

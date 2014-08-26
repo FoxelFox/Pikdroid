@@ -45,9 +45,13 @@ public class DetectSystem extends ASystem {
         }
     }
 
+    /**
+     * Detect Detectable with Detector
+     */
     @Override
     public void update() {
 
+        // TODO: Optimize this! Maybe use a QuadTree.
         // For all Detector Entities
         for (int i = 0; i < detectors.size(); ++i) {
             Entity iDetector = detectors.get(i);
@@ -64,7 +68,7 @@ public class DetectSystem extends ASystem {
 
                     // check if Detector can detect Detectable
                     float mDistance = detectedDistance(iDetector, mDetectable);
-                    if(mDistance < 100.0f) {
+                    if(mDistance < 2.0f) {
 
                         // is this the minimum distance?
                         if(kMinDistanceEntry == null) {
@@ -96,9 +100,7 @@ public class DetectSystem extends ASystem {
         // if entity is detectable remove it from collection
         Detectable detectable = event.getEntity().getComponent(Detectable.class);
         if (detectable != null) {
-            if(!detectables.get(detectable.getHint().ordinal()).remove(event.getEntity())) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            }
+            detectables.get(detectable.getHint().ordinal()).remove(event.getEntity());
         }
     }
 
