@@ -7,4 +7,5 @@ public enum DetectHint {
     FOOD,
     FOOD_MARK,
     PIKDROID,
+    BASE,
 }

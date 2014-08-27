@@ -25,8 +25,9 @@ import de.u5b.pikdroid.system.ASystem;
  */
 public class PikdroidSystem extends ASystem {
 
-    TreeMap<Integer, Entity> spawnedPikdroids;
-    TreeMap<Integer, Entity> spawnedFood;
+    private TreeMap<Integer, Entity> spawnedPikdroids;
+    private TreeMap<Integer, Entity> spawnedFood;
+    private Entity base;
 
 
     public PikdroidSystem(Engine engine) {
@@ -50,6 +51,10 @@ public class PikdroidSystem extends ASystem {
     }
 
     public void update() {
+        if(base == null) {
+            buildBase();
+        }
+
         if(spawnedFood.size() < 10)
             spawnFood();
     }
@@ -103,6 +108,25 @@ public class PikdroidSystem extends ASystem {
 
         entityManager.add(food);
         spawnedFood.put(food.getID(), food);
+    }
+
+    private void buildBase() {
+        base = new Entity();
+
+        Pose pose = new Pose();
+        pose.translate(8,12,0);
+
+        Detectable detectable = new Detectable(DetectHint.BASE);
+
+        Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f });
+        visual.scale(2.0f, 2.0f, 1.0f);
+
+
+        base.addComponent(pose);
+        base.addComponent(detectable);
+        base.addComponent(visual);
+
+        entityManager.add(base);
     }
 
     private float randomValue(float range){
