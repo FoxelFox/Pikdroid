@@ -25,6 +25,7 @@ public class IntelligenceSystem extends ASystem{
     TreeMap<Integer, Entity> entities;    // Intelligence to control
     TreeMap<Integer, Entity> food;        // Food to collect
 
+
     public IntelligenceSystem(Engine engine){
         super(engine);
 
@@ -49,42 +50,64 @@ public class IntelligenceSystem extends ASystem{
             Entity entity = entityEntry.getValue();
             Detector detector = entity.getComponent(Detector.class);
             Pose poseAi = entity.getComponent(Pose.class);
+            Intelligence intelligence = entity.getComponent(Intelligence.class);
 
-            DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
 
-            if(food != null) {
-                // Food was detected try to eat it
+            if(intelligence.hasFood()) {
+                // bring food to base
+                Pose poseBase = intelligence.getBase().getComponent(Pose.class);
 
-                if(food.getDistance() < 0.2f) {
-                    // eat the food ...
-                    entityManager.delete(food.getEntity());
-                }
 
-                Pose poseFood = food.getEntity().getComponent(Pose.class);
-
-                // look to food
-                if(poseAi.dotForward(poseFood) < 0.1) {
+                if (poseAi.dotForward(poseBase) < 0.1) {
                     poseAi.rotate(-8.0f, 0, 0, 1);
                 } else {
                     poseAi.rotate(8.0f, 0, 0, 1);
                 }
 
-                // calc speed to move
-                float speed = 0.25f * (float)Math.pow(food.getDistance(),2);
-                if(speed > 0.1f)
-                    speed = 0.1f;
-                poseAi.translate(speed , 0, 0);
+                poseAi.translate(0.1f, 0, 0);
+
+                if(poseAi.distance(poseBase) < 0.2f)
+                    intelligence.setHasFood(false);
 
             } else {
-                // Move random around
-                if(Math.random() < 0.5) {
-                    poseAi.rotate(-8.0f, 0, 0, 1);
+
+                DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
+
+                if (food != null) {
+                    // Food was detected try to eat it
+
+                    if (food.getDistance() < 0.2f) {
+                        // eat the food ...
+                        entityManager.delete(food.getEntity());
+                        intelligence.setHasFood(true);
+                    }
+
+                    Pose poseFood = food.getEntity().getComponent(Pose.class);
+
+                    // look to food
+                    if (poseAi.dotForward(poseFood) < 0.1) {
+                        poseAi.rotate(-8.0f, 0, 0, 1);
+                    } else {
+                        poseAi.rotate(8.0f, 0, 0, 1);
+                    }
+
+                    // calc speed to move
+                    float speed = 0.25f * (float) Math.pow(food.getDistance(), 2);
+                    if (speed > 0.1f)
+                        speed = 0.1f;
+                    poseAi.translate(speed, 0, 0);
+
                 } else {
-                    poseAi.rotate(8.0f, 0, 0, 1);
+                    // Move random around
+                    if (Math.random() < 0.5) {
+                        poseAi.rotate(-8.0f, 0, 0, 1);
+                    } else {
+                        poseAi.rotate(8.0f, 0, 0, 1);
+                    }
+
+                    poseAi.translate(0.1f, 0, 0);
+
                 }
-
-                poseAi.translate(0.1f , 0, 0);
-
             }
 
             // edge Detect

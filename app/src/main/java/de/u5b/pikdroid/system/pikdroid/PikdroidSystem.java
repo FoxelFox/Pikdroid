@@ -79,7 +79,7 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
         pikdroid.addComponent(new Movement(1.0f,1.0f));
-        pikdroid.addComponent(new Intelligence(4));
+        pikdroid.addComponent(new Intelligence(base));
         pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));
         pikdroid.addComponent(new Detector());
 
