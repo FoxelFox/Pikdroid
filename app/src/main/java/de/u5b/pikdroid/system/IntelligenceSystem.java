@@ -98,9 +98,12 @@ public class IntelligenceSystem extends ASystem{
                 intelligence.setHasFood(false);
                 movement.setTarget(null);
             } else {
-                intelligence.setHasFood(true);
-                entityManager.delete(movement.getTarget());
-                movement.setTarget(intelligence.getBase());
+                if(entityManager.delete(movement.getTarget())) {
+                    intelligence.setHasFood(true);
+                    movement.setTarget(intelligence.getBase());
+                } else {
+                    movement.setTarget(null);
+                }
             }
         }
     }

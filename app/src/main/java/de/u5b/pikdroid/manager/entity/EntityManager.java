@@ -50,9 +50,12 @@ public class EntityManager extends AManager {
      * Delete the Entity from Database
      * @param entity Entity to delete
      */
-    public void delete(Entity entity) {
-        if(!deleteQueue.contains(entity))
+    public boolean delete(Entity entity) {
+        if(!deleteQueue.contains(entity) && entities.contains(entity)) {
             deleteQueue.offer(entity);
+            return true;
+        }
+        return false;
     }
 
     public void update() {
