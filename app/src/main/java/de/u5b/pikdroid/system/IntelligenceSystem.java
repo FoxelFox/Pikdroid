@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
+import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.detect.DetectEntry;
 import de.u5b.pikdroid.component.detect.DetectHint;
@@ -31,6 +32,7 @@ public class IntelligenceSystem extends ASystem{
 
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
+        eventManager.subscribe(Topic.MOVE_TARGET_REACHED, this);
 
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
@@ -41,6 +43,7 @@ public class IntelligenceSystem extends ASystem{
         switch (event.getTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
+            case MOVE_TARGET_REACHED: onMoveTargetReached(event); break;
         }
     }
 
@@ -51,62 +54,15 @@ public class IntelligenceSystem extends ASystem{
             Detector detector = entity.getComponent(Detector.class);
             Pose poseAi = entity.getComponent(Pose.class);
             Intelligence intelligence = entity.getComponent(Intelligence.class);
+            Movement movement = entity.getComponent(Movement.class);
 
 
-            if(intelligence.hasFood()) {
-                // bring food to base
-                Pose poseBase = intelligence.getBase().getComponent(Pose.class);
-
-
-                if (poseAi.dotForward(poseBase) < 0.1) {
-                    poseAi.rotate(-8.0f, 0, 0, 1);
-                } else {
-                    poseAi.rotate(8.0f, 0, 0, 1);
-                }
-
-                poseAi.translate(0.1f, 0, 0);
-
-                if(poseAi.distance(poseBase) < 0.2f)
-                    intelligence.setHasFood(false);
-
-            } else {
+            if(!intelligence.hasFood()) {
 
                 DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
 
                 if (food != null) {
-                    // Food was detected try to eat it
-
-                    if (food.getDistance() < 0.2f) {
-                        // eat the food ...
-                        entityManager.delete(food.getEntity());
-                        intelligence.setHasFood(true);
-                    }
-
-                    Pose poseFood = food.getEntity().getComponent(Pose.class);
-
-                    // look to food
-                    if (poseAi.dotForward(poseFood) < 0.1) {
-                        poseAi.rotate(-8.0f, 0, 0, 1);
-                    } else {
-                        poseAi.rotate(8.0f, 0, 0, 1);
-                    }
-
-                    // calc speed to move
-                    float speed = 0.25f * (float) Math.pow(food.getDistance(), 2);
-                    if (speed > 0.1f)
-                        speed = 0.1f;
-                    poseAi.translate(speed, 0, 0);
-
-                } else {
-                    // Move random around
-                    if (Math.random() < 0.5) {
-                        poseAi.rotate(-8.0f, 0, 0, 1);
-                    } else {
-                        poseAi.rotate(8.0f, 0, 0, 1);
-                    }
-
-                    poseAi.translate(0.1f, 0, 0);
-
+                    movement.setTarget(food.getEntity());
                 }
             }
 
@@ -132,5 +88,20 @@ public class IntelligenceSystem extends ASystem{
     private void  onEntityDeleted(Event event) {
         entities.remove(event.getEntity().getID());
         food.remove(event.getEntity().getID());
+    }
+
+    private void onMoveTargetReached(Event event) {
+        Intelligence intelligence = event.getEntity().getComponent(Intelligence.class);
+        Movement movement = event.getEntity().getComponent(Movement.class);
+        if(intelligence != null) {
+            if(intelligence.hasFood()) {
+                intelligence.setHasFood(false);
+                movement.setTarget(null);
+            } else {
+                intelligence.setHasFood(true);
+                entityManager.delete(movement.getTarget());
+                movement.setTarget(intelligence.getBase());
+            }
+        }
     }
 }
