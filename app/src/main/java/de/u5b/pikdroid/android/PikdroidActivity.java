@@ -5,6 +5,8 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
@@ -21,6 +23,11 @@ public class PikdroidActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         engine = new Engine();
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(new MySurfaceView(this, engine));
         engine.play();
     }
