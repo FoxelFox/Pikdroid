@@ -3,7 +3,9 @@ package de.u5b.pikdroid.system.render;
 import android.content.Context;
 import android.opengl.Matrix;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
@@ -17,16 +19,31 @@ import de.u5b.pikdroid.manager.event.Topic;
  */
 public class MySurfaceView extends GLSurfaceView {
 
-    Engine engine;
+    private Engine engine;
 
-    public MySurfaceView(Context context, Engine engine) {
+    public MySurfaceView(Context context) {
         super(context);
+
+    }
+
+    public MySurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initGL(context);
+    }
+
+    //public MySurfaceView(Context context, AttributeSet attrs) {
+    //    super(context, attrs);
+    //    initGL(context);
+    //}
+
+    private void initGL(Context context) {
         // set OpenGLES 2.0 usage
         setEGLContextClientVersion(2);
         setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
-        // set the render
-        setRenderer(new RenderSystem(engine));
+    }
 
+    public void setEngine(Engine engine) {
+        setRenderer(new RenderSystem(engine));
         this.engine = engine;
     }
 

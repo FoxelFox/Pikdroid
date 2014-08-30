@@ -22,13 +22,20 @@ public class PikdroidActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        engine = new Engine();
 
+        // Activity Flags
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                             WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(new MySurfaceView(this, engine));
+        setContentView(R.layout.activity_pikdroid);
+
+        // Create Rendering Surface
+        MySurfaceView view = (MySurfaceView) findViewById(R.id.view);
+        engine = new Engine();
+        view.setEngine(engine);
         engine.play();
     }
 
