@@ -76,7 +76,18 @@ public class IntelligenceSystem extends ASystem{
             if(poseAi.getPositionY() < -13.0f || poseAi.getPositionY() > 13.0f)
                 poseAi.rotate(90.f,0,0,1);
 
+            // check if a new sector is reached
+            if(poseAi.isNewSectorReached()) {
+                if(intelligence.hasFood()) {
+                    eventManager.publish(new Event(Topic.MAKE_HINT, entity));
+                } else {
+                    eventManager.publish(new Event(Topic.REMOVE_HINT, entity));
+                }
+
+            }
+
         }
+
     }
 
     private void onEntityCreated(Event event) {

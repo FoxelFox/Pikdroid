@@ -12,4 +12,5 @@ public enum Topic {
     TRY_ENERGY_TRANSFER,
     ON_ENERGY_TRANSFERRED,
     MAKE_HINT,
+    REMOVE_HINT,
 }

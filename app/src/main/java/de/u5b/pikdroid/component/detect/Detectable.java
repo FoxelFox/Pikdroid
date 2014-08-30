@@ -12,7 +12,7 @@ public class Detectable extends Component{
 
     public Detectable(DetectHint hint) {
         this.hint = hint;
-        strength = 1;
+        strength = 0;
     }
 
     public DetectHint getHint() {
@@ -24,6 +24,9 @@ public class Detectable extends Component{
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        if(strength < 0)
+            this.strength = 0;
+        else
+            this.strength = strength;
     }
 }

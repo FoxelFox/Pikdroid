@@ -8,6 +8,7 @@ import android.opengl.Matrix;
  */
 public class Pose extends Component{
     private float[] matrix;
+    private int sectorX, sectorY;
 
     public Pose() {
         matrix = new float[16];
@@ -148,5 +149,15 @@ public class Pose extends Component{
             p.matrix[i] = matrix[i];
         }
         return p;
+    }
+
+    public boolean isNewSectorReached() {
+        if((int)matrix[12] != sectorX || (int)matrix[13] != sectorY) {
+            sectorX = (int)matrix[12];
+            sectorY = (int)matrix[13];
+            return true;
+        } else {
+            return false;
+        }
     }
 }
