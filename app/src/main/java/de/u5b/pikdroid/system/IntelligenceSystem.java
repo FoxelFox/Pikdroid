@@ -33,6 +33,7 @@ public class IntelligenceSystem extends ASystem{
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
         eventManager.subscribe(Topic.MOVE_TARGET_REACHED, this);
+        eventManager.subscribe(Topic.ON_ENERGY_TRANSFERRED, this);
 
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
@@ -44,6 +45,7 @@ public class IntelligenceSystem extends ASystem{
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
             case MOVE_TARGET_REACHED: onMoveTargetReached(event); break;
+            case ON_ENERGY_TRANSFERRED: onEnergyTransfered(event); break;
         }
     }
 
@@ -63,6 +65,8 @@ public class IntelligenceSystem extends ASystem{
 
                 if (food != null) {
                     movement.setTarget(food.getEntity());
+                } else {
+                    movement.setTarget(null);
                 }
             }
 
@@ -93,18 +97,50 @@ public class IntelligenceSystem extends ASystem{
     private void onMoveTargetReached(Event event) {
         Intelligence intelligence = event.getEntity().getComponent(Intelligence.class);
         Movement movement = event.getEntity().getComponent(Movement.class);
+
         if(intelligence != null) {
             if(intelligence.hasFood()) {
-                intelligence.setHasFood(false);
-                movement.setTarget(null);
+                // Transfer Energy from Intelligence to Base
+                eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, event.getEntity(), intelligence.getBase()));
             } else {
-                if(entityManager.delete(movement.getTarget())) {
-                    intelligence.setHasFood(true);
-                    movement.setTarget(intelligence.getBase());
-                } else {
-                    movement.setTarget(null);
-                }
+                // Transfer Energy from Food to Intelligence
+                eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, movement.getTarget(), event.getEntity()));
             }
         }
+    }
+
+    private void onEnergyTransfered(Event event) {
+        Intelligence intelligence;
+        Energy energy;
+        Movement movement;
+
+        intelligence = event.getEntity().getComponent(Intelligence.class);
+        if (intelligence != null) {
+            // Intelligence was the carrier
+            energy = event.getEntity().getComponent(Energy.class);
+            movement = event.getEntity().getComponent(Movement.class);
+
+            if(energy.isChargeEmpty()) {
+                intelligence.setHasFood(false);
+                movement.setTarget(null);
+            }
+        }
+
+        intelligence = event.getTarget().getComponent(Intelligence.class);
+        if (intelligence != null) {
+            // Intelligence was the reliever
+            energy = event.getTarget().getComponent(Energy.class);
+            movement = event.getTarget().getComponent(Movement.class);
+
+            if(energy.isChargeFull()) {
+                intelligence.setHasFood(true);
+                movement.setTarget(intelligence.getBase());
+            } else {
+                movement.setTarget(null);
+            }
+
+        }
+
+
     }
 }

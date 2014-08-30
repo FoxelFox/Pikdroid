@@ -2,6 +2,7 @@ package de.u5b.pikdroid.system.pikdroid;
 
 import android.graphics.Matrix;
 
+import java.util.Timer;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -28,6 +29,7 @@ public class PikdroidSystem extends ASystem {
     private TreeMap<Integer, Entity> spawnedPikdroids;
     private TreeMap<Integer, Entity> spawnedFood;
     private Entity base;
+    private Timer timer;
 
 
     public PikdroidSystem(Engine engine) {
@@ -39,6 +41,7 @@ public class PikdroidSystem extends ASystem {
 
         spawnedPikdroids = new TreeMap<Integer, Entity>();
         spawnedFood = new TreeMap<Integer, Entity>();
+
     }
 
     @Override
@@ -58,6 +61,12 @@ public class PikdroidSystem extends ASystem {
 
         if(spawnedFood.size() < 10)
             spawnFood();
+
+        Energy energyBase = base.getComponent(Energy.class);
+        if(spawnedPikdroids.size() < 50 && energyBase.isChargeFull()) {
+            energyBase.discharge();
+            buildPikdroid(base.getComponent(Pose.class).getCopy());
+        }
     }
 
     private void onEntityDeleted(Event event) {
@@ -82,6 +91,7 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
         pikdroid.addComponent(new Movement(0.1f,8.0f));
+        pikdroid.addComponent(new Energy(200,100,100));
         pikdroid.addComponent(new Intelligence(base));
         pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));
         pikdroid.addComponent(new Detector());
@@ -99,7 +109,7 @@ public class PikdroidSystem extends ASystem {
         Visual vis = new Visual(new float[] { 0.0f,  0.5f, 1.0f, 1.0f });
         vis.scale(0.5f,0.5f,1.0f);
 
-        Energy energy = new Energy(100,100);
+        Energy energy = new Energy(100,100,0);
         Detectable detectable = new Detectable(DetectHint.FOOD);
 
 
@@ -117,9 +127,11 @@ public class PikdroidSystem extends ASystem {
         base = new Entity();
 
         Pose pose = new Pose();
-        pose.translate(8,12,0);
+        pose.translate(0,0,0);
 
         Detectable detectable = new Detectable(DetectHint.BASE);
+
+        Energy energy = new Energy(1000,1000,800);
 
         Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f });
         visual.scale(2.0f, 2.0f, 1.0f);
@@ -128,6 +140,7 @@ public class PikdroidSystem extends ASystem {
         base.addComponent(pose);
         base.addComponent(detectable);
         base.addComponent(visual);
+        base.addComponent(energy);
 
         entityManager.add(base);
     }

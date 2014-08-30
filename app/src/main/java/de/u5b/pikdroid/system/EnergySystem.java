@@ -17,6 +17,11 @@ public class EnergySystem extends ASystem {
     public EnergySystem(Engine engine) {
         super(engine);
         entities = new ArrayList<Entity>();
+
+        // subscribe to topics
+        eventManager.subscribe(Topic.ENTITY_CREATED,this);
+        eventManager.subscribe(Topic.ENTITY_DELETED,this);
+        eventManager.subscribe(Topic.TRY_ENERGY_TRANSFER,this);
     }
 
     @Override
@@ -40,10 +45,13 @@ public class EnergySystem extends ASystem {
 
     private void onTryEnergyTransfer(Event event) {
         Energy energyA = event.getEntity().getComponent(Energy.class);
-        Energy energyB = event.getEntity().getComponent(Energy.class);
+        Energy energyB = event.getTarget().getComponent(Energy.class);
         if(energyA.containsEnergy()) {
             Energy.transfer(energyA,energyB);
             eventManager.publish(new Event(Topic.ON_ENERGY_TRANSFERRED, event.getEntity(),event.getTarget()));
+            if(!energyA.containsEnergy()) {
+                entityManager.delete(energyA.getEntity());
+            }
         }
     }
 

@@ -141,4 +141,12 @@ public class Pose extends Component{
                matrix[5] * nr[1] +
                matrix[6] * nr[2];
     }
+
+    public Pose getCopy() {
+        Pose p = new Pose();
+        for (int i = 0; i < p.matrix.length; ++i) {
+            p.matrix[i] = matrix[i];
+        }
+        return p;
+    }
 }

@@ -7,17 +7,19 @@ package de.u5b.pikdroid.component;
 public class Energy extends Component{
     private int load;
     private int capacity;
+    private int dischargeMinimum;
 
     /**
      * Create a new Energy Component
      * @param capacity max capacity
      * @param load initialized charge load
      */
-    public Energy(int capacity, int load) {
+    public Energy(int capacity, int load, int dischargeMinimum) {
         if(capacity < 0) capacity = 0;
         if(capacity < load) load = capacity;
         this.load = load;
         this.capacity = capacity;
+        this.dischargeMinimum = dischargeMinimum;
     }
 
     /**
@@ -30,7 +32,7 @@ public class Energy extends Component{
 
         load += charge;
         if(load > capacity) {
-            overflow = capacity - load;
+            overflow = load - capacity;
             load = capacity;
         }
         return overflow;
@@ -42,8 +44,8 @@ public class Energy extends Component{
      */
     public int discharge() {
         int tmp = load;
-        load = 0;
-        return load;
+        load = dischargeMinimum;
+        return tmp - dischargeMinimum;
     }
 
     /**
@@ -51,7 +53,16 @@ public class Energy extends Component{
      * @return true if Energy is available otherwise false
      */
     public boolean containsEnergy() {
-        return load > 0.0f;
+        return load > 0;
+    }
+
+
+    public boolean isChargeEmpty() {
+        return load <= dischargeMinimum;
+    }
+
+    public boolean isChargeFull() {
+        return load == capacity;
     }
 
     /**
