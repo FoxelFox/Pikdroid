@@ -79,6 +79,8 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
         shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);
     }
 
@@ -86,18 +88,14 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
 
-        float s = 1.0f/10.f;
-        if(width > height) {
-            float ar = (float)height / (float)width;
-            //Matrix.orthoM(viewMatrix,0,-s,s,-s*ar,s*ar,1.0f,10.0f);
-            Matrix.setIdentityM(viewMatrix,0);
-            Matrix.scaleM(viewMatrix,0,s*ar,s,1.0f);
-        } else {
-            float ar = (float)width / (float)height;
-            //Matrix.orthoM(viewMatrix,0,-s*ar,s*ar,-s,s,1.0f,10.0f);
-            Matrix.setIdentityM(viewMatrix,0);
-            Matrix.scaleM(viewMatrix,0,s,s*ar,1.0f);
-        }
+        float ar = (float)height / (float)width;
+        Matrix.orthoM(viewMatrix,0,-10.0f,10.0f,-10.0f*ar,10.0f*ar,-1,1);
+
+        //Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
+        //float[] cam = new float[16];
+        //Matrix.setIdentityM(cam,0);
+        //Matrix.translateM(cam,0,0,0, -18f);
+        //Matrix.multiplyMM(viewMatrix,0,viewMatrix,0,cam,0);
     }
 
     @Override

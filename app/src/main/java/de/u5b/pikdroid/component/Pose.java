@@ -60,8 +60,8 @@ public class Pose extends Component{
      */
     public float distance(Pose pose) {
         return (float)Math.sqrt(Math.pow(matrix[12] - pose.matrix[12],2) +
-                                Math.pow(matrix[13] - pose.matrix[13],2) +
-                                Math.pow(matrix[14] - pose.matrix[14],2));
+                                Math.pow(matrix[13] - pose.matrix[13],2));// +
+                                //Math.pow(matrix[14] - pose.matrix[14],2));
     }
 
     /**

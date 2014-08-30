@@ -90,6 +90,7 @@ public class PikdroidSystem extends ASystem {
     private void buildPikdroid(Pose pose) {
         Entity pikdroid = new Entity();
 
+        pose.translate(0,0,-0.2f);
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
         pikdroid.addComponent(new Movement(0.025f,4.0f));
@@ -106,9 +107,9 @@ public class PikdroidSystem extends ASystem {
         Entity food = new Entity();
 
         Pose pose = new Pose();
-        pose.translate(randomValue(20.0f),randomValue(20.0f),0);
+        pose.translate(randomValue(20.0f),randomValue(20.0f),0.8f);
 
-        Visual vis = new Visual(new float[] { 1.0f,  0.5f, 0.0f, 1.0f });
+        Visual vis = new Visual(new float[] { 1.0f,  0.75f, 0.0f, 1.0f });
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100,0);
@@ -129,7 +130,7 @@ public class PikdroidSystem extends ASystem {
         base = new Entity();
 
         Pose pose = new Pose();
-        pose.translate(0,0,0);
+        pose.translate(0,0,0.9f);
 
         Detectable detectable = new Detectable(DetectHint.BASE);
 
