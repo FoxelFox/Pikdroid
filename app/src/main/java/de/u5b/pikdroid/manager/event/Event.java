@@ -8,12 +8,22 @@ import de.u5b.pikdroid.manager.entity.Entity;
  */
 public class Event {
     private Topic topic;        // EventTopic
-    private Entity entity;    // Entity
+    private Entity entity;      // Entity
+    private Entity target;      // Target (eg. entity attack to target) usually not needed
 
     public Event(Topic topic, Entity entity) {
         this.topic = topic;
         this.entity = entity;
+        this.target = null;
     }
+
+    public Event(Topic topic, Entity entity, Entity target) {
+        this.topic = topic;
+        this.entity = entity;
+        this.target = target;
+    }
+
+
 
     public Topic getTopic() {
         return topic;
@@ -21,5 +31,9 @@ public class Event {
 
     public Entity getEntity() {
         return entity;
+    }
+
+    public Entity getTarget() {
+        return target;
     }
 }

@@ -47,11 +47,19 @@ public class Energy extends Component{
     }
 
     /**
+     * Energy available?
+     * @return true if Energy is available otherwise false
+     */
+    public boolean containsEnergy() {
+        return load > 0.0f;
+    }
+
+    /**
      * Transfer Energy from A to B
      * @param from A
      * @param to B
      */
-    public void transfer(Energy from, Energy to) {
+    public static void transfer(Energy from, Energy to) {
         // yeah the law of conservation of energy :D
         from.charge(to.charge(from.discharge()));
     }
