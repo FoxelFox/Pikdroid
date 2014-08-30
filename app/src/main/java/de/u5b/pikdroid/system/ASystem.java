@@ -13,10 +13,12 @@ public abstract class ASystem {
 
     protected EntityManager entityManager;
     protected EventManager eventManager;
+    protected Engine engine;
 
     public ASystem(Engine engine) {
         entityManager = engine.getEntityManager();
         eventManager = engine.getEventManager();
+        this.engine = engine;
     }
 
     public abstract void handleEvent(Event event);

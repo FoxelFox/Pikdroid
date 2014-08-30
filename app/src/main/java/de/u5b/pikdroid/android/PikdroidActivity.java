@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
@@ -17,7 +20,8 @@ import de.u5b.pikdroid.system.render.MySurfaceView;
  */
 public class PikdroidActivity extends Activity {
 
-    Engine engine;
+    private Engine engine;
+    private TextView pikdroidCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +36,17 @@ public class PikdroidActivity extends Activity {
 
         setContentView(R.layout.activity_pikdroid);
 
+
+        pikdroidCount = (TextView) findViewById(R.id.text_pikdroid_count);
+        pikdroidCount.setText("Pikdroids: " + 0);
+
+
         // Create Rendering Surface
         MySurfaceView view = (MySurfaceView) findViewById(R.id.view);
-        engine = new Engine();
+        engine = new Engine(this);
         view.setEngine(engine);
         engine.play();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,5 +65,13 @@ public class PikdroidActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void update() {
+        pikdroidCount.post(new Runnable() {
+            public void run() {
+                pikdroidCount.setText("Pikdroids: " + engine.getPikdroidCount());
+            }
+        });
     }
 }

@@ -1,5 +1,6 @@
 package de.u5b.pikdroid.game;
 
+import de.u5b.pikdroid.android.PikdroidActivity;
 import de.u5b.pikdroid.manager.entity.EntityManager;
 import de.u5b.pikdroid.manager.event.EventManager;
 import de.u5b.pikdroid.manager.SystemManager;
@@ -14,13 +15,15 @@ public class Engine {
     private EventManager eventManager;
     private SystemManager systemManager;
 
-    private Engine engine;
+    private PikdroidActivity view;
+    private int pikdroidCount;
 
-    public Engine() {
+    public Engine(PikdroidActivity view) {
         isRunning = false;
         entityManager = new EntityManager(this);
         eventManager = new EventManager(this);
         systemManager = new SystemManager(this);
+        this.view = view;
     }
 
     /**
@@ -36,7 +39,7 @@ public class Engine {
             eventManager.update();
             entityManager.update();
             systemManager.update();
-
+            view.update();
         }
     }
 
@@ -52,4 +55,11 @@ public class Engine {
         return eventManager;
     }
 
+    public void setPikdroidCount(int count) {
+        pikdroidCount = count;
+    }
+
+    public int getPikdroidCount() {
+        return pikdroidCount;
+    }
 }

@@ -67,6 +67,8 @@ public class PikdroidSystem extends ASystem {
             energyBase.discharge();
             buildPikdroid(base.getComponent(Pose.class).getCopy());
         }
+
+        engine.setPikdroidCount(spawnedPikdroids.size());
     }
 
     private void onEntityDeleted(Event event) {
