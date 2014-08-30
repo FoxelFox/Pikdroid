@@ -71,7 +71,7 @@ public class MySurfaceView extends GLSurfaceView {
         entity.addComponent(new Pose(matrix));
 
         // async queued event
-        //engine.getEventManager().publishQueued(new Event(Topic.SPAWN_PIKDROID, entity));
+        engine.getEventManager().publishQueued(new Event(Topic.MAKE_HINT, entity));
         return true;
     }
 

@@ -11,4 +11,5 @@ public enum Topic {
     MOVE_TARGET_REACHED,
     TRY_ENERGY_TRANSFER,
     ON_ENERGY_TRANSFERRED,
+    MAKE_HINT,
 }

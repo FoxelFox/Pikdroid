@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.DetectSystem;
 import de.u5b.pikdroid.system.EnergySystem;
+import de.u5b.pikdroid.system.HintSystem;
 import de.u5b.pikdroid.system.IntelligenceSystem;
 import de.u5b.pikdroid.system.MovementSystem;
 import de.u5b.pikdroid.system.pikdroid.PikdroidSystem;
@@ -20,6 +21,7 @@ public class SystemManager extends AManager {
     DetectSystem detectSystem;
     MovementSystem movementSystem;
     EnergySystem energySystem;
+    HintSystem hintSystem;
 
     public SystemManager(Engine engine){
         super(engine);
@@ -33,9 +35,11 @@ public class SystemManager extends AManager {
         detectSystem = new DetectSystem(engine);
         movementSystem = new MovementSystem(engine);
         energySystem = new EnergySystem(engine);
+        hintSystem = new HintSystem(engine);
     }
 
     public void update() {
+        hintSystem.update();
         detectSystem.update();
         intelligenceSystem.update();
         energySystem.update();

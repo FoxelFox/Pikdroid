@@ -36,4 +36,8 @@ public class Visual extends Component{
     public int getRenderObjectID(){
         return renderObjectID;
     }
+
+    public void setAlpha(float alpha) {
+        color[3] = alpha;
+    }
 }

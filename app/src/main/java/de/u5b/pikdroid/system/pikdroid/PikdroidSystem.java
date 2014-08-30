@@ -108,7 +108,7 @@ public class PikdroidSystem extends ASystem {
         Pose pose = new Pose();
         pose.translate(randomValue(20.0f),randomValue(20.0f),0);
 
-        Visual vis = new Visual(new float[] { 0.0f,  0.5f, 1.0f, 1.0f });
+        Visual vis = new Visual(new float[] { 1.0f,  0.5f, 0.0f, 1.0f });
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100,0);
