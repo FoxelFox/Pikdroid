@@ -33,16 +33,10 @@ public class Mesh {
 
     /**
      * Draw the Mesh in OpenGL to a Screen or Framebuffer
-     * @param shaderProgram
      */
-    public void draw(int shaderProgram) {
-        // TODO Optimize
-        int vPosition = GLES20.glGetAttribLocation(shaderProgram, "vPosition");
-        GLES20.glEnableVertexAttribArray(vPosition);
+    public void draw(int vPosition) {
         GLES20.glVertexAttribPointer(vPosition, 3, GLES20.GL_FLOAT, false, 0, vbo);
-
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
-        GLES20.glDisableVertexAttribArray(vPosition);
     }
 
 }

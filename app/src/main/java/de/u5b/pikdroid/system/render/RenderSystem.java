@@ -109,11 +109,20 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
 
         int uView = GLES20.glGetUniformLocation(shaderProgram, "uView");
+        int vPosition = GLES20.glGetAttribLocation(shaderProgram, "vPosition");
+        int uMPi = GLES20.glGetUniformLocation(shaderProgram,"uMP");
+        int uColor = GLES20.glGetUniformLocation(shaderProgram, "uColor");
+
+
         GLES20.glUniformMatrix4fv(uView,1,false,viewMatrix,0);
+
+
 
         // draw all objects
         for (Map.Entry<Integer, ARenderObject> entry : renderObjects.entrySet()) {
-            entry.getValue().draw(shaderProgram);
+            GLES20.glEnableVertexAttribArray(vPosition);
+            entry.getValue().draw(vPosition, uMPi, uColor);
+            GLES20.glDisableVertexAttribArray(vPosition);
         }
     }
 

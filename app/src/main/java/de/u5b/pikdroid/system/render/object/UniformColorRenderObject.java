@@ -27,17 +27,16 @@ public class UniformColorRenderObject extends ARenderObject{
 
 
     @Override
-    public void draw(int shaderProgram) {
+    public void draw(int vPosition, int uMPi, int uColor) {
 
         // set uniform shader color
-        int uColor = GLES20.glGetUniformLocation(shaderProgram, "uColor");
         GLES20.glUniform4fv(uColor,1,color,0);
 
         // set shader uniform model/pose matrix
         Matrix.multiplyMM(uMP,0,poseMatrix,0,modelMatrix,0);
-        int uMPi = GLES20.glGetUniformLocation(shaderProgram,"uMP");
+
         GLES20.glUniformMatrix4fv(uMPi,1,false,uMP,0);
 
-        mesh.draw(shaderProgram);
+        mesh.draw(vPosition);
     }
 }

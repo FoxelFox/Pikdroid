@@ -16,5 +16,5 @@ public abstract class ARenderObject {
         this.mesh = mesh;
     }
 
-    public abstract void draw(int shaderProgram);
+    public abstract void draw(int vPosition, int uMPi, int uColor);
 }
