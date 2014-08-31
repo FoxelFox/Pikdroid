@@ -1,9 +1,7 @@
 package de.u5b.pikdroid.manager;
 
-import android.opengl.GLSurfaceView;
-
 import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.system.DetectSystem;
+import de.u5b.pikdroid.system.detect.DetectSystem;
 import de.u5b.pikdroid.system.EnergySystem;
 import de.u5b.pikdroid.system.HintSystem;
 import de.u5b.pikdroid.system.IntelligenceSystem;

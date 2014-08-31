@@ -13,4 +13,5 @@ public enum Topic {
     ON_ENERGY_TRANSFERRED,
     MAKE_HINT,
     REMOVE_HINT,
+    NEW_POSE_SECTOR_REACHED,
 }

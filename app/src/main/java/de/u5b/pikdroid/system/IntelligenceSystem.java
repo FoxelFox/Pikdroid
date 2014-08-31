@@ -2,21 +2,18 @@ package de.u5b.pikdroid.system;
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
-import de.u5b.pikdroid.component.detect.DetectEntry;
 import de.u5b.pikdroid.component.detect.DetectHint;
 import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.Topic;
-import de.u5b.pikdroid.system.render.object.ARenderObject;
 
 /**
  * The IntelligenceSystem will try to control Entities that have an Intelligence Component
@@ -61,10 +58,10 @@ public class IntelligenceSystem extends ASystem{
 
             if(!intelligence.hasFood()) {
 
-                DetectEntry food = detector.getMinDistanceDetection(DetectHint.FOOD);
+                Entity food = detector.getDetection(DetectHint.FOOD);
 
                 if (food != null) {
-                    movement.setTarget(food.getEntity());
+                    movement.setTarget(food);
                 } else {
                     movement.setTarget(null);
                 }
