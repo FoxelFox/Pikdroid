@@ -25,27 +25,35 @@ public class Map2D {
 
     public void sort() {
 
-        // sort x
-        Collections.sort(listX, new Comparator<Pose>() {
-            @Override
-            public int compare(Pose lhs, Pose rhs) {
-                if(lhs.getPositionX() < rhs.getPositionX())
-                    return -1;
-                else
-                    return 1;
-            }
-        });
+        try {
 
-        // sort y
-        Collections.sort(listY, new Comparator<Pose>() {
-            @Override
-            public int compare(Pose lhs, Pose rhs) {
-                if(lhs.getPositionY() < rhs.getPositionY())
-                    return -1;
-                else
-                    return 1;
-            }
-        });
+            // sort x
+            Collections.sort(listX, new Comparator<Pose>() {
+                @Override
+                public int compare(Pose lhs, Pose rhs) {
+
+                    if (lhs.getPositionX() < rhs.getPositionX())
+                        return -1;
+                    else
+                        return 1;
+
+                }
+            });
+
+            // sort y
+            Collections.sort(listY, new Comparator<Pose>() {
+                @Override
+                public int compare(Pose lhs, Pose rhs) {
+                    if (lhs.getPositionY() < rhs.getPositionY())
+                        return -1;
+                    else
+                        return 1;
+                }
+            });
+
+        } catch (IllegalArgumentException e) {
+            // float values x == y
+        }
     }
 
     public void detectDetectables(Entity detector) {

@@ -32,6 +32,7 @@ public class IntelligenceSystem extends ASystem{
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
         eventManager.subscribe(Topic.MOVE_TARGET_REACHED, this);
         eventManager.subscribe(Topic.ON_ENERGY_TRANSFERRED, this);
+        eventManager.subscribe(Topic.NEW_POSE_SECTOR_REACHED,this);
 
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
@@ -44,6 +45,7 @@ public class IntelligenceSystem extends ASystem{
             case ENTITY_DELETED: onEntityDeleted(event); break;
             case MOVE_TARGET_REACHED: onMoveTargetReached(event); break;
             case ON_ENERGY_TRANSFERRED: onEnergyTransfered(event); break;
+            case NEW_POSE_SECTOR_REACHED: onNewPoseSectorReached(event); break;
         }
     }
 
@@ -72,16 +74,6 @@ public class IntelligenceSystem extends ASystem{
                 poseAi.rotate(90.f,0,0,1);
             if(poseAi.getPositionY() < -13.0f || poseAi.getPositionY() > 13.0f)
                 poseAi.rotate(90.f,0,0,1);
-
-            // check if a new sector is reached
-            if(poseAi.isNewSectorReached()) {
-                if(intelligence.hasFood()) {
-                    eventManager.publish(new Event(Topic.MAKE_HINT, entity));
-                } else {
-                    eventManager.publish(new Event(Topic.REMOVE_HINT, entity));
-                }
-
-            }
 
         }
 
@@ -145,6 +137,17 @@ public class IntelligenceSystem extends ASystem{
                 movement.setTarget(intelligence.getBase());
             } else {
                 movement.setTarget(null);
+            }
+        }
+    }
+
+    private void onNewPoseSectorReached(Event event) {
+        Intelligence intelligence = (Intelligence)event.getEntity().getComponent(Component.Type.INTElLICENCE);
+        if(intelligence != null) {
+            if(intelligence.hasFood()) {
+                eventManager.publish(new Event(Topic.MAKE_HINT, event.getEntity()));
+            } else {
+                eventManager.publish(new Event(Topic.REMOVE_HINT, event.getEntity()));
             }
         }
     }
