@@ -40,4 +40,9 @@ public class Visual extends Component{
     public void setAlpha(float alpha) {
         color[3] = alpha;
     }
+
+    @Override
+    public Type getType() {
+        return Type.VISUAL;
+    }
 }

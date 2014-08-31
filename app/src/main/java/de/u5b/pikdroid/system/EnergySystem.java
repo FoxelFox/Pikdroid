@@ -2,6 +2,7 @@ package de.u5b.pikdroid.system;
 
 import java.util.ArrayList;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
@@ -34,7 +35,7 @@ public class EnergySystem extends ASystem {
     }
 
     private void onEntityCreated(Event event) {
-        if(event.getEntity().getComponent(Energy.class) != null) {
+        if(event.getEntity().hasComponent(Component.Type.ENERGY)) {
             entities.add(event.getEntity());
         }
     }
@@ -44,8 +45,8 @@ public class EnergySystem extends ASystem {
     }
 
     private void onTryEnergyTransfer(Event event) {
-        Energy energyA = event.getEntity().getComponent(Energy.class);
-        Energy energyB = event.getTarget().getComponent(Energy.class);
+        Energy energyA = (Energy)event.getEntity().getComponent(Component.Type.ENERGY);
+        Energy energyB = (Energy)event.getTarget().getComponent(Component.Type.ENERGY);
         if(energyA.containsEnergy()) {
             Energy.transfer(energyA,energyB);
             eventManager.publish(new Event(Topic.ON_ENERGY_TRANSFERRED, event.getEntity(),event.getTarget()));

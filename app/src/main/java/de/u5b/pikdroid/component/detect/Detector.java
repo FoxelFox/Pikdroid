@@ -13,6 +13,8 @@ public class Detector extends Component{
     private ArrayList<ArrayList<DetectEntry>> detections;
     private ArrayList<DetectEntry> minDistanceEntries;
 
+
+
     public  Detector() {
         detections = new ArrayList<ArrayList<DetectEntry>>(DetectHint.values().length);
         minDistanceEntries = new ArrayList<DetectEntry>(DetectHint.values().length);
@@ -34,5 +36,10 @@ public class Detector extends Component{
 
     public DetectEntry getMinDistanceDetection(DetectHint hint) {
         return minDistanceEntries.get(hint.ordinal());
+    }
+
+    @Override
+    public Type getType() {
+        return Type.DETECTOR;
     }
 }

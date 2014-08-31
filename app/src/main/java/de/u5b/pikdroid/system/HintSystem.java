@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.component.detect.DetectHint;
@@ -41,7 +42,7 @@ public class HintSystem extends ASystem {
     }
 
     private void onMakeHint(Event event, boolean make) {
-        Pose pose = event.getEntity().getComponent(Pose.class);
+        Pose pose = (Pose)event.getEntity().getComponent(Component.Type.POSE);
         int x = (int)(pose.getPositionX());
         int y = (int)(pose.getPositionY());
 
@@ -53,7 +54,7 @@ public class HintSystem extends ASystem {
             hints.put(key, createHint(hintPose));
         }
 
-        Detectable d = hints.get(key).getComponent(Detectable.class);
+        Detectable d = (Detectable)hints.get(key).getComponent(Component.Type.DETECTABLE);
         d.setStrength(d.getStrength() + 1);
 
         if(make)
@@ -61,7 +62,7 @@ public class HintSystem extends ASystem {
         else
             d.setStrength(d.getStrength() - 2);
 
-        hints.get(key).getComponent(Visual.class).setAlpha((float)d.getStrength() * 0.05f);
+        ((Visual)hints.get(key).getComponent(Component.Type.VISUAL)).setAlpha((float)d.getStrength() * 0.05f);
     }
 
     @Override

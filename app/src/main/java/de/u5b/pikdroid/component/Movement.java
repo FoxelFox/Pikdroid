@@ -6,7 +6,7 @@ import de.u5b.pikdroid.manager.entity.Entity;
  * The Movement component contains parameter to move the Entity
  * Created by Foxel on 19.08.2014.
  */
-public class Movement extends Component{
+public class Movement extends Component {
     private float linearSpeed;      // max linear speed
     private float angularSpeed;     // max angular speed
 
@@ -69,5 +69,10 @@ public class Movement extends Component{
 
     public void setDistanceToReach(float distanceToReach) {
         this.distanceToReach = distanceToReach;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.MOVEMENT;
     }
 }

@@ -13,7 +13,19 @@ public abstract class Component {
         this.entity = entity;
     }
 
+    public abstract Type getType();
+
     public Entity getEntity() {
         return entity;
+    }
+
+    public enum Type {
+        POSE,
+        ENERGY,
+        VISUAL,
+        INTElLICENCE,
+        MOVEMENT,
+        DETECTABLE,
+        DETECTOR,
     }
 }

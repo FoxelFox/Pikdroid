@@ -12,42 +12,38 @@ import de.u5b.pikdroid.component.Component;
 public class Entity {
     private int id;
     private boolean isFinalized;
-    private ArrayList<Component> components;
+    //private ArrayList<Component> components;
+    private Component[] components;
 
     /**
      * Only the EntityManager should create Entities!
      */
     public Entity(){
         this.id = -1;
-        components = new ArrayList<Component>();
+        components = new Component[Component.Type.values().length];
         isFinalized = false;
+
     }
 
     public boolean addComponent(Component component) {
         if(!isFinalized) {
             component.setEntity(this);
-            components.add(component);
+            components[component.getType().ordinal()] = component;
             return true;
         }
         return false;
     }
 
-
-
     /**
      * Returns the component of type @type
-     * @param type ComponentType
-     * @param <T>
      * @return The Component of Type @type
      */
-    public <T extends Component> T getComponent(Class<T> type) {
-        for(int i = 0; i < components.size(); ++i) {
-            if(type.isInstance(components.get(i))) {
-                return type.cast(components.get(i));
-            }
-        }
-        //throw new NoSuchElementException("This Entity has no such Component!" + type.getClass().toString());
-        return null;
+    public Component getComponent(Component.Type cType) {
+        return components[cType.ordinal()];
+    }
+
+    public boolean hasComponent(Component.Type cType) {
+        return components[cType.ordinal()] != null;
     }
 
     /**

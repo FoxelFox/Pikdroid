@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
@@ -53,11 +54,10 @@ public class IntelligenceSystem extends ASystem{
     public void update() {
         for (Map.Entry<Integer, Entity> entityEntry : entities.entrySet()) {
             Entity entity = entityEntry.getValue();
-            Detector detector = entity.getComponent(Detector.class);
-            Pose poseAi = entity.getComponent(Pose.class);
-            Intelligence intelligence = entity.getComponent(Intelligence.class);
-            Movement movement = entity.getComponent(Movement.class);
-
+            Detector detector = (Detector)entity.getComponent(Component.Type.DETECTOR);
+            Pose poseAi = (Pose)entity.getComponent(Component.Type.POSE);
+            Intelligence intelligence = (Intelligence)entity.getComponent(Component.Type.INTElLICENCE);
+            Movement movement = (Movement)entity.getComponent(Component.Type.MOVEMENT);
 
             if(!intelligence.hasFood()) {
 
@@ -91,10 +91,10 @@ public class IntelligenceSystem extends ASystem{
     }
 
     private void onEntityCreated(Event event) {
-        if(event.getEntity().getComponent(Intelligence.class) != null) {
+        if(event.getEntity().hasComponent(Component.Type.INTElLICENCE)) {
             // This Entity has Intelligence to update
             entities.put(event.getEntity().getID(), event.getEntity());
-        } else if(event.getEntity().getComponent(Energy.class) != null) {
+        } else if(event.getEntity().hasComponent(Component.Type.ENERGY)) {
             // This Entity has Energy its Food for me
             food.put(event.getEntity().getID(), event.getEntity());
         }
@@ -106,8 +106,8 @@ public class IntelligenceSystem extends ASystem{
     }
 
     private void onMoveTargetReached(Event event) {
-        Intelligence intelligence = event.getEntity().getComponent(Intelligence.class);
-        Movement movement = event.getEntity().getComponent(Movement.class);
+        Intelligence intelligence = (Intelligence)event.getEntity().getComponent(Component.Type.INTElLICENCE);
+        Movement movement = (Movement)event.getEntity().getComponent(Component.Type.MOVEMENT);
 
         if(intelligence != null) {
             if(intelligence.hasFood()) {
@@ -125,11 +125,11 @@ public class IntelligenceSystem extends ASystem{
         Energy energy;
         Movement movement;
 
-        intelligence = event.getEntity().getComponent(Intelligence.class);
+        intelligence = (Intelligence)event.getEntity().getComponent(Component.Type.INTElLICENCE);
         if (intelligence != null) {
             // Intelligence was the carrier
-            energy = event.getEntity().getComponent(Energy.class);
-            movement = event.getEntity().getComponent(Movement.class);
+            energy = (Energy)event.getEntity().getComponent(Component.Type.ENERGY);
+            movement = (Movement)event.getEntity().getComponent(Component.Type.MOVEMENT);
 
             if(energy.isChargeEmpty()) {
                 intelligence.setHasFood(false);
@@ -137,11 +137,11 @@ public class IntelligenceSystem extends ASystem{
             }
         }
 
-        intelligence = event.getTarget().getComponent(Intelligence.class);
+        intelligence = (Intelligence)event.getTarget().getComponent(Component.Type.INTElLICENCE);
         if (intelligence != null) {
             // Intelligence was the reliever
-            energy = event.getTarget().getComponent(Energy.class);
-            movement = event.getTarget().getComponent(Movement.class);
+            energy = (Energy)event.getTarget().getComponent(Component.Type.ENERGY);
+            movement = (Movement)event.getTarget().getComponent(Component.Type.MOVEMENT);
 
             if(energy.isChargeFull()) {
                 intelligence.setHasFood(true);
@@ -149,9 +149,6 @@ public class IntelligenceSystem extends ASystem{
             } else {
                 movement.setTarget(null);
             }
-
         }
-
-
     }
 }

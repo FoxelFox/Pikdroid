@@ -4,7 +4,7 @@ package de.u5b.pikdroid.component;
  * Energy is something like electricity.
  * Created by Foxel on 21.08.2014.
  */
-public class Energy extends Component{
+public class Energy extends Component {
     private int load;
     private int capacity;
     private int dischargeMinimum;
@@ -81,5 +81,10 @@ public class Energy extends Component{
 
     public int getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.ENERGY;
     }
 }

@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
@@ -62,10 +63,10 @@ public class PikdroidSystem extends ASystem {
         if(spawnedFood.size() < 10)
             spawnFood();
 
-        Energy energyBase = base.getComponent(Energy.class);
+        Energy energyBase = (Energy)base.getComponent(Component.Type.ENERGY);
         if(spawnedPikdroids.size() < 50 && energyBase.isChargeFull()) {
             energyBase.discharge();
-            buildPikdroid(base.getComponent(Pose.class).getCopy());
+            buildPikdroid(((Pose)base.getComponent(Component.Type.POSE)).getCopy());
         }
 
         engine.setPikdroidCount(spawnedPikdroids.size());
@@ -77,7 +78,7 @@ public class PikdroidSystem extends ASystem {
     }
 
     private void onSpawnPikdroid(Event event) {
-        buildPikdroid(event.getEntity().getComponent(Pose.class));
+        buildPikdroid(((Pose)event.getEntity().getComponent(Component.Type.POSE)).getCopy());
     }
 
 
@@ -93,7 +94,7 @@ public class PikdroidSystem extends ASystem {
         pose.translate(0,0,-0.2f);
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
-        pikdroid.addComponent(new Movement(0.025f,4.0f));
+        pikdroid.addComponent(new Movement(0.1f,16.0f));
         pikdroid.addComponent(new Energy(200,100,100));
         pikdroid.addComponent(new Intelligence(base));
         pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));

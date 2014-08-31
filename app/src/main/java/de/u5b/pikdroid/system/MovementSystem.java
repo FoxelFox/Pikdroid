@@ -2,6 +2,7 @@ package de.u5b.pikdroid.system;
 
 import java.util.ArrayList;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
@@ -38,13 +39,13 @@ public class MovementSystem extends ASystem {
         Movement move;
         Pose pose;
         for (int i = 0; i < moveableList.size(); ++i) {
-            pose = moveableList.get(i).getComponent(Pose.class);
-            move = moveableList.get(i).getComponent(Movement.class);
+            pose = (Pose)moveableList.get(i).getComponent(Component.Type.POSE);
+            move = (Movement)moveableList.get(i).getComponent(Component.Type.MOVEMENT);
 
             if (move.hasTarget()) {
                 // the movement component has a target to reach
 
-                Pose target = move.getTarget().getComponent(Pose.class);
+                Pose target = (Pose)move.getTarget().getComponent(Component.Type.POSE);
 
                 if (pose.dotForward(target) < 0.1) {
                     pose.rotate(-move.getAngularSpeed(), 0, 0, 1);
@@ -54,7 +55,7 @@ public class MovementSystem extends ASystem {
 
                 // calc speed to move
                 float distance = pose.distance(target);
-                float speed = 0.1f * (float) Math.pow(distance, 2);
+                float speed = 1.0f * (float) Math.pow(distance, 2);
                 if (speed > move.getLinearSpeed())
                     speed = move.getLinearSpeed();
                 pose.translate(speed, 0, 0);
@@ -78,7 +79,7 @@ public class MovementSystem extends ASystem {
     }
 
     private void onEntityCreated(Event event) {
-        Movement move = event.getEntity().getComponent(Movement.class);
+        Movement move = (Movement)event.getEntity().getComponent(Component.Type.MOVEMENT);
 
         if (move != null)
             moveableList.add(event.getEntity());

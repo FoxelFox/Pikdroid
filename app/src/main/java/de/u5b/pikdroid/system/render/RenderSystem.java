@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
@@ -119,11 +120,12 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private void onEntityCreated(Event event) {
 
         // get the pose matrix from Entity
-        float[] poseMatrix = event.getEntity().getComponent(Pose.class).getMatrix();
+        float[] poseMatrix = ((Pose)event.getEntity().getComponent(Component.Type.POSE)).getMatrix();
 
         // get the visual component
-        float[] color = event.getEntity().getComponent(Visual.class).getColor();
-        float[] modelMatrix = event.getEntity().getComponent(Visual.class).getModelMatrix();
+        Visual visual = (Visual)event.getEntity().getComponent(Component.Type.VISUAL);
+        float[] color = visual.getColor();
+        float[] modelMatrix = visual.getModelMatrix();
 
         // add a new RenderObject to the renderObject List
         renderObjects.put(event.getEntity().getID(), new UniformColorRenderObject(MeshFactory.getQuad(), color, poseMatrix, modelMatrix));

@@ -60,9 +60,15 @@ public class Pose extends Component{
      * @return euclidean distance
      */
     public float distance(Pose pose) {
-        return (float)Math.sqrt(Math.pow(matrix[12] - pose.matrix[12],2) +
-                                Math.pow(matrix[13] - pose.matrix[13],2));// +
-                                //Math.pow(matrix[14] - pose.matrix[14],2));
+
+        float x = matrix[12] - pose.matrix[12];
+        float y = matrix[13] - pose.matrix[13];
+
+        // fast power of 2
+        x *=x;
+        y *=y;
+
+        return (float)Math.sqrt(x + y);
     }
 
     /**
@@ -159,5 +165,10 @@ public class Pose extends Component{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Type getType() {
+        return Type.POSE;
     }
 }

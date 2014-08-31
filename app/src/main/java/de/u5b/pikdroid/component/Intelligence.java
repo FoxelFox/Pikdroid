@@ -10,6 +10,11 @@ public class Intelligence extends Component{
     private boolean hasFood;
     private Entity base;
 
+    @Override
+    public Type getType() {
+        return Type.INTElLICENCE;
+    }
+
     public Intelligence(Entity base) {
         this.base = base;
         this.hasFood = false;

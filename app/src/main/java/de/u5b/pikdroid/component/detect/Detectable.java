@@ -29,4 +29,9 @@ public class Detectable extends Component{
         else
             this.strength = strength;
     }
+
+    @Override
+    public Type getType() {
+        return Type.DETECTABLE;
+    }
 }
