@@ -38,6 +38,7 @@ public class MovementSystem extends ASystem {
     public void update() {
         Movement move;
         Pose pose;
+        boolean poseSectorChanged = false;
         for (int i = 0; i < moveableList.size(); ++i) {
             pose = (Pose)moveableList.get(i).getComponent(Component.Type.POSE);
             move = (Movement)moveableList.get(i).getComponent(Component.Type.MOVEMENT);
@@ -76,9 +77,14 @@ public class MovementSystem extends ASystem {
                 pose.translate(move.getLinearSpeed(), 0, 0);
             }
             // check if new sector was reached
+
             if(pose.isNewSectorReached()) {
                 eventManager.publish(new Event(Topic.NEW_POSE_SECTOR_REACHED, pose.getEntity()));
+                poseSectorChanged = true;
             }
+        }
+        if(poseSectorChanged) {
+            eventManager.publish(new Event(Topic.POSE_SECTOR_CHANGED, null));
         }
     }
 

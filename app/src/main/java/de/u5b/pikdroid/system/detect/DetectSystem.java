@@ -27,7 +27,7 @@ public class DetectSystem extends ASystem {
         // subscribe to topics
         eventManager.subscribe(Topic.ENTITY_CREATED, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
-        eventManager.subscribe(Topic.NEW_POSE_SECTOR_REACHED, this);
+        eventManager.subscribe(Topic.POSE_SECTOR_CHANGED, this);
 
         detectingMap = new Map2D();
         detectors = new ArrayList<Entity>();
@@ -38,7 +38,7 @@ public class DetectSystem extends ASystem {
         switch (event.getTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
-            case NEW_POSE_SECTOR_REACHED: onNewPoseSectorReached(); break;
+            case POSE_SECTOR_CHANGED: onNewPoseSectorReached(); break;
         }
     }
 
