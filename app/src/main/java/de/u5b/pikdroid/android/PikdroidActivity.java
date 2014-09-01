@@ -35,20 +35,17 @@ public class PikdroidActivity extends Activity {
                              WindowManager.LayoutParams.FLAG_FULLSCREEN |
                              WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //setContentView(R.layout.activity_pikdroid);
-        //pikdroidCount = (TextView) findViewById(R.id.text_pikdroid_count);
-        //pikdroidCount.setText("Pikdroids: " + 0);
+        setContentView(R.layout.activity_pikdroid);
+        pikdroidCount = (TextView) findViewById(R.id.text_pikdroid_count);
+        pikdroidCount.setText("Pikdroids: " + 0);
 
 
         // Create Rendering Surface
-        //MySurfaceView view = (MySurfaceView) findViewById(R.id.view);
-        MySurfaceView view = new MySurfaceView(this);
+        MySurfaceView view = (MySurfaceView) findViewById(R.id.view);
+        //MySurfaceView view = new MySurfaceView(this);
         engine = new Engine(this);
         view.setEngine(engine);
         engine.play();
-        setContentView(view);
-
-
 
     }
 
@@ -72,8 +69,10 @@ public class PikdroidActivity extends Activity {
     }
 
     public void update() {
-
-        //pikdroidCount.setText("Pikdroids: " + engine.getPikdroidCount());
-
+        pikdroidCount.post(new Runnable() {
+            public void run() {
+                pikdroidCount.setText("Pikdroids: " + engine.getPikdroidCount());
+            }
+        });
     }
 }
