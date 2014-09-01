@@ -90,13 +90,13 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
 
         float ar = (float)height / (float)width;
-        Matrix.orthoM(viewMatrix,0,-10.0f,10.0f,-10.0f*ar,10.0f*ar,-1,1);
+        //Matrix.orthoM(viewMatrix,0,-10.0f,10.0f,-10.0f*ar,10.0f*ar,-1,1);
 
-        //Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
-        //float[] cam = new float[16];
-        //Matrix.setIdentityM(cam,0);
-        //Matrix.translateM(cam,0,0,0, -18f);
-        //Matrix.multiplyMM(viewMatrix,0,viewMatrix,0,cam,0);
+        Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
+        float[] cam = new float[16];
+        Matrix.setIdentityM(cam,0);
+        Matrix.translateM(cam,0,0,0, -18f);
+        Matrix.multiplyMM(viewMatrix,0,viewMatrix,0,cam,0);
     }
 
     @Override

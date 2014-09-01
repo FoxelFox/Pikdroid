@@ -23,18 +23,13 @@ public class MySurfaceView extends GLSurfaceView {
 
     public MySurfaceView(Context context) {
         super(context);
-
+        initGL(context);
     }
 
     public MySurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initGL(context);
     }
-
-    //public MySurfaceView(Context context, AttributeSet attrs) {
-    //    super(context, attrs);
-    //    initGL(context);
-    //}
 
     private void initGL(Context context) {
         // set OpenGLES 2.0 usage
