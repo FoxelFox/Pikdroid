@@ -3,6 +3,7 @@ package de.u5b.pikdroid.system.detect;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Pose;
@@ -17,10 +18,14 @@ import de.u5b.pikdroid.manager.entity.Entity;
 public class Map2D {
     private ArrayList<Pose> listX;
     private ArrayList<Pose> listY;
+    private HashMap<Pose, Integer> lastDetectorIndexX;  // contains the last detector Indices from listX
+    private HashMap<Pose, Integer> lastDetectorIndexY;  // contains the last detector Indices from listY
 
     public Map2D (){
         listX = new ArrayList<Pose>();
         listY = new ArrayList<Pose>();
+        lastDetectorIndexX = new HashMap<Pose, Integer>();
+        lastDetectorIndexY = new HashMap<Pose, Integer>(); // Stores the last detector Indices
     }
 
     public void sort() {
@@ -68,9 +73,12 @@ public class Map2D {
         }
 
         // find list index
-        int ix = listX.indexOf(pose);
-        int iy = listY.indexOf(pose);
-
+        //int ix = listX.indexOf(pose);
+        //int iy = listY.indexOf(pose);
+        int ix = myIndexOf(listX, lastDetectorIndexX.get(pose), pose);
+        int iy = myIndexOf(listY, lastDetectorIndexY.get(pose), pose);
+        lastDetectorIndexX.put(pose, ix);
+        lastDetectorIndexY.put(pose, iy);
 
         i = ix;
         while (++i >= 0 && i < listX.size() && listX.get(i).distance(pose) < 2.0f) {
@@ -106,13 +114,48 @@ public class Map2D {
         }
     }
 
+    public int myIndexOf(ArrayList<Pose> list, int startIndex, Pose item) {
+
+        try {
+            // TODO: here is going something wrong
+
+            // first check if the index is the same
+            if (list.get(startIndex).equals(item)) return startIndex;
+
+            int index;
+            int offset = 1;
+            while (true) {
+                // check right side
+                index = startIndex + offset;
+                if (index >= 0 && index < list.size() && list.get(index).equals(item)) {
+                    return index;
+                }
+
+                // check left side
+                index = startIndex - offset;
+                if (index >= 0 && index < list.size() && list.get(index).equals(item)) {
+                    return index;
+                }
+                ++offset;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public void insert(Pose pose) {
         listX.add(pose);
         listY.add(pose);
+        lastDetectorIndexX.put(pose, listX.size() / 2);
+        lastDetectorIndexY.put(pose, listY.size() / 2);
+
     }
 
     public void remove(Pose pose) {
         listX.remove(pose);
         listY.remove(pose);
+        lastDetectorIndexX.remove(pose);
+        lastDetectorIndexY.remove(pose);
     }
 }
