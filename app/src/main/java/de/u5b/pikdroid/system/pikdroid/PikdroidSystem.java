@@ -28,6 +28,7 @@ public class PikdroidSystem extends ASystem {
     private TreeMap<Integer, Entity> enemies;
     private TreeMap<Integer, Entity> spawnedFood;
     private Entity base;
+    private boolean loaded;
 
 
     public PikdroidSystem(Engine engine) {
@@ -42,6 +43,7 @@ public class PikdroidSystem extends ASystem {
         spawnedFood = new TreeMap<Integer, Entity>();
         enemies = new TreeMap<Integer, Entity>();
 
+        loaded = false;
     }
 
     @Override
@@ -54,15 +56,18 @@ public class PikdroidSystem extends ASystem {
     }
 
     public void update() {
-        if(base == null) {
+
+        if(!loaded) {
             buildBase();
+            while (enemies.size() < 10)
+                spawnEnemy();
+            loaded = true;
         }
 
         if(spawnedFood.size() < 10)
             spawnFood();
 
-        if(enemies.size() < 10)
-            spawnEnemy();
+
 
         Energy energyBase = (Energy)base.getComponent(Component.Type.ENERGY);
         if(spawnedPikdroids.size() < 100 && energyBase.isChargeFull()) {
