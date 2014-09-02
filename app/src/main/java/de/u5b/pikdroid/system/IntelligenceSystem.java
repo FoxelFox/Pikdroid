@@ -62,13 +62,15 @@ public class IntelligenceSystem extends ASystem{
             Intelligence intelligence = (Intelligence)entity.getComponent(Component.Type.INTElLICENCE);
             Movement movement = (Movement)entity.getComponent(Component.Type.MOVEMENT);
 
-            if(!intelligence.hasFood()) {
+
+
+            if (!intelligence.hasFood()) {
 
                 Entity food = detector.getDetection(DetectHint.FOOD);
 
                 if (food != null) {
                     movement.setTarget(food);
-                } else if (userTarget != null ){
+                } else if (userTarget != null) {
                     movement.setTarget(userTarget);
                 } else {
                     movement.setTarget(null);
@@ -76,12 +78,13 @@ public class IntelligenceSystem extends ASystem{
             }
 
             // edge Detect
-            if(poseAi.getPositionX() < -10.0f || poseAi.getPositionX() > 10.0f)
-                poseAi.rotate(90.f,0,0,1);
-            if(poseAi.getPositionY() < -13.0f || poseAi.getPositionY() > 13.0f)
-                poseAi.rotate(90.f,0,0,1);
-
+            if (poseAi.getPositionX() < -10.0f || poseAi.getPositionX() > 10.0f)
+                poseAi.rotate(90.f, 0, 0, 1);
+            if (poseAi.getPositionY() < -13.0f || poseAi.getPositionY() > 13.0f)
+                poseAi.rotate(90.f, 0, 0, 1);
         }
+
+
 
     }
 

@@ -1,10 +1,9 @@
 package de.u5b.pikdroid.manager.entity;
 
-import java.net.NetPermission;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.HashMap;
 
 import de.u5b.pikdroid.component.Component;
+import de.u5b.pikdroid.manager.event.Topic;
 
 /**
  * Created by Foxel on 19.08.2014.
@@ -12,7 +11,7 @@ import de.u5b.pikdroid.component.Component;
 public class Entity {
     private int id;
     private boolean isFinalized;
-    //private ArrayList<Component> components;
+    private HashMap<Topic, EntityCode> topicCode;
     private Component[] components;
 
     /**
@@ -22,6 +21,7 @@ public class Entity {
         this.id = -1;
         components = new Component[Component.Type.values().length];
         isFinalized = false;
+        topicCode = new HashMap<Topic, EntityCode>();
 
     }
 
@@ -53,6 +53,15 @@ public class Entity {
     public void setId(int id) {
         this.id = id;
         isFinalized = true;
+    }
+
+    public void addTopicCode(Topic topic, EntityCode code) {
+        topicCode.put(topic, code);
+    }
+
+    public void notify (Topic topic) {
+        if(topicCode.containsKey(topic))
+            topicCode.get(topic).execute();
     }
 
     public int getID() {

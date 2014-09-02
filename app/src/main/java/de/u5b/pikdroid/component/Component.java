@@ -27,5 +27,6 @@ public abstract class Component {
         MOVEMENT,
         DETECTABLE,
         DETECTOR,
+        CODE,
     }
 }

@@ -2,12 +2,10 @@ package de.u5b.pikdroid.manager.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.AManager;
-import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.system.*;
 
 /**
@@ -50,6 +48,8 @@ public class EventManager extends AManager {
                 sys.handleEvent(event);
             }
         }
+        if(event.getEntity() != null)
+            event.getEntity().notify(event.getTopic());
     }
 
     public void update() {

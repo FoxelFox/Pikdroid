@@ -6,6 +6,7 @@ package de.u5b.pikdroid.component.detect;
 public enum DetectHint {
     FOOD,
     FOOD_MARK,
+    ENEMY,
     PIKDROID,
     BASE,
 }

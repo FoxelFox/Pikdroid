@@ -34,6 +34,7 @@ public class SystemManager extends AManager {
         movementSystem = new MovementSystem(engine);
         energySystem = new EnergySystem(engine);
         hintSystem = new HintSystem(engine);
+
     }
 
     public void update() {
@@ -44,6 +45,7 @@ public class SystemManager extends AManager {
         movementSystem.update();
         pikdroidSystem.update();
         renderSystem.update();
+
     }
 
 }
