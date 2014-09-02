@@ -8,6 +8,7 @@ import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.component.Intelligence;
 import de.u5b.pikdroid.component.Movement;
 import de.u5b.pikdroid.component.Pose;
+import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.component.detect.DetectHint;
 import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
@@ -23,6 +24,7 @@ public class IntelligenceSystem extends ASystem{
 
     TreeMap<Integer, Entity> entities;    // Intelligence to control
     TreeMap<Integer, Entity> food;        // Food to collect
+    private Entity userTarget;
 
 
     public IntelligenceSystem(Engine engine){
@@ -33,6 +35,7 @@ public class IntelligenceSystem extends ASystem{
         eventManager.subscribe(Topic.MOVE_TARGET_REACHED, this);
         eventManager.subscribe(Topic.ON_ENERGY_TRANSFERRED, this);
         eventManager.subscribe(Topic.NEW_POSE_SECTOR_REACHED,this);
+        eventManager.subscribe(Topic.SET_USER_TARGET, this);
 
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
@@ -46,6 +49,7 @@ public class IntelligenceSystem extends ASystem{
             case MOVE_TARGET_REACHED: onMoveTargetReached(event); break;
             case ON_ENERGY_TRANSFERRED: onEnergyTransfered(event); break;
             case NEW_POSE_SECTOR_REACHED: onNewPoseSectorReached(event); break;
+            case SET_USER_TARGET: onSetUserTarget(event); break;
         }
     }
 
@@ -64,6 +68,8 @@ public class IntelligenceSystem extends ASystem{
 
                 if (food != null) {
                     movement.setTarget(food);
+                } else if (userTarget != null ){
+                    movement.setTarget(userTarget);
                 } else {
                     movement.setTarget(null);
                 }
@@ -102,9 +108,15 @@ public class IntelligenceSystem extends ASystem{
             if(intelligence.hasFood()) {
                 // Transfer Energy from Intelligence to Base
                 eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, event.getEntity(), intelligence.getBase()));
-            } else {
+            } else if(movement.getTarget().equals(userTarget)) {
+
+                entityManager.delete(userTarget);
+                userTarget = null;
+            } else if(movement.getTarget() != null){
                 // Transfer Energy from Food to Intelligence
-                eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, movement.getTarget(), event.getEntity()));
+                if(movement.getTarget().hasComponent(Component.Type.ENERGY)) {
+                    eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, movement.getTarget(), event.getEntity()));
+                }
             }
         }
     }
@@ -120,10 +132,15 @@ public class IntelligenceSystem extends ASystem{
             energy = (Energy)event.getEntity().getComponent(Component.Type.ENERGY);
             movement = (Movement)event.getEntity().getComponent(Component.Type.MOVEMENT);
 
-            if(energy.isChargeEmpty()) {
-                intelligence.setHasFood(false);
-                movement.setTarget(null);
-            }
+            //if(energy.isChargeEmpty()) {
+            //    intelligence.setHasFood(false);
+            //    movement.setTarget(null);
+            //}
+            energy.discharge();
+            intelligence.setHasFood(false);
+            movement.setTarget(null);
+
+
         }
 
         intelligence = (Intelligence)event.getTarget().getComponent(Component.Type.INTElLICENCE);
@@ -145,10 +162,39 @@ public class IntelligenceSystem extends ASystem{
         Intelligence intelligence = (Intelligence)event.getEntity().getComponent(Component.Type.INTElLICENCE);
         if(intelligence != null) {
             if(intelligence.hasFood()) {
-                eventManager.publish(new Event(Topic.MAKE_HINT, event.getEntity()));
+                //eventManager.publish(new Event(Topic.MAKE_HINT, event.getEntity()));
             } else {
+
                 eventManager.publish(new Event(Topic.REMOVE_HINT, event.getEntity()));
             }
         }
+    }
+
+    private void onSetUserTarget(Event event) {
+        if(userTarget == null) {
+            buildUserTarget();
+        }
+
+        Pose poseNew = (Pose)event.getEntity().getComponent(Component.Type.POSE);
+        Pose poseTarget = (Pose)userTarget.getComponent(Component.Type.POSE);
+
+        poseTarget.setPositionX(poseNew.getPositionX());
+        poseTarget.setPositionY(poseNew.getPositionY());
+
+    }
+
+    private void buildUserTarget() {
+        userTarget = new Entity();
+
+        Visual visual = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 1.0f });
+        visual.scale(1.0f, 1.0f, 1.0f);
+
+        Pose pose = new Pose();
+        pose.translate(0,0,0.9f);
+
+        userTarget.addComponent(visual);
+        userTarget.addComponent(pose);
+
+        entityManager.add(userTarget);
     }
 }

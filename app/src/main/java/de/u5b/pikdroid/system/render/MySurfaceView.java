@@ -66,7 +66,7 @@ public class MySurfaceView extends GLSurfaceView {
         entity.addComponent(new Pose(matrix));
 
         // async queued event
-        engine.getEventManager().publishQueued(new Event(Topic.MAKE_HINT, entity));
+        engine.getEventManager().publishQueued(new Event(Topic.SET_USER_TARGET, entity));
         return true;
     }
 

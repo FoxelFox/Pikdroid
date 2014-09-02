@@ -36,8 +36,8 @@ public class HintSystem extends ASystem {
     @Override
     public void handleEvent(Event event) {
         switch (event.getTopic()) {
-            case MAKE_HINT: onMakeHint(event, true); break;
-            case REMOVE_HINT: onMakeHint(event, false); break;
+            case MAKE_HINT: //onMakeHint(event, true); break;
+            case REMOVE_HINT: //onMakeHint(event, false); break;
         }
     }
 

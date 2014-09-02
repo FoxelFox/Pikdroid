@@ -59,6 +59,7 @@ public class Map2D {
         } catch (IllegalArgumentException e) {
             // float values x == y
         }
+
     }
 
     public void detectDetectables(Entity detector) {

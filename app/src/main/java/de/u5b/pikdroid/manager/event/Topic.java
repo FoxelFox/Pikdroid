@@ -15,4 +15,5 @@ public enum Topic {
     REMOVE_HINT,
     NEW_POSE_SECTOR_REACHED,
     POSE_SECTOR_CHANGED,
+    SET_USER_TARGET,
 }

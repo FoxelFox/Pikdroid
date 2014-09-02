@@ -100,8 +100,12 @@ public class Pose extends Component{
         return matrix[13];
     }
 
-    public float getPositionZ() {
-        return matrix[14];
+    public void setPositionX(float x) {
+        matrix[12] = x;
+    }
+
+    public void setPositionY(float y) {
+        matrix[13] = y;
     }
 
     /**
@@ -166,6 +170,8 @@ public class Pose extends Component{
             return false;
         }
     }
+
+
 
     @Override
     public Type getType() {

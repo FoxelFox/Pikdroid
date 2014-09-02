@@ -30,7 +30,6 @@ public class PikdroidSystem extends ASystem {
     private TreeMap<Integer, Entity> spawnedPikdroids;
     private TreeMap<Integer, Entity> spawnedFood;
     private Entity base;
-    private Timer timer;
 
 
     public PikdroidSystem(Engine engine) {
@@ -50,7 +49,6 @@ public class PikdroidSystem extends ASystem {
         switch (event.getTopic()) {
             case SPAWN_PIKDROID: onSpawnPikdroid(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
-
 
         }
     }
@@ -80,6 +78,8 @@ public class PikdroidSystem extends ASystem {
     private void onSpawnPikdroid(Event event) {
         buildPikdroid(((Pose)event.getEntity().getComponent(Component.Type.POSE)).getCopy());
     }
+
+
 
 
 
@@ -148,6 +148,8 @@ public class PikdroidSystem extends ASystem {
 
         entityManager.add(base);
     }
+
+
 
     private float randomValue(float range){
         return ((float)Math.random() - 0.5f) * range;
