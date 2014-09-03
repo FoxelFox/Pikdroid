@@ -97,7 +97,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
         float[] cam = new float[16];
         Matrix.setIdentityM(cam,0);
-        Matrix.translateM(cam,0,0,0, -18f);
+        Matrix.translateM(cam,0,0,0, -17f);
         Matrix.multiplyMM(viewMatrix,0,viewMatrix,0,cam,0);
     }
 

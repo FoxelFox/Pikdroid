@@ -59,7 +59,7 @@ public class PikdroidSystem extends ASystem {
 
         if(!loaded) {
             buildBase();
-            while (enemies.size() < 10)
+            while (enemies.size() < 2)
                 spawnEnemy();
             loaded = true;
         }
@@ -169,46 +169,58 @@ public class PikdroidSystem extends ASystem {
         Detectable detectable = new Detectable(DetectHint.ENEMY);
         final Detector detector = new Detector();
 
-        Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f });
+        final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f });
         visual.scale(1.0f, 1.0f, 1.0f);
 
         final Movement move = new Movement(0.1f,8.0f);
         move.setDistanceToReach(0.3f);
+        move.setTarget(randomTarget(5.0f));
+
+        final Energy energy = new Energy(1000,100,0);
 
         enemy.addComponent(pose);
         enemy.addComponent(detectable);
         enemy.addComponent(visual);
         enemy.addComponent(move);
         enemy.addComponent(detector);
+        enemy.addComponent(energy);
+
+        final Entity randomTarget = new Entity();
+        final Pose randomPose = new Pose();
+        randomTarget.addComponent(randomPose);
+
+        final EntityCode findTarget = new EntityCode() {
+            @Override
+            public void execute() {
+                Entity[] detections = detector.getDetections();
+                if(detections[DetectHint.FOOD.ordinal()] != null) {
+                    move.setTarget(detections[DetectHint.FOOD.ordinal()]);
+                } else if (detections[DetectHint.PIKDROID.ordinal()] != null) {
+                    move.setTarget(detections[DetectHint.PIKDROID.ordinal()]);
+                } else {
+                    modifyRandom(randomPose, 20.0f);
+                    move.setTarget(randomTarget);
+
+                }
+
+            }
+        };
 
         enemy.addTopicCode(Topic.MOVE_TARGET_REACHED, new EntityCode() {
             @Override
             public void execute() {
-                entityManager.delete(move.getTarget());
-                entityManager.delete(enemy);
+                if(move.getTarget().hasComponent(Component.Type.ENERGY)) {
+                    Energy tEnergy = (Energy)move.getTarget().getComponent(Component.Type.ENERGY);
+                    energy.charge(tEnergy.discharge());
+                    energy.discharge(100);
+                    entityManager.delete(move.getTarget());
+                }
+                findTarget.execute();
             }
         });
 
-        enemy.addTopicCode(Topic.NEW_POSE_SECTOR_REACHED, new EntityCode() {
-            @Override
-            public void execute() {
-                if(move.getTarget() == null) {
-                    move.setTarget(detector.getDetections()[DetectHint.PIKDROID.ordinal()]);
-                }
+        enemy.addTopicCode(Topic.NEW_POSE_SECTOR_REACHED, findTarget);
 
-                // edge Detect
-                if (pose.getPositionX() < -10.0f || pose.getPositionX() > 10.0f) {
-                    pose.rotate(180.f, 0, 0, 1);
-                    pose.setPositionX(pose.getPositionX() * 0.99f);
-                }
-                else if (pose.getPositionY() < -13.0f || pose.getPositionY() > 13.0f) {
-                    pose.rotate(180.f, 0, 0, 1);
-                    pose.setPositionY(pose.getPositionY() * 0.99f);
-                }
-
-
-            }
-        });
 
 
         entityManager.add(enemy);
@@ -216,6 +228,18 @@ public class PikdroidSystem extends ASystem {
     }
 
 
+    private void modifyRandom(Pose pose, float range) {
+        pose.setPositionX(randomValue(range));
+        pose.setPositionY(randomValue(range));
+    }
+
+    private Entity randomTarget(float range) {
+        Entity target = new Entity();
+        Pose tPose = new Pose();
+        tPose.translate(randomValue(range), randomValue(range),0);
+        target.addComponent(tPose);
+        return target;
+    }
 
     private float randomValue(float range){
         return ((float)Math.random() - 0.5f) * range;

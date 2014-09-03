@@ -48,6 +48,18 @@ public class Energy extends Component {
         return tmp - dischargeMinimum;
     }
 
+    public int discharge(int volume) {
+        load -= volume;
+
+        if(load < dischargeMinimum) {
+            int tmp = dischargeMinimum - load;
+            load = dischargeMinimum;
+            return tmp;
+        } else {
+            return volume;
+        }
+    }
+
     /**
      * Energy available?
      * @return true if Energy is available otherwise false
