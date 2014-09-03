@@ -114,7 +114,7 @@ public class PikdroidSystem extends ASystem {
         final Entity pikdroid = new Entity();
 
         final Detector detector = new Detector();
-        final Movement movement = new Movement(0.1f,8.0f);
+        final Movement movement = new Movement(0.1f,8.0f,0.1f);
         final Energy energy = new Energy(200,100,100);
 
         pose.translate(0,0,-0.2f);
@@ -253,7 +253,7 @@ public class PikdroidSystem extends ASystem {
         final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f });
         visual.scale(1.0f, 1.0f, 1.0f);
 
-        final Movement move = new Movement(0.1f,8.0f);
+        final Movement move = new Movement(0.1f,8.0f,0.3f);
         move.setDistanceToReach(0.3f);
         move.setTarget(randomTarget(5.0f));
 

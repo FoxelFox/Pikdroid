@@ -13,14 +13,16 @@ public class Movement extends Component {
     private Entity target;
     private boolean hasTarget;
     private float distanceToReach;
+    private float damper;
 
     private boolean randomOnNoTarget;
 
-    public Movement(float linearSpeed, float angularSpeed) {
+    public Movement(float linearSpeed, float angularSpeed, float damper) {
         this.linearSpeed = linearSpeed;
         this.angularSpeed = angularSpeed;
         randomOnNoTarget = true;
         distanceToReach = 0.2f;
+        this.damper = damper;
     }
 
     public Entity getTarget() {
@@ -74,5 +76,9 @@ public class Movement extends Component {
     @Override
     public Type getType() {
         return Type.MOVEMENT;
+    }
+
+    public float getDamper() {
+        return damper;
     }
 }

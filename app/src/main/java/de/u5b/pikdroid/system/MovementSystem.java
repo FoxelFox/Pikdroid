@@ -56,7 +56,7 @@ public class MovementSystem extends ASystem {
 
                 // calc speed to move
                 float distance = pose.distance(target);
-                float speed = 0.1f * distance;
+                float speed = move.getDamper() * distance;
                 if (speed > move.getLinearSpeed())
                     speed = move.getLinearSpeed();
                 pose.translate(speed, 0, 0);
