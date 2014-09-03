@@ -29,6 +29,7 @@ public class PikdroidSystem extends ASystem {
     private TreeMap<Integer, Entity> spawnedFood;
     private Entity base;
     private boolean loaded;
+    private Entity userTarget;
 
 
     public PikdroidSystem(Engine engine) {
@@ -37,6 +38,8 @@ public class PikdroidSystem extends ASystem {
         // subscribe to Spawn new Pikdroids
         eventManager.subscribe(Topic.SPAWN_PIKDROID, this);
         eventManager.subscribe(Topic.ENTITY_DELETED, this);
+        eventManager.subscribe(Topic.SET_USER_TARGET, this);
+
 
 
         spawnedPikdroids = new TreeMap<Integer, Entity>();
@@ -51,18 +54,32 @@ public class PikdroidSystem extends ASystem {
         switch (event.getTopic()) {
             case SPAWN_PIKDROID: onSpawnPikdroid(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
+            case SET_USER_TARGET: onSetUserTarget(event); break;
 
         }
+    }
+
+    private void onSetUserTarget(Event event) {
+        if(userTarget == null) {
+            buildUserTarget();
+        }
+
+        Pose poseNew = (Pose)event.getEntity().getComponent(Component.Type.POSE);
+        Pose poseTarget = (Pose)userTarget.getComponent(Component.Type.POSE);
+
+        poseTarget.setPositionX(poseNew.getPositionX());
+        poseTarget.setPositionY(poseNew.getPositionY());
     }
 
     public void update() {
 
         if(!loaded) {
             buildBase();
-            while (enemies.size() < 2)
-                spawnEnemy();
             loaded = true;
         }
+
+        if (enemies.size() < (spawnedPikdroids.size() >> 1))
+            spawnEnemy();
 
         if(spawnedFood.size() < 10)
             spawnFood();
@@ -94,16 +111,83 @@ public class PikdroidSystem extends ASystem {
      * @return a new Pikdroid Entity
      */
     private void buildPikdroid(Pose pose) {
-        Entity pikdroid = new Entity();
+        final Entity pikdroid = new Entity();
+
+        final Detector detector = new Detector();
+        final Movement movement = new Movement(0.1f,8.0f);
+        final Energy energy = new Energy(200,100,100);
 
         pose.translate(0,0,-0.2f);
+
         pikdroid.addComponent(pose);
         pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
-        pikdroid.addComponent(new Movement(0.1f,8.0f));
-        pikdroid.addComponent(new Energy(200,100,100));
-        pikdroid.addComponent(new Intelligence(base));
+        pikdroid.addComponent(movement);
+        pikdroid.addComponent(energy);
         pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));
-        pikdroid.addComponent(new Detector());
+        pikdroid.addComponent(detector);
+
+        final Entity randomTarget = new Entity();
+        final Pose randomPose = new Pose();
+        randomTarget.addComponent(randomPose);
+
+        movement.setTarget(randomTarget);
+        final boolean[] hasFood = {false};
+
+        pikdroid.addTopicCode(Topic.NEW_POSE_SECTOR_REACHED, new EntityCode() {
+            @Override
+            public void execute() {
+                if (!hasFood[0]) {
+
+                    Entity food = detector.getDetection(DetectHint.FOOD);
+
+                    if (userTarget != null) {
+                        movement.setTarget(userTarget);
+                    }
+                    if (food != null) {
+                        movement.setTarget(food);
+                    }
+                }
+            }
+        });
+
+        pikdroid.addTopicCode(Topic.MOVE_TARGET_REACHED, new EntityCode() {
+            @Override
+            public void execute() {
+
+                if(hasFood[0]) {
+                    // Transfer Energy from Intelligence to Base
+                    modifyRandom(randomPose, 20.0f);
+                    movement.setTarget(randomTarget);
+                    eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, pikdroid, base));
+                } else if(movement.getTarget().equals(userTarget)) {
+                    entityManager.delete(userTarget);
+                    userTarget = null;
+                    modifyRandom(randomPose, 20.0f);
+                    movement.setTarget(randomTarget);
+                } else  if(movement.getTarget().hasComponent(Component.Type.ENERGY)) {
+                    // Transfer Energy from Food to Pikdroid
+                    Entity food = movement.getTarget();
+                    modifyRandom(randomPose, 20.0f);
+                    movement.setTarget(randomTarget);
+                    eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, food, pikdroid));
+                } else {
+                    modifyRandom(randomPose, 20.0f);
+                    movement.setTarget(randomTarget);
+                }
+            }
+        });
+
+        pikdroid.addTopicCode(Topic.ON_ENERGY_TRANSFERRED, new EntityCode() {
+            @Override
+            public void execute() {
+                if(energy.isChargeFull()) {
+                    hasFood[0] = true;
+                    movement.setTarget(base);
+                } else {
+                    hasFood[0] = false;
+                }
+            }
+        });
 
         entityManager.add(pikdroid);
         spawnedPikdroids.put(pikdroid.getID(), pikdroid);
@@ -148,9 +232,6 @@ public class PikdroidSystem extends ASystem {
 
         Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f });
         visual.scale(2.0f, 2.0f, 1.0f);
-
-
-
 
         base.addComponent(pose);
         base.addComponent(detectable);
@@ -197,10 +278,6 @@ public class PikdroidSystem extends ASystem {
                     move.setTarget(detections[DetectHint.FOOD.ordinal()]);
                 } else if (detections[DetectHint.PIKDROID.ordinal()] != null) {
                     move.setTarget(detections[DetectHint.PIKDROID.ordinal()]);
-                } else {
-                    modifyRandom(randomPose, 20.0f);
-                    move.setTarget(randomTarget);
-
                 }
 
             }
@@ -215,7 +292,8 @@ public class PikdroidSystem extends ASystem {
                     energy.discharge(100);
                     entityManager.delete(move.getTarget());
                 }
-                findTarget.execute();
+                modifyRandom(randomPose, 20.0f);
+                move.setTarget(randomTarget);
             }
         });
 
@@ -227,10 +305,32 @@ public class PikdroidSystem extends ASystem {
         enemies.put(enemy.getID(),enemy);
     }
 
+    private void buildUserTarget() {
+        userTarget = new Entity();
+
+        Visual visual = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 1.0f });
+        visual.scale(1.0f, 1.0f, 1.0f);
+
+        Pose pose = new Pose();
+        pose.translate(0,0,0.9f);
+
+        userTarget.addComponent(visual);
+        userTarget.addComponent(pose);
+
+        entityManager.add(userTarget);
+    }
 
     private void modifyRandom(Pose pose, float range) {
-        pose.setPositionX(randomValue(range));
-        pose.setPositionY(randomValue(range));
+        int oldX = (int)pose.getPositionX();
+        int oldY = (int)pose.getPositionX();
+
+        while (oldX == (int)pose.getPositionX()) {
+            pose.setPositionX(randomValue(range));
+
+        }
+        while (oldY == (int)pose.getPositionY()) {
+            pose.setPositionY(randomValue(range));
+        }
     }
 
     private Entity randomTarget(float range) {

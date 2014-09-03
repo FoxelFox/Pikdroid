@@ -50,6 +50,9 @@ public class EventManager extends AManager {
         }
         if(event.getEntity() != null)
             event.getEntity().notify(event.getTopic());
+
+        if(event.getTarget() != null)
+            event.getTarget().notify(event.getTopic());
     }
 
     public void update() {
