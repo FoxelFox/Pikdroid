@@ -253,7 +253,7 @@ public class PikdroidSystem extends ASystem {
         final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f });
         visual.scale(1.0f, 1.0f, 1.0f);
 
-        final Movement move = new Movement(0.1f,8.0f,0.3f);
+        final Movement move = new Movement(0.09f,8.0f,0.3f);
         move.setDistanceToReach(0.3f);
         move.setTarget(randomTarget(5.0f));
 
