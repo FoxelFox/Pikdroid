@@ -8,7 +8,7 @@ import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * Created by Foxel on 29.08.2014.
@@ -20,12 +20,12 @@ public class MovementSystem extends ASystem {
     public MovementSystem(Engine engine) {
         super(engine);
         moveableList = new ArrayList<Entity>();
-        eventManager.subscribe(Topic.ENTITY_CREATED, this);
+        eventManager.subscribe(EventTopic.ENTITY_CREATED, this);
     }
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
         }
@@ -62,7 +62,7 @@ public class MovementSystem extends ASystem {
                 pose.translate(speed, 0, 0);
 
                 if(distance < move.getDistanceToReach()) {
-                    eventManager.publish(new Event(Topic.MOVE_TARGET_REACHED, moveableList.get(i)));
+                    eventManager.publish(new Event(EventTopic.MOVE_TARGET_REACHED, moveableList.get(i)));
                 }
 
             } else if (move.isRandomOnNoTarget()) {
@@ -79,12 +79,12 @@ public class MovementSystem extends ASystem {
             // check if new sector was reached
 
             if(pose.isNewSectorReached()) {
-                eventManager.publish(new Event(Topic.NEW_POSE_SECTOR_REACHED, pose.getEntity()));
+                eventManager.publish(new Event(EventTopic.NEW_POSE_SECTOR_REACHED, pose.getEntity()));
                 poseSectorChanged = true;
             }
         }
         if(poseSectorChanged) {
-            eventManager.publish(new Event(Topic.POSE_SECTOR_CHANGED, null));
+            eventManager.publish(new Event(EventTopic.POSE_SECTOR_CHANGED, null));
         }
     }
 

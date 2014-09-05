@@ -14,27 +14,27 @@ import de.u5b.pikdroid.system.*;
  * Created by Foxel on 14.08.2014.
  */
 public class EventManager extends AManager {
-    private HashMap<Topic, ArrayList<ASystem>> subscriber;  // contains the Systems that subscribe to Topics
+    private HashMap<EventTopic, ArrayList<ASystem>> subscriber;  // contains the Systems that subscribe to Topics
     private ConcurrentLinkedQueue<Event> eventQueue;
 
     public EventManager(Engine engine) {
         super(engine);
-        subscriber = new HashMap<Topic, ArrayList<ASystem>>();
+        subscriber = new HashMap<EventTopic, ArrayList<ASystem>>();
         eventQueue = new ConcurrentLinkedQueue<Event>();
     }
 
     /**
      * Subscribe to an EventTopic
-     * @param topic Topic to subscribe on
+     * @param eventTopic Topic to subscribe on
      * @param system The ISystem that want to subscribe
      */
-    public void subscribe(Topic topic, ASystem system) {
-        if(subscriber.containsKey(topic)) {
-            subscriber.get(topic).add(system);
+    public void subscribe(EventTopic eventTopic, ASystem system) {
+        if(subscriber.containsKey(eventTopic)) {
+            subscriber.get(eventTopic).add(system);
         } else {
             ArrayList<ASystem> list = new ArrayList<ASystem>();
             list.add(system);
-            subscriber.put(topic, list);
+            subscriber.put(eventTopic, list);
         }
     }
 
@@ -43,16 +43,16 @@ public class EventManager extends AManager {
      * @param event Event to publish
      */
     public void publish(Event event) {
-        if(subscriber.containsKey(event.getTopic())) {
-            for(ASystem sys: subscriber.get(event.getTopic())) {
+        if(subscriber.containsKey(event.getEventTopic())) {
+            for(ASystem sys: subscriber.get(event.getEventTopic())) {
                 sys.handleEvent(event);
             }
         }
         if(event.getEntity() != null)
-            event.getEntity().notify(event.getTopic());
+            event.getEntity().notify(event.getEventTopic());
 
         if(event.getTarget() != null)
-            event.getTarget().notify(event.getTopic());
+            event.getTarget().notify(event.getEventTopic());
     }
 
     public void update() {

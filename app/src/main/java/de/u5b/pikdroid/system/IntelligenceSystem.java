@@ -14,7 +14,7 @@ import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * The IntelligenceSystem will try to control Entities that have an Intelligence Component
@@ -30,12 +30,12 @@ public class IntelligenceSystem extends ASystem{
     public IntelligenceSystem(Engine engine){
         super(engine);
 
-        eventManager.subscribe(Topic.ENTITY_CREATED, this);
-        eventManager.subscribe(Topic.ENTITY_DELETED, this);
-        eventManager.subscribe(Topic.MOVE_TARGET_REACHED, this);
-        eventManager.subscribe(Topic.ON_ENERGY_TRANSFERRED, this);
-        eventManager.subscribe(Topic.NEW_POSE_SECTOR_REACHED,this);
-        eventManager.subscribe(Topic.SET_USER_TARGET, this);
+        eventManager.subscribe(EventTopic.ENTITY_CREATED, this);
+        eventManager.subscribe(EventTopic.ENTITY_DELETED, this);
+        eventManager.subscribe(EventTopic.MOVE_TARGET_REACHED, this);
+        eventManager.subscribe(EventTopic.ON_ENERGY_TRANSFERRED, this);
+        eventManager.subscribe(EventTopic.NEW_POSE_SECTOR_REACHED,this);
+        eventManager.subscribe(EventTopic.SET_USER_TARGET, this);
 
         entities = new TreeMap<Integer, Entity>();
         food = new TreeMap<Integer, Entity>();
@@ -43,7 +43,7 @@ public class IntelligenceSystem extends ASystem{
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
             case MOVE_TARGET_REACHED: onMoveTargetReached(event); break;
@@ -110,7 +110,7 @@ public class IntelligenceSystem extends ASystem{
         if(intelligence != null) {
             if(intelligence.hasFood()) {
                 // Transfer Energy from Intelligence to Base
-                eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, event.getEntity(), intelligence.getBase()));
+                eventManager.publish(new Event(EventTopic.TRY_ENERGY_TRANSFER, event.getEntity(), intelligence.getBase()));
             } else if(movement.getTarget().equals(userTarget)) {
 
                 entityManager.delete(userTarget);
@@ -118,7 +118,7 @@ public class IntelligenceSystem extends ASystem{
             } else if(movement.getTarget() != null){
                 // Transfer Energy from Food to Intelligence
                 if(movement.getTarget().hasComponent(Component.Type.ENERGY)) {
-                    eventManager.publish(new Event(Topic.TRY_ENERGY_TRANSFER, movement.getTarget(), event.getEntity()));
+                    eventManager.publish(new Event(EventTopic.TRY_ENERGY_TRANSFER, movement.getTarget(), event.getEntity()));
                 }
             }
         }
@@ -168,7 +168,7 @@ public class IntelligenceSystem extends ASystem{
                 //eventManager.publish(new Event(Topic.MAKE_HINT, event.getEntity()));
             } else {
 
-                eventManager.publish(new Event(Topic.REMOVE_HINT, event.getEntity()));
+                eventManager.publish(new Event(EventTopic.REMOVE_HINT, event.getEntity()));
             }
         }
     }

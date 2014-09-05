@@ -1,17 +1,13 @@
 package de.u5b.pikdroid.manager.entity;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Queue;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import de.u5b.pikdroid.component.Component;
-import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.AManager;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * The EntityManager is the Database for Collections of Components that form Entities.
@@ -43,7 +39,7 @@ public class EntityManager extends AManager {
             entities.set(index, entity);
         }
         entity.setId(index);
-        engine.getEventManager().publish(new Event(Topic.ENTITY_CREATED, entity));
+        engine.getEventManager().publish(new Event(EventTopic.ENTITY_CREATED, entity));
     }
 
     /**
@@ -63,7 +59,7 @@ public class EntityManager extends AManager {
             Entity entity = deleteQueue.poll();
             entities.set(entity.getID(), null);
             eStack.push(entity.getID());
-            engine.getEventManager().publish(new Event(Topic.ENTITY_DELETED, entity));
+            engine.getEventManager().publish(new Event(EventTopic.ENTITY_DELETED, entity));
         }
     }
 }

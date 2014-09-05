@@ -4,11 +4,8 @@ import android.opengl.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -18,7 +15,7 @@ import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 import de.u5b.pikdroid.system.ASystem;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
 import de.u5b.pikdroid.system.render.object.ARenderObject;
@@ -55,8 +52,8 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         this.engine = engine;
 
         // subscribe to topics
-        eventManager.subscribe(Topic.ENTITY_CREATED,this);
-        eventManager.subscribe(Topic.ENTITY_DELETED,this);
+        eventManager.subscribe(EventTopic.ENTITY_CREATED,this);
+        eventManager.subscribe(EventTopic.ENTITY_DELETED,this);
 
         renderObjects = new TreeMap<Integer, ARenderObject>();
         viewMatrix = new float[16];
@@ -64,7 +61,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
         }

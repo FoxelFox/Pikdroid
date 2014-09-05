@@ -7,7 +7,7 @@ import de.u5b.pikdroid.component.Energy;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * Created by Foxel on 30.08.2014.
@@ -20,14 +20,14 @@ public class EnergySystem extends ASystem {
         entities = new ArrayList<Entity>();
 
         // subscribe to topics
-        eventManager.subscribe(Topic.ENTITY_CREATED,this);
-        eventManager.subscribe(Topic.ENTITY_DELETED,this);
-        eventManager.subscribe(Topic.TRY_ENERGY_TRANSFER,this);
+        eventManager.subscribe(EventTopic.ENTITY_CREATED,this);
+        eventManager.subscribe(EventTopic.ENTITY_DELETED,this);
+        eventManager.subscribe(EventTopic.TRY_ENERGY_TRANSFER,this);
     }
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
             case TRY_ENERGY_TRANSFER: onTryEnergyTransfer(event); break;
@@ -49,7 +49,7 @@ public class EnergySystem extends ASystem {
         Energy energyB = (Energy)event.getTarget().getComponent(Component.Type.ENERGY);
         if(energyA.containsEnergy()) {
             Energy.transfer(energyA,energyB);
-            eventManager.publish(new Event(Topic.ON_ENERGY_TRANSFERRED, event.getEntity(),event.getTarget()));
+            eventManager.publish(new Event(EventTopic.ON_ENERGY_TRANSFERRED, event.getEntity(),event.getTarget()));
             if(!energyA.containsEnergy()) {
                 entityManager.delete(energyA.getEntity());
             }

@@ -5,13 +5,12 @@ import android.opengl.Matrix;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 
 import de.u5b.pikdroid.component.Pose;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * The OpenGLSurface on Android Devices
@@ -66,7 +65,7 @@ public class MySurfaceView extends GLSurfaceView {
         entity.addComponent(new Pose(matrix));
 
         // async queued event
-        engine.getEventManager().publishQueued(new Event(Topic.SET_USER_TARGET, entity));
+        engine.getEventManager().publishQueued(new Event(EventTopic.SET_USER_TARGET, entity));
         return true;
     }
 

@@ -2,9 +2,7 @@ package de.u5b.pikdroid.system;
 
 import android.util.Pair;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import de.u5b.pikdroid.component.Component;
 import de.u5b.pikdroid.component.Pose;
@@ -14,7 +12,7 @@ import de.u5b.pikdroid.component.detect.Detectable;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 
 /**
  * Created by Foxel on 30.08.2014.
@@ -29,13 +27,13 @@ public class HintSystem extends ASystem {
         size = 16;
         hints = new HashMap<Pair<Integer,Integer>, Entity>();
 
-        eventManager.subscribe(Topic.MAKE_HINT, this);
-        eventManager.subscribe(Topic.REMOVE_HINT, this);
+        eventManager.subscribe(EventTopic.MAKE_HINT, this);
+        eventManager.subscribe(EventTopic.REMOVE_HINT, this);
     }
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case MAKE_HINT: //onMakeHint(event, true); break;
             case REMOVE_HINT: //onMakeHint(event, false); break;
         }

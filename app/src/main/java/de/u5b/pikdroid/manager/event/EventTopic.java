@@ -4,7 +4,7 @@ package de.u5b.pikdroid.manager.event;
  * Contains all EventTopics
  * Created by Foxel on 15.08.2014.
  */
-public enum Topic {
+public enum EventTopic {
     ENTITY_CREATED,
     ENTITY_DELETED,
     SPAWN_PIKDROID,

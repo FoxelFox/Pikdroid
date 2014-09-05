@@ -9,7 +9,7 @@ import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.Topic;
+import de.u5b.pikdroid.manager.event.EventTopic;
 import de.u5b.pikdroid.system.ASystem;
 
 /**
@@ -25,9 +25,9 @@ public class DetectSystem extends ASystem {
         super(engine);
 
         // subscribe to topics
-        eventManager.subscribe(Topic.ENTITY_CREATED, this);
-        eventManager.subscribe(Topic.ENTITY_DELETED, this);
-        eventManager.subscribe(Topic.POSE_SECTOR_CHANGED, this);
+        eventManager.subscribe(EventTopic.ENTITY_CREATED, this);
+        eventManager.subscribe(EventTopic.ENTITY_DELETED, this);
+        eventManager.subscribe(EventTopic.POSE_SECTOR_CHANGED, this);
 
         detectingMap = new Map2D();
         detectors = new ArrayList<Entity>();
@@ -35,7 +35,7 @@ public class DetectSystem extends ASystem {
 
     @Override
     public void handleEvent(Event event) {
-        switch (event.getTopic()) {
+        switch (event.getEventTopic()) {
             case ENTITY_CREATED: onEntityCreated(event); break;
             case ENTITY_DELETED: onEntityDeleted(event); break;
             case POSE_SECTOR_CHANGED: onNewPoseSectorReached(); break;

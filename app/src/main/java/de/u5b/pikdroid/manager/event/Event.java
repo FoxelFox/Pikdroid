@@ -7,26 +7,26 @@ import de.u5b.pikdroid.manager.entity.Entity;
  * Created by Foxel on 18.08.2014.
  */
 public class Event {
-    private Topic topic;        // EventTopic
+    private EventTopic eventTopic;        // EventTopic
     private Entity entity;      // Entity
     private Entity target;      // Target (eg. entity attack to target) usually not needed
 
-    public Event(Topic topic, Entity entity) {
-        this.topic = topic;
+    public Event(EventTopic eventTopic, Entity entity) {
+        this.eventTopic = eventTopic;
         this.entity = entity;
         this.target = null;
     }
 
-    public Event(Topic topic, Entity entity, Entity target) {
-        this.topic = topic;
+    public Event(EventTopic eventTopic, Entity entity, Entity target) {
+        this.eventTopic = eventTopic;
         this.entity = entity;
         this.target = target;
     }
 
 
 
-    public Topic getTopic() {
-        return topic;
+    public EventTopic getEventTopic() {
+        return eventTopic;
     }
 
     public Entity getEntity() {
