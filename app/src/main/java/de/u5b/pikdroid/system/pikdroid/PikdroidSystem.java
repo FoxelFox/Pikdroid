@@ -12,7 +12,6 @@ import de.u5b.pikdroid.component.detect.Detectable;
 import de.u5b.pikdroid.component.detect.Detector;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
-import de.u5b.pikdroid.manager.entity.EntityCode;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventTopic;
 import de.u5b.pikdroid.system.ASystem;
@@ -132,9 +131,9 @@ public class PikdroidSystem extends ASystem {
         movement.setTarget(randomTarget);
         final boolean[] hasFood = {false};
 
-        pikdroid.addCodeForEvent(EventTopic.NEW_POSE_SECTOR_REACHED, new EntityCode() {
+        pikdroid.addCodeForEvent(EventTopic.NEW_POSE_SECTOR_REACHED, new Runnable() {
             @Override
-            public void execute() {
+            public void run() {
                 if (!hasFood[0]) {
 
                     Entity food = detector.getDetection(DetectHint.FOOD);
@@ -149,9 +148,9 @@ public class PikdroidSystem extends ASystem {
             }
         });
 
-        pikdroid.addCodeForEvent(EventTopic.MOVE_TARGET_REACHED, new EntityCode() {
+        pikdroid.addCodeForEvent(EventTopic.MOVE_TARGET_REACHED, new Runnable() {
             @Override
-            public void execute() {
+            public void run() {
 
                 if (hasFood[0]) {
                     // Transfer Energy from Intelligence to Base
@@ -176,9 +175,9 @@ public class PikdroidSystem extends ASystem {
             }
         });
 
-        pikdroid.addCodeForEvent(EventTopic.ON_ENERGY_TRANSFERRED, new EntityCode() {
+        pikdroid.addCodeForEvent(EventTopic.ON_ENERGY_TRANSFERRED, new Runnable() {
             @Override
-            public void execute() {
+            public void run() {
                 if (energy.isChargeFull()) {
                     hasFood[0] = true;
                     movement.setTarget(base);
@@ -269,9 +268,9 @@ public class PikdroidSystem extends ASystem {
         final Pose randomPose = new Pose();
         randomTarget.addComponent(randomPose);
 
-        final EntityCode findTarget = new EntityCode() {
+        final Runnable findTarget = new Runnable() {
             @Override
-            public void execute() {
+            public void run() {
                 Entity[] detections = detector.getDetections();
                 if(detections[DetectHint.FOOD.ordinal()] != null) {
                     move.setTarget(detections[DetectHint.FOOD.ordinal()]);
@@ -282,9 +281,9 @@ public class PikdroidSystem extends ASystem {
             }
         };
 
-        enemy.addCodeForEvent(EventTopic.MOVE_TARGET_REACHED, new EntityCode() {
+        enemy.addCodeForEvent(EventTopic.MOVE_TARGET_REACHED, new Runnable() {
             @Override
-            public void execute() {
+            public void run() {
                 if (move.getTarget().hasComponent(Component.Type.ENERGY)) {
                     Energy tEnergy = (Energy) move.getTarget().getComponent(Component.Type.ENERGY);
                     energy.charge(tEnergy.discharge());

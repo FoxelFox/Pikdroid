@@ -12,7 +12,7 @@ import de.u5b.pikdroid.manager.event.EventTopic;
 public class Entity {
     private int id;
     private boolean isFinalized;
-    private HashMap<EventTopic, EntityCode> eventCode;
+    private HashMap<EventTopic, Runnable> eventCode;
     private Component[] components;
 
     /**
@@ -23,7 +23,7 @@ public class Entity {
         this.id = -1;
         components = new Component[Component.Type.values().length];
         isFinalized = false;
-        eventCode = new HashMap<EventTopic, EntityCode>();
+        eventCode = new HashMap<EventTopic, Runnable>();
 
     }
 
@@ -41,7 +41,7 @@ public class Entity {
      * @param eventTopic Topic for Event
      * @param code Code to execute
      */
-    public void addCodeForEvent(EventTopic eventTopic, EntityCode code) {
+    public void addCodeForEvent(EventTopic eventTopic, Runnable code) {
         eventCode.put(eventTopic, code);
     }
 
@@ -52,7 +52,7 @@ public class Entity {
      */
     public void notify (EventTopic eventTopic) {
         if(eventCode.containsKey(eventTopic))
-            eventCode.get(eventTopic).execute();
+            eventCode.get(eventTopic).run();
     }
 
     public boolean addComponent(Component component) {
