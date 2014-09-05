@@ -29,7 +29,6 @@ public class PikdroidSystem extends ASystem {
     private boolean loaded;
     private Entity userTarget;
 
-
     public PikdroidSystem(Engine engine) {
         super(engine);
 
@@ -37,8 +36,6 @@ public class PikdroidSystem extends ASystem {
         eventManager.subscribe(EventTopic.SPAWN_PIKDROID, this);
         eventManager.subscribe(EventTopic.ENTITY_DELETED, this);
         eventManager.subscribe(EventTopic.SET_USER_TARGET, this);
-
-
 
         spawnedPikdroids = new TreeMap<Integer, Entity>();
         spawnedFood = new TreeMap<Integer, Entity>();
@@ -84,12 +81,14 @@ public class PikdroidSystem extends ASystem {
 
 
 
+        // TODO: this should be a runnable for the base entity
         Energy energyBase = (Energy)base.getComponent(Component.Type.ENERGY);
         if(spawnedPikdroids.size() < 100 && energyBase.isChargeFull()) {
             energyBase.discharge();
             buildPikdroid(((Pose)base.getComponent(Component.Type.POSE)).getCopy());
         }
 
+        // update gui
         engine.setPikdroidCount(spawnedPikdroids.size());
     }
 
@@ -148,6 +147,7 @@ public class PikdroidSystem extends ASystem {
             }
         });
 
+        // code when the Pikdroid has reached his move target
         pikdroid.addCodeForEvent(EventTopic.MOVE_TARGET_REACHED, new Runnable() {
             @Override
             public void run() {
@@ -158,23 +158,27 @@ public class PikdroidSystem extends ASystem {
                     movement.setTarget(randomTarget);
                     eventManager.publish(new Event(EventTopic.TRY_ENERGY_TRANSFER, pikdroid, base));
                 } else if (movement.getTarget().equals(userTarget)) {
+                    // Next target should be the users target
                     entityManager.delete(userTarget);
                     userTarget = null;
                     modifyRandom(randomPose, 20.0f);
                     movement.setTarget(randomTarget);
                 } else if (movement.getTarget().hasComponent(Component.Type.ENERGY)) {
+                    // Pikdroid is on a Entity that contains Energy -> Food
                     // Transfer Energy from Food to Pikdroid
                     Entity food = movement.getTarget();
                     modifyRandom(randomPose, 20.0f);
                     movement.setTarget(randomTarget);
                     eventManager.publish(new Event(EventTopic.TRY_ENERGY_TRANSFER, food, pikdroid));
                 } else {
+                    // Pikdroid has nothing detected -> set a new random target
                     modifyRandom(randomPose, 20.0f);
                     movement.setTarget(randomTarget);
                 }
             }
         });
 
+        // code when the Pikdroid has energy transferred
         pikdroid.addCodeForEvent(EventTopic.ON_ENERGY_TRANSFERRED, new Runnable() {
             @Override
             public void run() {
@@ -187,14 +191,15 @@ public class PikdroidSystem extends ASystem {
             }
         });
 
+        // finalize
         entityManager.add(pikdroid);
         spawnedPikdroids.put(pikdroid.getID(), pikdroid);
     }
 
-
-
-
-
+    /**
+     * Spawn more food.
+     * Food is simply a Entity that contains Energy
+     */
     private void spawnFood() {
         Entity food = new Entity();
 
@@ -207,17 +212,18 @@ public class PikdroidSystem extends ASystem {
         Energy energy = new Energy(100,100,0);
         Detectable detectable = new Detectable(DetectHint.FOOD);
 
-
         food.addComponent(pose);
         food.addComponent(vis);
         food.addComponent(energy);
         food.addComponent(detectable);
 
-
         entityManager.add(food);
         spawnedFood.put(food.getID(), food);
     }
 
+    /**
+     * Create the Pikdroid home base
+     */
     private void buildBase() {
         base = new Entity();
 
@@ -239,6 +245,9 @@ public class PikdroidSystem extends ASystem {
         entityManager.add(base);
     }
 
+    /**
+     * The Pikdroid enemy entity
+     */
     private void spawnEnemy() {
         final Entity enemy = new Entity();
 
@@ -296,8 +305,6 @@ public class PikdroidSystem extends ASystem {
         });
 
         enemy.addCodeForEvent(EventTopic.NEW_POSE_SECTOR_REACHED, findTarget);
-
-
 
         entityManager.add(enemy);
         enemies.put(enemy.getID(),enemy);
