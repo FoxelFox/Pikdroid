@@ -9,7 +9,6 @@ import android.opengl.Matrix;
 public class Visual extends Component{
     private float[] color;          // The Color for an Entity
     private float[] modelMatrix;
-    private int renderObjectID;
 
     public Visual(float[] color) {
         this.color = color;
@@ -27,14 +26,6 @@ public class Visual extends Component{
 
     public float[] getModelMatrix() {
         return modelMatrix;
-    }
-
-    public void setRenderObjectID(int id) {
-        renderObjectID = id;
-    }
-
-    public int getRenderObjectID(){
-        return renderObjectID;
     }
 
     public void setAlpha(float alpha) {

@@ -4,7 +4,6 @@ import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.detect.DetectSystem;
 import de.u5b.pikdroid.system.EnergySystem;
 import de.u5b.pikdroid.system.HintSystem;
-import de.u5b.pikdroid.system.IntelligenceSystem;
 import de.u5b.pikdroid.system.MovementSystem;
 import de.u5b.pikdroid.system.pikdroid.PikdroidSystem;
 import de.u5b.pikdroid.system.render.RenderSystem;
@@ -15,7 +14,6 @@ import de.u5b.pikdroid.system.render.RenderSystem;
 public class SystemManager extends AManager {
     PikdroidSystem pikdroidSystem;
     RenderSystem renderSystem;
-    IntelligenceSystem intelligenceSystem;
     DetectSystem detectSystem;
     MovementSystem movementSystem;
     EnergySystem energySystem;
@@ -29,7 +27,6 @@ public class SystemManager extends AManager {
     public void startGame() {
         pikdroidSystem = new PikdroidSystem(engine);
         renderSystem = new RenderSystem(engine);
-        intelligenceSystem = new IntelligenceSystem(engine);
         detectSystem = new DetectSystem(engine);
         movementSystem = new MovementSystem(engine);
         energySystem = new EnergySystem(engine);
@@ -40,7 +37,6 @@ public class SystemManager extends AManager {
     public void update() {
         hintSystem.update();
         detectSystem.update();
-        intelligenceSystem.update();
         energySystem.update();
         movementSystem.update();
         pikdroidSystem.update();
