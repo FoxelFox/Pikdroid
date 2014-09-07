@@ -54,6 +54,12 @@ public class Pose extends Component{
         matrix[14] = tmpZ;
     }
 
+    public void scale(float x, float y, float z) {
+        matrix[12] *= x;
+        matrix[13] *= y;
+        matrix[14] *= z;
+    }
+
     /**
      * Calculate the euclidean distance
      * @param pose other Pose

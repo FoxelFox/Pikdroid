@@ -62,8 +62,8 @@ public class PikdroidSystem extends ASystem {
         Pose poseNew = (Pose)event.getEntity().getComponent(Component.Type.POSE);
         Pose poseTarget = (Pose)userTarget.getComponent(Component.Type.POSE);
 
-        poseTarget.setPositionX(poseNew.getPositionX());
-        poseTarget.setPositionY(poseNew.getPositionY());
+        poseTarget.setPositionX(poseNew.getPositionX() * 10);
+        poseTarget.setPositionY(poseNew.getPositionY() * 10);
     }
 
     public void update() {
@@ -114,6 +114,8 @@ public class PikdroidSystem extends ASystem {
         final Movement movement = new Movement(0.1f,8.0f,0.1f);
         final Energy energy = new Energy(200,100,100);
 
+
+        pose.scale(10,10,1);
         pose.translate(0,0,-0.2f);
 
         pikdroid.addComponent(pose);

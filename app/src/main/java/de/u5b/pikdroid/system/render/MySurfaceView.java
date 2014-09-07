@@ -47,19 +47,14 @@ public class MySurfaceView extends GLSurfaceView {
         float x = event.getX() / (float)getWidth() * 2.0f - 1.0f;
         float y = event.getY() / (float)getHeight() * 2.0f - 1.0f;
         y = y * (-1.0f);
-
-        x *= (float)getWidth()*0.02f;
-        y *= (float)getHeight()*0.02f;
-
+        y *= (float)getHeight() / (float)getWidth();
 
         System.out.println("x: " + x + "y: " + y);
 
         float[] matrix = new float[16];
         Matrix.setIdentityM(matrix,0);
 
-
         Matrix.translateM(matrix,0,x ,y, 0.0f);
-
 
         Entity entity = new Entity();
         entity.addComponent(new Pose(matrix));
