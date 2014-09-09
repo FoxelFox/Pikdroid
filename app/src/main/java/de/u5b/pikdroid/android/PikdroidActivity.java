@@ -44,8 +44,10 @@ public class PikdroidActivity extends Activity {
         MySurfaceView view = (MySurfaceView) findViewById(R.id.view);
         //MySurfaceView view = new MySurfaceView(this);
         engine = new Engine(this);
-        view.setEngine(engine);
         engine.play();
+
+        view.setEngine(engine);
+
 
     }
 

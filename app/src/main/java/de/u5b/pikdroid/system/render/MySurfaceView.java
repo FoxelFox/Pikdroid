@@ -11,6 +11,7 @@ import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventTopic;
+import de.u5b.pikdroid.system.InputSystem;
 
 /**
  * The OpenGLSurface on Android Devices
@@ -19,6 +20,7 @@ import de.u5b.pikdroid.manager.event.EventTopic;
 public class MySurfaceView extends GLSurfaceView {
 
     private Engine engine;
+    private InputSystem inputSystem;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -39,6 +41,7 @@ public class MySurfaceView extends GLSurfaceView {
     public void setEngine(Engine engine) {
         setRenderer(new RenderSystem(engine));
         this.engine = engine;
+        inputSystem = engine.getSystemManager().getSystem(InputSystem.class);
     }
 
     @Override
@@ -49,19 +52,9 @@ public class MySurfaceView extends GLSurfaceView {
         y = y * (-1.0f);
         y *= (float)getHeight() / (float)getWidth();
 
-        System.out.println("x: " + x + "y: " + y);
-
-        float[] matrix = new float[16];
-        Matrix.setIdentityM(matrix,0);
-
-        Matrix.translateM(matrix,0,x ,y, 0.0f);
-
-        Entity entity = new Entity();
-        entity.addComponent(new Pose(matrix));
-
-        // async queued event
-        engine.getEventManager().publishQueued(new Event(EventTopic.SET_USER_TARGET, entity));
+        inputSystem.onPressed(x,y);
         return true;
     }
+
 
 }

@@ -24,7 +24,7 @@ public class SystemManager extends AManager {
     }
 
     public void startGame() {
-        //systems.add(new InputSystem(engine));
+        systems.add(new InputSystem(engine));
         systems.add(new HintSystem(engine));
         systems.add(new DetectSystem(engine));
         systems.add(new EnergySystem(engine));
@@ -39,4 +39,18 @@ public class SystemManager extends AManager {
         }
     }
 
+    /**
+     * Returns the System
+     * @param type Type of the System
+     * @param <T>
+     * @return
+     */
+    public <T extends ASystem> T getSystem(Class<T> type) {
+        for (ASystem system : systems) {
+            if(type.isInstance(system)) {
+                return type.cast(system);
+            }
+        }
+        return null;
+    }
 }
