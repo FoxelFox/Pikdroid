@@ -1,21 +1,16 @@
 package de.u5b.pikdroid.android;
 
 import android.app.Activity;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.InputSystem;
-import de.u5b.pikdroid.system.render.MySurfaceView;
 import de.u5b.pikdroid.system.render.RenderSystem;
 
 /**

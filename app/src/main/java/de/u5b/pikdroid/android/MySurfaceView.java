@@ -1,16 +1,10 @@
-package de.u5b.pikdroid.system.render;
+package de.u5b.pikdroid.android;
 
 import android.content.Context;
-import android.opengl.Matrix;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import de.u5b.pikdroid.component.Pose;
-import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.manager.entity.Entity;
-import de.u5b.pikdroid.manager.event.Event;
-import de.u5b.pikdroid.manager.event.EventTopic;
 import de.u5b.pikdroid.system.InputSystem;
 
 /**
@@ -20,6 +14,7 @@ import de.u5b.pikdroid.system.InputSystem;
 public class MySurfaceView extends GLSurfaceView {
 
     private InputSystem inputSystem;
+    private float lastX, lastY;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -46,10 +41,23 @@ public class MySurfaceView extends GLSurfaceView {
 
         float x = event.getX() / (float)getWidth() * 2.0f - 1.0f;
         float y = event.getY() / (float)getHeight() * 2.0f - 1.0f;
-        y = y * (-1.0f);
-        y *= (float)getHeight() / (float)getWidth();
+        y = y * (-1.0f) * (float)getHeight() / (float)getWidth();
 
-        inputSystem.onPressed(x,y);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                inputSystem.onPressed(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                inputSystem.onRelesed(x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                inputSystem.onMoved(x - lastX, y - lastY);
+                break;
+        }
+
+        lastX = x;
+        lastY = y;
+
         return true;
     }
 
