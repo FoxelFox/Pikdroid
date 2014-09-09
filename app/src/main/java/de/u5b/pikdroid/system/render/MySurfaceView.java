@@ -19,7 +19,6 @@ import de.u5b.pikdroid.system.InputSystem;
  */
 public class MySurfaceView extends GLSurfaceView {
 
-    private Engine engine;
     private InputSystem inputSystem;
 
     public MySurfaceView(Context context) {
@@ -38,10 +37,8 @@ public class MySurfaceView extends GLSurfaceView {
         setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
     }
 
-    public void setEngine(Engine engine) {
-        setRenderer(new RenderSystem(engine));
-        this.engine = engine;
-        inputSystem = engine.getSystemManager().getSystem(InputSystem.class);
+    public void setInputHandler(InputSystem inputHandler) {
+        inputSystem = inputHandler;
     }
 
     @Override

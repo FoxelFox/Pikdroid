@@ -14,7 +14,9 @@ import org.w3c.dom.Text;
 
 import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.system.InputSystem;
 import de.u5b.pikdroid.system.render.MySurfaceView;
+import de.u5b.pikdroid.system.render.RenderSystem;
 
 /**
  * The main AndroidActivity
@@ -46,7 +48,8 @@ public class PikdroidActivity extends Activity {
         engine = new Engine(this);
         engine.play();
 
-        view.setEngine(engine);
+        view.setRenderer(engine.getSystemManager().getSystem(RenderSystem.class));
+        view.setInputHandler(engine.getSystemManager().getSystem(InputSystem.class));
 
 
     }
