@@ -1,6 +1,10 @@
 package de.u5b.pikdroid.manager;
 
+import java.util.ArrayList;
+
 import de.u5b.pikdroid.game.Engine;
+import de.u5b.pikdroid.system.ASystem;
+import de.u5b.pikdroid.system.InputSystem;
 import de.u5b.pikdroid.system.detect.DetectSystem;
 import de.u5b.pikdroid.system.EnergySystem;
 import de.u5b.pikdroid.system.HintSystem;
@@ -12,36 +16,27 @@ import de.u5b.pikdroid.system.render.RenderSystem;
  * Created by Foxel on 18.08.2014.
  */
 public class SystemManager extends AManager {
-    PikdroidSystem pikdroidSystem;
-    RenderSystem renderSystem;
-    DetectSystem detectSystem;
-    MovementSystem movementSystem;
-    EnergySystem energySystem;
-    HintSystem hintSystem;
+    private ArrayList<ASystem> systems;
 
     public SystemManager(Engine engine){
         super(engine);
-
+        systems = new ArrayList<ASystem>(16);
     }
 
     public void startGame() {
-        pikdroidSystem = new PikdroidSystem(engine);
-        renderSystem = new RenderSystem(engine);
-        detectSystem = new DetectSystem(engine);
-        movementSystem = new MovementSystem(engine);
-        energySystem = new EnergySystem(engine);
-        hintSystem = new HintSystem(engine);
-
+        //systems.add(new InputSystem(engine));
+        systems.add(new HintSystem(engine));
+        systems.add(new DetectSystem(engine));
+        systems.add(new EnergySystem(engine));
+        systems.add(new MovementSystem(engine));
+        systems.add(new PikdroidSystem(engine));
+        systems.add(new RenderSystem(engine));
     }
 
     public void update() {
-        hintSystem.update();
-        detectSystem.update();
-        energySystem.update();
-        movementSystem.update();
-        pikdroidSystem.update();
-        renderSystem.update();
-
+        for (ASystem system : systems) {
+            system.update();
+        }
     }
 
 }
