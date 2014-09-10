@@ -13,6 +13,8 @@ import de.u5b.pikdroid.manager.event.EventTopic;
  */
 public class InputSystem extends ASystem{
 
+    private float pressedX, pressedY; // for distance calc between pressed and released point
+
     public InputSystem(Engine engine) {
         super(engine);
     }
@@ -38,10 +40,20 @@ public class InputSystem extends ASystem{
 
         // async queued event
         eventManager.publishQueued(new Event(EventTopic.SET_USER_TARGET, entity));
+
+        pressedX = x;
+        pressedY = y;
     }
 
-    public void onRelesed(float x, float y) {
+    public void onReleased(float x, float y) {
+        float xx = (x - pressedX);
+        float yy = (y - pressedY);
+        xx *= xx;
+        yy *= yy;
 
+        float dist = (float)Math.sqrt(xx + yy);
+
+        //TODO: create a target circle for pikdroids
     }
 
     public void onMoved(float dx, float dy) {

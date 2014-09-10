@@ -48,7 +48,7 @@ public class MySurfaceView extends GLSurfaceView {
                 inputSystem.onPressed(x, y);
                 break;
             case MotionEvent.ACTION_UP:
-                inputSystem.onRelesed(x, y);
+                inputSystem.onReleased(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 inputSystem.onMoved(x - lastX, y - lastY);
