@@ -119,7 +119,9 @@ public class PikdroidSystem extends ASystem {
         pose.translate(0,0,-0.2f);
 
         pikdroid.addComponent(pose);
-        pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f }));
+        pikdroid.addComponent(new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f },
+                              Visual.Shading.UniformColor,
+                              Visual.Geometry.Quad));
         pikdroid.addComponent(movement);
         pikdroid.addComponent(energy);
         pikdroid.addComponent(new Detectable(DetectHint.PIKDROID));
@@ -208,7 +210,9 @@ public class PikdroidSystem extends ASystem {
         Pose pose = new Pose();
         pose.translate(randomValue(20.0f),randomValue(20.0f),0.8f);
 
-        Visual vis = new Visual(new float[] { 1.0f,  0.75f, 0.0f, 1.0f });
+        Visual vis = new Visual(new float[] { 1.0f,  0.75f, 0.0f, 1.0f },
+                                Visual.Shading.UniformColor,
+                                Visual.Geometry.Quad);
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100,0);
@@ -236,7 +240,9 @@ public class PikdroidSystem extends ASystem {
 
         Energy energy = new Energy(1000,1000,800);
 
-        Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f });
+        Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f },
+                                   Visual.Shading.UniformColor,
+                                   Visual.Geometry.Quad);
         visual.scale(2.0f, 2.0f, 1.0f);
 
         base.addComponent(pose);
@@ -259,7 +265,9 @@ public class PikdroidSystem extends ASystem {
         Detectable detectable = new Detectable(DetectHint.ENEMY);
         final Detector detector = new Detector();
 
-        final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f });
+        final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f },
+                                         Visual.Shading.UniformColor,
+                                         Visual.Geometry.Quad);
         visual.scale(1.0f, 1.0f, 1.0f);
 
         final Movement move = new Movement(0.09f,8.0f,0.3f);
@@ -315,7 +323,9 @@ public class PikdroidSystem extends ASystem {
     private void buildUserTarget() {
         userTarget = new Entity();
 
-        Visual visual = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 1.0f });
+        Visual visual = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 1.0f },
+                                   Visual.Shading.UniformColor,
+                                   Visual.Geometry.Quad);
         visual.scale(1.0f, 1.0f, 1.0f);
 
         Pose pose = new Pose();

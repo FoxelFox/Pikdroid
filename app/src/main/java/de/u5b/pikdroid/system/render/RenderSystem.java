@@ -4,6 +4,10 @@ import android.opengl.Matrix;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,31 +23,19 @@ import de.u5b.pikdroid.manager.event.EventTopic;
 import de.u5b.pikdroid.system.ASystem;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
 import de.u5b.pikdroid.system.render.object.ARenderObject;
+import de.u5b.pikdroid.system.render.object.RenderObjectFactory;
 import de.u5b.pikdroid.system.render.object.UniformColorRenderObject;
+import de.u5b.pikdroid.system.render.shader.Shader;
+import de.u5b.pikdroid.system.render.shader.ShaderLibrary;
 
 /**
  * The RenderSystem draws Entities that have an Visual Component
  * Created by Foxel on 13.08.2014.
  */
 public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
-    private final String vertexShaderCode =
 
-            "attribute vec4 vPosition;" +
-            "uniform mat4 uMP;" +
-            "uniform mat4 uView;" +
-            "void main(){" +
-            "  gl_Position = uView * uMP * vPosition;" +
-            "}";
-
-    private final String fragmentShaderCode =
-            "precision mediump float;" +
-            "uniform vec4 uColor;" +
-            "void main() {" +
-            "  gl_FragColor = uColor;" +
-            "}";
-
-    private int shaderProgram;
-    private TreeMap<Integer, ARenderObject> renderObjects;
+    private ShaderLibrary shaderLibrary;
+    private HashMap<Visual.Shading, TreeMap<Integer, ARenderObject>> renderObjects;
     private float[] viewMatrix;
     private Engine engine; // TODO: this is only for update call --> remove this later
 
@@ -55,7 +47,8 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         eventManager.subscribe(EventTopic.ENTITY_CREATED,this);
         eventManager.subscribe(EventTopic.ENTITY_DELETED,this);
 
-        renderObjects = new TreeMap<Integer, ARenderObject>();
+        renderObjects = new HashMap<Visual.Shading, TreeMap<Integer, ARenderObject>>();
+        shaderLibrary = new ShaderLibrary();
         viewMatrix = new float[16];
     }
 
@@ -80,8 +73,6 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         GLES20.glEnable( GLES20.GL_DEPTH_TEST );
         GLES20.glDepthFunc( GLES20.GL_LEQUAL );
         GLES20.glDepthMask( true );
-
-        shaderProgram = createShader(vertexShaderCode, fragmentShaderCode);
     }
 
     @Override
@@ -104,25 +95,37 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         engine.update();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        GLES20.glUseProgram(shaderProgram);
-
-
-        int uView = GLES20.glGetUniformLocation(shaderProgram, "uView");
-        int vPosition = GLES20.glGetAttribLocation(shaderProgram, "vPosition");
-        int uMPi = GLES20.glGetUniformLocation(shaderProgram,"uMP");
-        int uColor = GLES20.glGetUniformLocation(shaderProgram, "uColor");
-
-
-        GLES20.glUniformMatrix4fv(uView,1,false,viewMatrix,0);
 
 
 
-        // draw all objects
-        for (Map.Entry<Integer, ARenderObject> entry : renderObjects.entrySet()) {
-            GLES20.glEnableVertexAttribArray(vPosition);
-            entry.getValue().draw(vPosition, uMPi, uColor);
-            GLES20.glDisableVertexAttribArray(vPosition);
+
+
+        Iterator it = renderObjects.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+
+            // get the shader for the next objects to draw
+            Shader shader = ShaderLibrary.getShader((Visual.Shading)pairs.getKey());
+            shader.use();
+
+            // get the List that contains the object
+            TreeMap<Integer, ARenderObject> objList = (TreeMap<Integer, ARenderObject>)pairs.getValue();
+
+            // Set Uniform Values
+            int uView = GLES20.glGetUniformLocation(shader.getId(), "uView");
+            GLES20.glUniformMatrix4fv(uView,1,false,viewMatrix,0);
+
+            for (Map.Entry<Integer, ARenderObject> obj : objList.entrySet()) {
+                obj.getValue().calcMP();
+
+                GLES20.glEnableVertexAttribArray(0);
+                obj.getValue().draw();
+                GLES20.glDisableVertexAttribArray(0);
+            }
         }
+
+
+
     }
 
     private void onEntityCreated(Event event) {
@@ -132,17 +135,24 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
         // get the visual component
         Visual visual = (Visual)event.getEntity().getComponent(Component.Type.VISUAL);
-        float[] color = visual.getColor();
         float[] modelMatrix = visual.getModelMatrix();
 
-        // add a new RenderObject to the renderObject List
-        renderObjects.put(event.getEntity().getID(), new UniformColorRenderObject(MeshFactory.getQuad(), color, poseMatrix, modelMatrix));
+        // Add a new RenderObject to the renderObject Collection
+        if(!renderObjects.containsKey(visual.getShading())) {
+            renderObjects.put(visual.getShading(), new TreeMap<Integer, ARenderObject>());
+        }
 
-
+        ARenderObject rObj = RenderObjectFactory.create(visual);
+        rObj.setModelMatrix(modelMatrix);
+        rObj.setPoseMatrix(poseMatrix);
+        renderObjects.get(visual.getShading()).put(event.getEntity().getID(),rObj);
     }
 
     private void onEntityDeleted(Event event) {
-        renderObjects.remove(event.getEntity().getID());
+        if (event.getEntity().hasComponent(Component.Type.VISUAL)) {
+            Visual visual = (Visual) event.getEntity().getComponent(Component.Type.VISUAL);
+            renderObjects.get(visual.getShading()).remove(event.getEntity().getID());
+        }
     }
 
     private static int createShader(String vertex, String fragment) {

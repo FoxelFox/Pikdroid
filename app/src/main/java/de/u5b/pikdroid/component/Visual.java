@@ -9,15 +9,33 @@ import android.opengl.Matrix;
 public class Visual extends Component{
     private float[] color;          // The Color for an Entity
     private float[] modelMatrix;
+    private Shading shading;
 
-    public Visual(float[] color) {
+    private Geometry geometryType;
+    private String geometryName;
+
+    public Visual(float[] color, Shading shading, Geometry geometryType) {
         this.color = color;
+        this.shading = shading;
+        this.geometryType = geometryType;
         modelMatrix = new float[16];
         Matrix.setIdentityM(modelMatrix,0);
     }
 
     public float[] getColor() {
         return color;
+    }
+
+    public Shading getShading() {
+        return shading;
+    }
+
+    public Geometry getGeometryType() {
+        return geometryType;
+    }
+
+    public String getGeometryName() {
+        return geometryName;
     }
 
     public void scale(float x, float y, float z) {
@@ -35,5 +53,16 @@ public class Visual extends Component{
     @Override
     public Type getType() {
         return Type.VISUAL;
+    }
+
+    public enum Shading {
+        TextureColor,
+        UniformColor,
+    }
+
+    public enum Geometry {
+        Triangle,
+        Quad,
+        Model,
     }
 }

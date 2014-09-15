@@ -71,7 +71,9 @@ public class HintSystem extends ASystem {
     private Entity createHint(Pose pose) {
         Entity hint = new Entity();
 
-        Visual vis = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 0.1f });
+        Visual vis = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 0.1f },
+                                Visual.Shading.UniformColor,
+                                Visual.Geometry.Quad);
 
         Detectable detectable = new Detectable(DetectHint.FOOD_MARK);
 
