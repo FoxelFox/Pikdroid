@@ -21,7 +21,10 @@
 
 
         </activity>
-        <activity android:name="de.u5b.pikdroid.android.PikdroidActivity" />
+        <activity
+            android:name="de.u5b.pikdroid.android.PikdroidActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
