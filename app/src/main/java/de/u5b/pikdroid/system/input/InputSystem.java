@@ -1,4 +1,4 @@
-package de.u5b.pikdroid.system;
+package de.u5b.pikdroid.system.input;
 
 import android.opengl.Matrix;
 
@@ -7,11 +7,12 @@ import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventTopic;
+import de.u5b.pikdroid.system.ASystem;
 
 /**
  * Created by Foxel on 09.09.2014.
  */
-public class InputSystem extends ASystem{
+public class InputSystem extends ASystem {
 
     private float pressedX, pressedY; // for distance calc between pressed and released point
 

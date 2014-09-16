@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import de.u5b.pikdroid.system.InputSystem;
+import de.u5b.pikdroid.system.input.InputSystem;
 
 /**
  * The OpenGLSurface on Android Devices

@@ -1,4 +1,4 @@
-package de.u5b.pikdroid.system;
+package de.u5b.pikdroid.system.move;
 
 import java.util.ArrayList;
 
@@ -9,15 +9,17 @@ import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventTopic;
+import de.u5b.pikdroid.system.ASystem;
 
 /**
+ * The MoveSystem will try to move Entities to his targets.
  * Created by Foxel on 29.08.2014.
  */
-public class MovementSystem extends ASystem {
+public class MoveSystem extends ASystem {
 
     ArrayList<Entity> moveableList;
 
-    public MovementSystem(Engine engine) {
+    public MoveSystem(Engine engine) {
         super(engine);
         moveableList = new ArrayList<Entity>();
         eventManager.subscribe(EventTopic.ENTITY_CREATED, this);
@@ -31,9 +33,6 @@ public class MovementSystem extends ASystem {
         }
     }
 
-    /**
-     *
-     */
     @Override
     public void update() {
         Movement move;

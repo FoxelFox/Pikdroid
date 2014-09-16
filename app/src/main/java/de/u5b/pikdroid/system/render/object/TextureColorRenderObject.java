@@ -1,12 +1,11 @@
 package de.u5b.pikdroid.system.render.object;
 
 import android.opengl.GLES20;
-import android.opengl.Matrix;
 
 import de.u5b.pikdroid.component.Visual;
-import de.u5b.pikdroid.system.render.mesh.Mesh;
 
 /**
+ * A colored Object by an Texture
  * Created by Foxel on 10.09.2014.
  */
 public class TextureColorRenderObject extends ARenderObject{

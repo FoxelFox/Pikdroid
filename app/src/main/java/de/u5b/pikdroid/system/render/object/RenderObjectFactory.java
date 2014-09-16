@@ -2,9 +2,9 @@ package de.u5b.pikdroid.system.render.object;
 
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
-import de.u5b.pikdroid.system.render.shader.ShaderLibrary;
 
 /**
+ * Creates a RenderObject based on the VisualComponent for an Entity.
  * Created by Foxel on 11.09.2014.
  */
 public class RenderObjectFactory {

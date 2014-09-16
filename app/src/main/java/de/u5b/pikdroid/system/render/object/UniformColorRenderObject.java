@@ -1,12 +1,8 @@
 package de.u5b.pikdroid.system.render.object;
 
-
 import android.opengl.GLES20;
-import android.opengl.Matrix;
 
 import de.u5b.pikdroid.component.Visual;
-import de.u5b.pikdroid.system.render.mesh.Mesh;
-import de.u5b.pikdroid.system.render.shader.Shader;
 
 /**
  * A Basic Object colored by an uniform in the shader

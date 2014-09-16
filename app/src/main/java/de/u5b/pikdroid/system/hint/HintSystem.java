@@ -1,4 +1,4 @@
-package de.u5b.pikdroid.system;
+package de.u5b.pikdroid.system.hint;
 
 import android.util.Pair;
 
@@ -13,6 +13,7 @@ import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.manager.entity.Entity;
 import de.u5b.pikdroid.manager.event.Event;
 import de.u5b.pikdroid.manager.event.EventTopic;
+import de.u5b.pikdroid.system.ASystem;
 
 /**
  * Created by Foxel on 30.08.2014.

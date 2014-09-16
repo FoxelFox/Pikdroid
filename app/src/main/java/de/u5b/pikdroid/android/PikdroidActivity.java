@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import de.u5b.pikdroid.R;
 import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.system.InputSystem;
+import de.u5b.pikdroid.system.input.InputSystem;
 import de.u5b.pikdroid.system.render.RenderSystem;
 
 /**

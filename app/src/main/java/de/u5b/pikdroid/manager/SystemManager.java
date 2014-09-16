@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import de.u5b.pikdroid.game.Engine;
 import de.u5b.pikdroid.system.ASystem;
-import de.u5b.pikdroid.system.InputSystem;
+import de.u5b.pikdroid.system.input.InputSystem;
 import de.u5b.pikdroid.system.detect.DetectSystem;
-import de.u5b.pikdroid.system.EnergySystem;
-import de.u5b.pikdroid.system.HintSystem;
-import de.u5b.pikdroid.system.MovementSystem;
+import de.u5b.pikdroid.system.energy.EnergySystem;
+import de.u5b.pikdroid.system.hint.HintSystem;
+import de.u5b.pikdroid.system.move.MoveSystem;
 import de.u5b.pikdroid.system.pikdroid.PikdroidSystem;
 import de.u5b.pikdroid.system.render.RenderSystem;
 
@@ -28,7 +28,7 @@ public class SystemManager extends AManager {
         systems.add(new HintSystem(engine));
         systems.add(new DetectSystem(engine));
         systems.add(new EnergySystem(engine));
-        systems.add(new MovementSystem(engine));
+        systems.add(new MoveSystem(engine));
         systems.add(new PikdroidSystem(engine));
         systems.add(new RenderSystem(engine));
     }
