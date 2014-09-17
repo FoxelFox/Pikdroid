@@ -3,7 +3,6 @@ package de.u5b.pikdroid.system.render.mesh;
 import java.util.HashMap;
 
 import de.u5b.pikdroid.component.Visual;
-import de.u5b.pikdroid.system.render.shader.Shader;
 
 /**
  * The MeshFactory creates Basic Meshes that are ready to use.

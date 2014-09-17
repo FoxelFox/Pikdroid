@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render.object;
 
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 
 import de.u5b.pikdroid.component.Visual;
 
@@ -17,7 +17,7 @@ public class UniformColorRenderObject extends ARenderObject{
         super(visual);
 
         this.color = visual.getColor();
-        colorIndex = GLES20.glGetUniformLocation(shader.getId(), "uColor");
+        colorIndex = glGetUniformLocation(shader.getId(), "uColor");
     }
 
 
@@ -25,9 +25,9 @@ public class UniformColorRenderObject extends ARenderObject{
     public void draw() {
 
         // set uniform shader color
-        GLES20.glUniform4fv(colorIndex,1,color,0);
-        GLES20.glUniform4fv(modelPoseMatrixIndex,1,modelPoseMatrix,0);
-        GLES20.glUniformMatrix4fv(modelPoseMatrixIndex,1,false,modelPoseMatrix,0);
+        glUniform4fv(colorIndex,1,color,0);
+        glUniform4fv(modelPoseMatrixIndex,1,modelPoseMatrix,0);
+        glUniformMatrix4fv(modelPoseMatrixIndex,1,false,modelPoseMatrix,0);
 
         mesh.draw();
     }

@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render.object;
 
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 import android.opengl.Matrix;
 
 import de.u5b.pikdroid.component.Visual;
@@ -27,7 +27,7 @@ public abstract class ARenderObject {
     public ARenderObject(Visual visual) {
         shader = ShaderLibrary.getShader(visual.getShading());
         modelPoseMatrix = new float[16];
-        modelPoseMatrixIndex = GLES20.glGetUniformLocation(shader.getId(), "uMP");
+        modelPoseMatrixIndex = glGetUniformLocation(shader.getId(), "uMP");
     }
 
     public abstract void draw();

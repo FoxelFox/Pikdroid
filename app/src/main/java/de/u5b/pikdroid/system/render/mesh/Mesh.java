@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render.mesh;
 
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -35,7 +35,7 @@ public class Mesh {
         vertexCount = vertices.length / 3;
         attributes = new int[1];
 
-        attributes[0] = GLES20.glGetAttribLocation(ShaderLibrary.getShader(shading).getId(), "vPosition");
+        attributes[0] = glGetAttribLocation(ShaderLibrary.getShader(shading).getId(), "vPosition");
 
     }
 
@@ -43,8 +43,8 @@ public class Mesh {
      * Draw the Mesh in OpenGL to a Screen or Framebuffer
      */
     public void draw() {
-        GLES20.glVertexAttribPointer(attributes[0], 3, GLES20.GL_FLOAT, false, 0, vfb);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
+        glVertexAttribPointer(attributes[0], 3, GL_FLOAT, false, 0, vfb);
+        glDrawArrays(GL_TRIANGLES, 0, vertexCount);
     }
 
 }

@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render.object;
 
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 
 import de.u5b.pikdroid.component.Visual;
 
@@ -16,7 +16,7 @@ public class TextureColorRenderObject extends ARenderObject{
 
     @Override
     public void draw() {
-        GLES20.glUniformMatrix4fv(shader.getId(),1,false,modelPoseMatrix,0);
+        glUniformMatrix4fv(shader.getId(),1,false,modelPoseMatrix,0);
         mesh.draw();
     }
 }

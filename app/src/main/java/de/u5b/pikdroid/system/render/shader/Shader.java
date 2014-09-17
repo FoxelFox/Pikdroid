@@ -1,6 +1,6 @@
 package de.u5b.pikdroid.system.render.shader;
 
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 
 /**
  * A simple structure for shader sources
@@ -21,19 +21,19 @@ public class Shader {
     }
 
     private void build() {
-        int vs = compile(GLES20.GL_VERTEX_SHADER, vertex);
-        int fs = compile(GLES20.GL_FRAGMENT_SHADER, fragment);
-        id = GLES20.glCreateProgram();
+        int vs = compile(GL_VERTEX_SHADER, vertex);
+        int fs = compile(GL_FRAGMENT_SHADER, fragment);
+        id = glCreateProgram();
 
-        GLES20.glAttachShader(id, vs);
-        GLES20.glAttachShader(id, fs);
-        GLES20.glLinkProgram(id);
+        glAttachShader(id, vs);
+        glAttachShader(id, fs);
+        glLinkProgram(id);
     }
 
     private static int compile(int type, String code) {
-        int shader = GLES20.glCreateShader(type);
-        GLES20.glShaderSource(shader,code);
-        GLES20.glCompileShader(shader);
+        int shader = glCreateShader(type);
+        glShaderSource(shader,code);
+        glCompileShader(shader);
         return shader;
     }
 
@@ -42,7 +42,7 @@ public class Shader {
     }
 
     public void use() {
-        GLES20.glUseProgram(id);
+        glUseProgram(id);
         activeID = id;
     }
 

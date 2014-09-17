@@ -1,8 +1,7 @@
 package de.u5b.pikdroid.system.render;
 
-import android.opengl.Matrix;
-import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +21,8 @@ import de.u5b.pikdroid.system.render.object.ARenderObject;
 import de.u5b.pikdroid.system.render.object.RenderObjectFactory;
 import de.u5b.pikdroid.system.render.shader.Shader;
 import de.u5b.pikdroid.system.render.shader.ShaderLibrary;
+
+import static android.opengl.GLES20.*;
 
 /**
  * The RenderSystem draws Entities that have an Visual Component
@@ -60,17 +61,17 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-        GLES20.glDepthMask(true);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glDepthMask(true);
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        GLES20.glViewport(0, 0, width, height);
+        glViewport(0, 0, width, height);
 
         Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
         float[] cam = new float[16];
@@ -84,7 +85,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         // TODO: remove this update
         engine.update();
 
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         for (Object o : renderObjects.entrySet()) {
             Map.Entry visualTree = (Map.Entry) o;
@@ -97,15 +98,15 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
             TreeMap<Integer, ARenderObject> objList = (TreeMap<Integer, ARenderObject>) visualTree.getValue();
 
             // Set Uniform Values
-            int uView = GLES20.glGetUniformLocation(shader.getId(), "uView");
-            GLES20.glUniformMatrix4fv(uView, 1, false, viewMatrix, 0);
+            int uView = glGetUniformLocation(shader.getId(), "uView");
+            glUniformMatrix4fv(uView, 1, false, viewMatrix, 0);
 
             for (Map.Entry<Integer, ARenderObject> obj : objList.entrySet()) {
                 obj.getValue().calcMP();
 
-                GLES20.glEnableVertexAttribArray(0);
+                glEnableVertexAttribArray(0);
                 obj.getValue().draw();
-                GLES20.glDisableVertexAttribArray(0);
+                glDisableVertexAttribArray(0);
             }
         }
     }
