@@ -1,8 +1,12 @@
 package de.u5b.pikdroid.system.render.mesh;
 
+import android.opengl.Matrix;
+
+import java.io.InputStream;
 import java.util.HashMap;
 
 import de.u5b.pikdroid.component.Visual;
+import de.u5b.pikdroid.game.Engine;
 
 /**
  * The MeshFactory creates Basic Meshes that are ready to use.
@@ -11,14 +15,27 @@ import de.u5b.pikdroid.component.Visual;
  */
 public class MeshFactory {
 
-    private static HashMap<Visual.Shading, Mesh> triangle = new HashMap<Visual.Shading, Mesh>();
-    private static HashMap<Visual.Shading, Mesh> quad = new HashMap<Visual.Shading, Mesh>();
+    private HashMap<Visual.Shading, Mesh> triangle;
+    private HashMap<Visual.Shading, Mesh> quad;
+
+    private HashMap<Visual.Shading, HashMap<String, Mesh>> meshMap;
+
+    private Engine engine;
+
+    public MeshFactory(Engine engine) {
+        this.engine = engine;
+
+        triangle = new HashMap<Visual.Shading, Mesh>();
+        quad = new HashMap<Visual.Shading, Mesh>();
+        meshMap = new HashMap<Visual.Shading, HashMap<String, Mesh>>();
+
+    }
 
     /**
      * A simple triangle
      * @return Triangle Mesh
      */
-    public static Mesh getTriangle(Visual.Shading shading) {
+    public Mesh getTriangle(Visual.Shading shading) {
         if(!triangle.containsKey(shading))
             triangle.put(shading, createTriangle(shading));
         return triangle.get(shading);
@@ -28,17 +45,42 @@ public class MeshFactory {
      * A simple triangle
      * @return Triangle Mesh
      */
-    public static Mesh getQuad(Visual.Shading shading) {
+    public Mesh getQuad(Visual.Shading shading) {
         if(!quad.containsKey(shading))
             quad.put(shading, createQuad(shading));
         return quad.get(shading);
     }
 
     /**
+     * A Mesh by the filename
+     * @param name file name
+     * @param shading shading shader
+     * @return mesh from file
+     */
+    public Mesh get(String name, Visual.Shading shading) {
+        if(!meshMap.containsKey(shading)) {
+            meshMap.put(shading, new HashMap<String, Mesh>());
+        }
+
+        if(!meshMap.get(shading).containsKey(name)) {
+            meshMap.get(shading).put(name, create(name,shading));
+        }
+
+        return meshMap.get(shading).get(name);
+    }
+
+
+    private Mesh create(String name, Visual.Shading shading) {
+        InputStream file = engine.getInputStream(name + ".dae");
+        ColladaModel colladaModel = new ColladaModel(file);
+        return colladaModel.getMesh();
+    }
+
+    /**
      * Creates a basic Triangle
      * @return
      */
-    private static Mesh createTriangle(Visual.Shading shading) {
+    private Mesh createTriangle(Visual.Shading shading) {
         float vertices[] = {
                 0.0f,  0.5f, 0.0f,
                 -0.5f, -0.5f, 0.0f,
@@ -47,7 +89,7 @@ public class MeshFactory {
         return new Mesh(vertices, shading);
     }
 
-    private static Mesh createQuad(Visual.Shading shading) {
+    private Mesh createQuad(Visual.Shading shading) {
         float vertices[] = {
                 0.5f,  0.5f, 0.0f,
                 -0.5f, -0.5f, 0.0f,
@@ -59,4 +101,5 @@ public class MeshFactory {
         };
         return new Mesh(vertices, shading);
     }
+
 }

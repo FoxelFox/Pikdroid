@@ -1,5 +1,8 @@
 package de.u5b.pikdroid.game;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import de.u5b.pikdroid.android.PikdroidActivity;
 import de.u5b.pikdroid.manager.entity.EntityManager;
 import de.u5b.pikdroid.manager.event.EventManager;
@@ -61,5 +64,14 @@ public class Engine {
 
     public int getPikdroidCount() {
         return pikdroidCount;
+    }
+
+    public InputStream getInputStream(String file) {
+        try {
+            return view.getAssets().open(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

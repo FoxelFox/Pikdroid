@@ -33,6 +33,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     private HashMap<Visual.Shading, TreeMap<Integer, ARenderObject>> renderObjects;
     private float[] viewMatrix;
     private Engine engine; // TODO: this is only for update call --> remove this later
+    private RenderObjectFactory rObjFactory;
 
     public RenderSystem(Engine engine) {
         super(engine);
@@ -43,6 +44,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
         eventManager.subscribe(EventTopic.ENTITY_DELETED,this);
 
         renderObjects = new HashMap<Visual.Shading, TreeMap<Integer, ARenderObject>>();
+        rObjFactory = new RenderObjectFactory(engine);
         viewMatrix = new float[16];
     }
 
@@ -127,7 +129,7 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
                 renderObjects.put(visual.getShading(), new TreeMap<Integer, ARenderObject>());
             }
 
-            ARenderObject rObj = RenderObjectFactory.create(visual);
+            ARenderObject rObj = rObjFactory.create(visual);
             rObj.setModelMatrix(modelMatrix);
             rObj.setPoseMatrix(poseMatrix);
 
