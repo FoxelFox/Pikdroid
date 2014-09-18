@@ -243,6 +243,8 @@ public class PikdroidSystem extends ASystem {
         Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f },
                                    Visual.Shading.UniformColor,
                                    Visual.Geometry.Quad);
+
+        //visual.setGeometryName("circle");
         visual.scale(2.0f, 2.0f, 1.0f);
 
         base.addComponent(pose);

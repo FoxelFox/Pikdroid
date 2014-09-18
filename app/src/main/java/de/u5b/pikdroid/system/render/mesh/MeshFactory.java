@@ -52,10 +52,10 @@ public class MeshFactory {
     }
 
     /**
-     * A Mesh by the filename
-     * @param name file name
-     * @param shading shading shader
-     * @return mesh from file
+     * Returns A mesh that will/was loaded from a file
+     * @param name File name without file extension.
+     * @param shading Visual.Shading Group
+     * @return a mesh from file to draw it
      */
     public Mesh get(String name, Visual.Shading shading) {
         if(!meshMap.containsKey(shading)) {

@@ -38,6 +38,10 @@ public class Visual extends Component{
         return geometryName;
     }
 
+    public void setGeometryName(String name) {
+        this.geometryName = name;
+    }
+
     public void scale(float x, float y, float z) {
         Matrix.scaleM(modelMatrix, 0, x, y, z);
     }

@@ -42,8 +42,7 @@ public class RenderObjectFactory {
                 obj.setMesh(meshFactory.getTriangle(visual.getShading()));
                 break;
             case Model:
-
-
+                obj.setMesh(meshFactory.get(visual.getGeometryName(), visual.getShading()));
                 break;
         }
 
