@@ -21,15 +21,17 @@ import java.util.Scanner;
 public class ColladaModel {
 
     private XmlPullParser parser;
-    private ArrayList<VertexBuffer> buffers;
+    private ArrayList<FloatBuffer> buffers;
+    private ArrayList<Integer> strides;
     private ShortBuffer indices;
+    private Mesh.Semantic[] semantics;
     private int polycount;
 
     public ColladaModel(InputStream file) {
 
         parser = Xml.newPullParser();
-        buffers = new ArrayList<VertexBuffer>();
-
+        buffers = new ArrayList<FloatBuffer>();
+        strides = new ArrayList<Integer>();
 
         try {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -58,18 +60,14 @@ public class ColladaModel {
                     readFloatArray();
                 } else if (parser.getName().equals("accessor")) {
                     // read stride for last VertexBuffer
-                    buffers.get(buffers.size() -1).stride = Integer.parseInt(parser.getAttributeValue(null, "stride"));
+                    strides.add(Integer.parseInt(parser.getAttributeValue(null, "stride")));
                 } else if (parser.getName().equals("polylist")) {
-                    // get the number of polygons
-                    polycount = Integer.parseInt(parser.getAttributeValue(null, "count"));
-                } else if (parser.getName().equals("p")) {
                     readIndexArray();
                     break;
                 }
             }
         }
     }
-
 
     private void readFloatArray() throws XmlPullParserException, IOException {
         int count = Integer.parseInt(parser.getAttributeValue(null, "count"));
@@ -78,33 +76,50 @@ public class ColladaModel {
         Scanner scanner = new Scanner(parser.getText());
         scanner.useLocale(Locale.ENGLISH);
 
+        // allocate memory for FloatBuffer
         ByteBuffer bb = ByteBuffer.allocateDirect(count * 4);
         bb.order(ByteOrder.nativeOrder());
 
-        VertexBuffer vb = new VertexBuffer();
-
         // read step by step the next float value
-        vb.buffer =  bb.asFloatBuffer();
+        FloatBuffer fb = bb.asFloatBuffer();
         while (scanner.hasNextFloat()) {
-            vb.buffer.put(scanner.nextFloat());
+            fb.put(scanner.nextFloat());
         }
-        vb.buffer.position(0);
-        buffers.add(vb);
+        fb.position(0);
+        buffers.add(fb);
     }
 
     private void readIndexArray()  throws XmlPullParserException, IOException {
+        polycount = Integer.parseInt(parser.getAttributeValue(null, "count"));
+
+        // read semantics
+        String semantic;
+        semantics = new Mesh.Semantic[buffers.size()];
+        for (int i = 0; i < buffers.size(); i++) {
+            skipTo("input");
+            semantic = parser.getAttributeValue(null, "semantic");
+            if (semantic.equals(Mesh.Semantic.VERTEX.name())) {
+                semantics[i] = Mesh.Semantic.VERTEX;
+            } else if (semantic.equals(Mesh.Semantic.NORMAL.name())) {
+                semantics[i] = Mesh.Semantic.NORMAL;
+            } else if (semantic.equals(Mesh.Semantic.TEXCOORD.name())) {
+                semantics[i] = Mesh.Semantic.TEXCOORD;
+            }
+        }
+
+        // read Indices
+        skipTo("p");
         parser.next();
         Scanner scanner = new Scanner(parser.getText());
 
-        // read step by step the next index
-        int size = polycount;
-        for (int i = 0; i < buffers.size(); i++) {
-            size *= buffers.get(i).stride;
-        }
+        // calculate Buffer Size
+        int size = polycount * buffers.size() * 3;
 
+        // allocate memory
         ByteBuffer bb = ByteBuffer.allocateDirect(size * 2);
         bb.order(ByteOrder.nativeOrder());
 
+        // read step by step the next index
         indices = bb.asShortBuffer();
         while (scanner.hasNextShort()) {
             indices.put(scanner.nextShort());
@@ -112,33 +127,68 @@ public class ColladaModel {
         indices.position(0);
     }
 
-    private void readSource() throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, null, "source");
-
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-
-            if (parser.getName().equals("float_array")) {
-
-                int cout = Integer.getInteger(parser.getAttributeValue(null, "count"));
-                String values = parser.getText();
-
-                System.out.println(cout + "::" + values);
+    private void skipTo(String name) throws XmlPullParserException, IOException{
+        while (true) {
+            if (parser.next() == XmlPullParser.START_TAG) {
+                if (parser.getName().equals(name)) {
+                    break;
+                }
             }
         }
-
     }
 
-    public Mesh getMesh() {
-
-        return null;
+    public FloatBuffer[] getVertexBuffers() {
+        return (FloatBuffer[])buffers.toArray();
     }
 
-    private class VertexBuffer {
-        private FloatBuffer buffer;
-        private int stride;
+    public FloatBuffer getInterleavedVertexBuffer() {
 
+        int size = 0;
+        int valuePerVertex = 0;
+
+        // calc size per vertex
+        for (Integer stride : strides) {
+            valuePerVertex += stride;
+        }
+        // multiply with polyCount and size of float
+        size = valuePerVertex * polycount * 3;
+
+        // allocate memory for interleaved vertex buffer
+        ByteBuffer bb = ByteBuffer.allocateDirect(size * 4);
+        bb.order(ByteOrder.nativeOrder());
+
+        FloatBuffer interleaved = bb.asFloatBuffer();
+
+        for (int i = 0; i < polycount * (buffers.size() * 3); i += buffers.size()) {   // i vertex
+            for (int j = 0; j < buffers.size(); j++) {          // j buffer
+                for (int k = 0; k < strides.get(j); k++) {      // k offset for entry int j buffer
+                    interleaved.put(buffers.get(j).get(indices.get(i+j) * strides.get(j) +k));
+                    System.out.println(buffers.get(j).get(indices.get(i+j) * strides.get(j) +k));
+                }
+            }
+        }
+        interleaved.position(0);
+        return interleaved;
     }
+
+    public ShortBuffer getIndices() {
+        return indices;
+    }
+
+    public Mesh.Semantic[] getSemantics() {
+        return semantics;
+    }
+
+    public int[] getStrides() {
+        int s[] = new int[strides.size()];
+        for (int i = 0; i < strides.size(); ++i) {
+            s[i] = strides.get(i);
+        }
+        return s;
+    }
+
+    public int getPolyCount() {
+        return polycount;
+    }
+
 }

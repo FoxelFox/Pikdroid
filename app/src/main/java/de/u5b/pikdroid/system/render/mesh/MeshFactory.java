@@ -1,7 +1,5 @@
 package de.u5b.pikdroid.system.render.mesh;
 
-import android.opengl.Matrix;
-
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -35,22 +33,24 @@ public class MeshFactory {
      * A simple triangle
      * @return Triangle Mesh
      */
+    /*
     public Mesh getTriangle(Visual.Shading shading) {
         if(!triangle.containsKey(shading))
             triangle.put(shading, createTriangle(shading));
         return triangle.get(shading);
     }
-
+    */
     /**
      * A simple triangle
      * @return Triangle Mesh
      */
+    /*
     public Mesh getQuad(Visual.Shading shading) {
         if(!quad.containsKey(shading))
             quad.put(shading, createQuad(shading));
         return quad.get(shading);
     }
-
+    */
     /**
      * Returns A mesh that will/was loaded from a file
      * @param name File name without file extension.
@@ -72,14 +72,17 @@ public class MeshFactory {
 
     private Mesh create(String name, Visual.Shading shading) {
         InputStream file = engine.getInputStream(name + ".dae");
-        ColladaModel colladaModel = new ColladaModel(file);
-        return colladaModel.getMesh();
+        ColladaModel model = new ColladaModel(file);
+
+        return new Mesh(model.getInterleavedVertexBuffer(), model.getPolyCount(), model.getSemantics(), model.getStrides(), shading );
     }
 
     /**
      * Creates a basic Triangle
      * @return
      */
+
+    /*
     private Mesh createTriangle(Visual.Shading shading) {
         float vertices[] = {
                 0.0f,  0.5f, 0.0f,
@@ -101,5 +104,5 @@ public class MeshFactory {
         };
         return new Mesh(vertices, shading);
     }
-
+    */
 }

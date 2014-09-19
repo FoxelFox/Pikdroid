@@ -65,8 +65,8 @@ public class Visual extends Component{
     }
 
     public enum Geometry {
-        Triangle,
-        Quad,
+       // Triangle,
+       // Quad,
         Model,
     }
 }

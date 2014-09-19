@@ -35,12 +35,12 @@ public class RenderObjectFactory {
 
         // Add geometry
         switch (visual.getGeometryType()) {
-            case Quad:
-                obj.setMesh(meshFactory.getQuad(visual.getShading()));
-                break;
-            case Triangle:
-                obj.setMesh(meshFactory.getTriangle(visual.getShading()));
-                break;
+            //case Quad:
+            //    obj.setMesh(meshFactory.getQuad(visual.getShading()));
+            //    break;
+            //case Triangle:
+            //    obj.setMesh(meshFactory.getTriangle(visual.getShading()));
+            //    break;
             case Model:
                 obj.setMesh(meshFactory.get(visual.getGeometryName(), visual.getShading()));
                 break;
