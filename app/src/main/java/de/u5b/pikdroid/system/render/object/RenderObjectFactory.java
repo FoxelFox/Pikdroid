@@ -1,11 +1,7 @@
 package de.u5b.pikdroid.system.render.object;
 
-import java.io.InputStream;
-
 import de.u5b.pikdroid.component.Visual;
 import de.u5b.pikdroid.game.Engine;
-import de.u5b.pikdroid.system.input.InputSystem;
-import de.u5b.pikdroid.system.render.mesh.ColladaModel;
 import de.u5b.pikdroid.system.render.mesh.MeshFactory;
 
 /**
@@ -33,19 +29,8 @@ public class RenderObjectFactory {
                 break;
         }
 
-        // Add geometry
-        switch (visual.getGeometryType()) {
-            //case Quad:
-            //    obj.setMesh(meshFactory.getQuad(visual.getShading()));
-            //    break;
-            //case Triangle:
-            //    obj.setMesh(meshFactory.getTriangle(visual.getShading()));
-            //    break;
-            case Model:
-                obj.setMesh(meshFactory.get(visual.getGeometryName(), visual.getShading()));
-                break;
-        }
-
+        // load and set the geometry to draw from file
+        obj.setMesh(meshFactory.get(visual.getModelName(), visual.getShading()));
         return obj;
     }
 }

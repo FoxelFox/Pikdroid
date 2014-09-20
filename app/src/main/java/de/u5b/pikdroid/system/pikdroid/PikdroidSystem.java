@@ -105,7 +105,6 @@ public class PikdroidSystem extends ASystem {
     /**
      * Build a new Pikdroid
      * @param pose position
-     * @return a new Pikdroid Entity
      */
     private void buildPikdroid(Pose pose) {
         final Entity pikdroid = new Entity();
@@ -121,8 +120,7 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(pose);
         Visual visual = new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f },
                                    Visual.Shading.UniformColor,
-                                   Visual.Geometry.Model);
-        visual.setGeometryName("circle");
+                                   "quad");
         pikdroid.addComponent(visual);
 
         pikdroid.addComponent(movement);
@@ -215,8 +213,7 @@ public class PikdroidSystem extends ASystem {
 
         Visual vis = new Visual(new float[] { 1.0f,  0.75f, 0.0f, 1.0f },
                                 Visual.Shading.UniformColor,
-                                Visual.Geometry.Model);
-        vis.setGeometryName("quad");
+                                "circle");
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100,0);
@@ -246,9 +243,8 @@ public class PikdroidSystem extends ASystem {
 
         Visual visual = new Visual(new float[] { 0.0f, 1.0f, 0.5f, 1.0f },
                                    Visual.Shading.UniformColor,
-                                   Visual.Geometry.Model);
+                                   "circle");
 
-        visual.setGeometryName("circle");
         visual.scale(2.0f, 2.0f, 1.0f);
 
         base.addComponent(pose);
@@ -273,8 +269,7 @@ public class PikdroidSystem extends ASystem {
 
         final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f },
                                          Visual.Shading.UniformColor,
-                                         Visual.Geometry.Model);
-        visual.setGeometryName("quad");
+                                         "quad");
         visual.scale(1.0f, 1.0f, 1.0f);
 
         final Movement move = new Movement(0.09f,8.0f,0.3f);
@@ -332,8 +327,7 @@ public class PikdroidSystem extends ASystem {
 
         Visual visual = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 1.0f },
                                    Visual.Shading.UniformColor,
-                                   Visual.Geometry.Model);
-        visual.setGeometryName("quad");
+                                   "circle");
         visual.scale(1.0f, 1.0f, 1.0f);
 
         Pose pose = new Pose();

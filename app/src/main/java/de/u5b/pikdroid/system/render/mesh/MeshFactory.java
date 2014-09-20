@@ -13,44 +13,15 @@ import de.u5b.pikdroid.game.Engine;
  */
 public class MeshFactory {
 
-    private HashMap<Visual.Shading, Mesh> triangle;
-    private HashMap<Visual.Shading, Mesh> quad;
-
     private HashMap<Visual.Shading, HashMap<String, Mesh>> meshMap;
 
     private Engine engine;
 
     public MeshFactory(Engine engine) {
         this.engine = engine;
-
-        triangle = new HashMap<Visual.Shading, Mesh>();
-        quad = new HashMap<Visual.Shading, Mesh>();
         meshMap = new HashMap<Visual.Shading, HashMap<String, Mesh>>();
-
     }
 
-    /**
-     * A simple triangle
-     * @return Triangle Mesh
-     */
-    /*
-    public Mesh getTriangle(Visual.Shading shading) {
-        if(!triangle.containsKey(shading))
-            triangle.put(shading, createTriangle(shading));
-        return triangle.get(shading);
-    }
-    */
-    /**
-     * A simple triangle
-     * @return Triangle Mesh
-     */
-    /*
-    public Mesh getQuad(Visual.Shading shading) {
-        if(!quad.containsKey(shading))
-            quad.put(shading, createQuad(shading));
-        return quad.get(shading);
-    }
-    */
     /**
      * Returns A mesh that will/was loaded from a file
      * @param name File name without file extension.
@@ -76,33 +47,4 @@ public class MeshFactory {
 
         return new Mesh(model.getInterleavedVertexBuffer(), model.getPolyCount(), model.getSemantics(), model.getStrides(), shading );
     }
-
-    /**
-     * Creates a basic Triangle
-     * @return
-     */
-
-    /*
-    private Mesh createTriangle(Visual.Shading shading) {
-        float vertices[] = {
-                0.0f,  0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f
-        };
-        return new Mesh(vertices, shading);
-    }
-
-    private Mesh createQuad(Visual.Shading shading) {
-        float vertices[] = {
-                0.5f,  0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                -0.5f, 0.5f, 0.0f,
-
-                0.5f, 0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                -0.5f,  -0.5f, 0.0f,
-        };
-        return new Mesh(vertices, shading);
-    }
-    */
 }

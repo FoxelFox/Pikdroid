@@ -11,13 +11,12 @@ public class Visual extends Component{
     private float[] modelMatrix;
     private Shading shading;
 
-    private Geometry geometryType;
-    private String geometryName;
+    private String modelName;
 
-    public Visual(float[] color, Shading shading, Geometry geometryType) {
+    public Visual(float[] color, Shading shading, String  modelName) {
         this.color = color;
         this.shading = shading;
-        this.geometryType = geometryType;
+        this.modelName = modelName;
         modelMatrix = new float[16];
         Matrix.setIdentityM(modelMatrix,0);
     }
@@ -30,16 +29,8 @@ public class Visual extends Component{
         return shading;
     }
 
-    public Geometry getGeometryType() {
-        return geometryType;
-    }
-
-    public String getGeometryName() {
-        return geometryName;
-    }
-
-    public void setGeometryName(String name) {
-        this.geometryName = name;
+    public String getModelName() {
+        return modelName;
     }
 
     public void scale(float x, float y, float z) {
@@ -62,11 +53,5 @@ public class Visual extends Component{
     public enum Shading {
         TextureColor,
         UniformColor,
-    }
-
-    public enum Geometry {
-       // Triangle,
-       // Quad,
-        Model,
     }
 }

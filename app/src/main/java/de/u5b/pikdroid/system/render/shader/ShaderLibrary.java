@@ -30,10 +30,8 @@ public class ShaderLibrary {
             case UniformColor: shader = new Shader(vUniColor, fUniColor); break;
             case TextureColor: shader = new Shader(vTexColor, fTexColor); break;
         }
+        library.put(shading, shader);
 
-        if(shader != null) {
-            library.put(shading, shader);
-        }
         return shader;
     }
 

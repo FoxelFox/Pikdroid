@@ -74,8 +74,7 @@ public class HintSystem extends ASystem {
 
         Visual vis = new Visual(new float[] { 0.0f, 0.5f, 1.0f, 0.1f },
                                 Visual.Shading.UniformColor,
-                                Visual.Geometry.Model);
-        vis.setGeometryName("quad");
+                                "quad");
 
         Detectable detectable = new Detectable(DetectHint.FOOD_MARK);
 

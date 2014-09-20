@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
+ * This class is used to load COLLADA Files
  * Created by Foxel on 17.09.2014.
  */
 public class ColladaModel {
@@ -137,21 +138,15 @@ public class ColladaModel {
         }
     }
 
-    public FloatBuffer[] getVertexBuffers() {
-        return (FloatBuffer[])buffers.toArray();
-    }
-
     public FloatBuffer getInterleavedVertexBuffer() {
 
-        int size = 0;
-        int valuePerVertex = 0;
-
         // calc size per vertex
+        int valuePerVertex = 0;
         for (Integer stride : strides) {
             valuePerVertex += stride;
         }
         // multiply with polyCount and size of float
-        size = valuePerVertex * polycount * 3;
+        int size = valuePerVertex * polycount * 3;
 
         // allocate memory for interleaved vertex buffer
         ByteBuffer bb = ByteBuffer.allocateDirect(size * 4);
@@ -169,10 +164,6 @@ public class ColladaModel {
         }
         interleaved.position(0);
         return interleaved;
-    }
-
-    public ShortBuffer getIndices() {
-        return indices;
     }
 
     public Mesh.Semantic[] getSemantics() {
