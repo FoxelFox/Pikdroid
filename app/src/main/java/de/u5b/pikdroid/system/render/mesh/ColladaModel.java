@@ -158,7 +158,6 @@ public class ColladaModel {
             for (int j = 0; j < buffers.size(); j++) {          // j buffer
                 for (int k = 0; k < strides.get(j); k++) {      // k offset for entry int j buffer
                     interleaved.put(buffers.get(j).get(indices.get(i+j) * strides.get(j) +k));
-                    System.out.println(buffers.get(j).get(indices.get(i+j) * strides.get(j) +k));
                 }
             }
         }

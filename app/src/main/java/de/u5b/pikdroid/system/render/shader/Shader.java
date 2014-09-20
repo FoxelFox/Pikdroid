@@ -28,12 +28,15 @@ public class Shader {
         glAttachShader(id, vs);
         glAttachShader(id, fs);
         glLinkProgram(id);
+
+        System.err.println(glGetProgramInfoLog(id));
     }
 
     private static int compile(int type, String code) {
         int shader = glCreateShader(type);
         glShaderSource(shader,code);
         glCompileShader(shader);
+        System.err.println(glGetShaderInfoLog(shader));
         return shader;
     }
 

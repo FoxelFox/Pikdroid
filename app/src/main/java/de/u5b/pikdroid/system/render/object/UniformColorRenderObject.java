@@ -26,7 +26,7 @@ public class UniformColorRenderObject extends ARenderObject{
 
         // set uniform shader color
         glUniform4fv(colorIndex,1,color,0);
-        glUniform4fv(modelPoseMatrixIndex,1,modelPoseMatrix,0);
+        glUniformMatrix4fv(poseMatrixIndex,1,false,poseMatrix,0);
         glUniformMatrix4fv(modelPoseMatrixIndex,1,false,modelPoseMatrix,0);
 
         mesh.draw();

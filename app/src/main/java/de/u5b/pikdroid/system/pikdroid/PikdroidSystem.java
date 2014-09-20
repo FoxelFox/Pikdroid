@@ -70,10 +70,12 @@ public class PikdroidSystem extends ASystem {
 
         if(!loaded) {
             buildBase();
+            buildTerrain();
             loaded = true;
+
         }
 
-        if (enemies.size() < (spawnedPikdroids.size() >> 1))
+        if (enemies.size() < (spawnedPikdroids.size() >> 2))
             spawnEnemy();
 
         if(spawnedFood.size() < 10)
@@ -120,7 +122,7 @@ public class PikdroidSystem extends ASystem {
         pikdroid.addComponent(pose);
         Visual visual = new Visual(new float[] { 0.5f,  1.0f, 0.0f, 1.0f },
                                    Visual.Shading.UniformColor,
-                                   "quad");
+                                   "pikdroid");
         pikdroid.addComponent(visual);
 
         pikdroid.addComponent(movement);
@@ -213,7 +215,7 @@ public class PikdroidSystem extends ASystem {
 
         Visual vis = new Visual(new float[] { 1.0f,  0.75f, 0.0f, 1.0f },
                                 Visual.Shading.UniformColor,
-                                "circle");
+                                "box");
         vis.scale(0.5f,0.5f,1.0f);
 
         Energy energy = new Energy(100,100,0);
@@ -255,6 +257,27 @@ public class PikdroidSystem extends ASystem {
         entityManager.add(base);
     }
 
+    private void buildTerrain() {
+        Entity terrain = new Entity();
+
+        Pose pose = new Pose();
+        pose.translate(0,0,-5f);
+
+
+
+        Visual visual = new Visual(new float[] { 0.1f, 0.12f, 0.15f, 1.0f },
+                Visual.Shading.UniformColor,
+                "terrain");
+
+        visual.scale(20.0f, 20.0f, 20.0f);
+
+        terrain.addComponent(pose);
+        terrain.addComponent(visual);
+
+        entityManager.add(terrain);
+    }
+
+
     /**
      * The Pikdroid enemy entity
      */
@@ -269,7 +292,7 @@ public class PikdroidSystem extends ASystem {
 
         final Visual visual = new Visual(new float[] { 1.0f, 0.0f, 0.25f, 1.0f },
                                          Visual.Shading.UniformColor,
-                                         "quad");
+                                         "box");
         visual.scale(1.0f, 1.0f, 1.0f);
 
         final Movement move = new Movement(0.09f,8.0f,0.3f);

@@ -75,10 +75,10 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         glViewport(0, 0, width, height);
 
-        Matrix.perspectiveM(viewMatrix, 0, 90, (float)width/(float)height,0.1f,100);
+        Matrix.perspectiveM(viewMatrix, 0, 40, (float)width/(float)height,0.1f,1000);
         float[] cam = new float[16];
         Matrix.setIdentityM(cam,0);
-        Matrix.translateM(cam,0,0,0, -17f);
+        Matrix.translateM(cam,0,0,0, -50f);
         Matrix.multiplyMM(viewMatrix,0,viewMatrix,0,cam,0);
     }
 
@@ -107,8 +107,12 @@ public class RenderSystem extends ASystem implements GLSurfaceView.Renderer {
                 obj.getValue().calcMP();
 
                 glEnableVertexAttribArray(0);
+                glEnableVertexAttribArray(1);
+                glEnableVertexAttribArray(2);
                 obj.getValue().draw();
                 glDisableVertexAttribArray(0);
+                glEnableVertexAttribArray(1);
+                glEnableVertexAttribArray(2);
             }
         }
     }

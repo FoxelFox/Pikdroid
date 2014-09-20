@@ -17,6 +17,7 @@ public abstract class ARenderObject {
     protected Shader shader;
 
     // shader indices
+    protected int poseMatrixIndex;      // shader index for Pose Matrix
     protected int modelPoseMatrixIndex; // shader index for Model*Pose Matrix
 
     protected Mesh mesh;                // geometry to draw
@@ -28,6 +29,7 @@ public abstract class ARenderObject {
         shader = ShaderLibrary.getShader(visual.getShading());
         modelPoseMatrix = new float[16];
         modelPoseMatrixIndex = glGetUniformLocation(shader.getId(), "uMP");
+        poseMatrixIndex = glGetUniformLocation(shader.getId(), "uPose");
     }
 
     public abstract void draw();
